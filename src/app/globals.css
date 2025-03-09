@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir') url('./fonts/avenir-font/AvenirLTStd-Black.otf') format('otf');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+.ql-toolbar.ql-snow {
+  background: #999ba0 !important;
+  border: none !important;
+  border-radius: 8px 8px 0 0 !important;
+  font-family: 'Roboto' !important;
+  color: #919094 !important;
+  padding: 10px 16px !important;
+}
+
+.ql-editor {
+  padding: 10px 16px !important;
+  scrollbar-width: none !important;
+  font-family: 'Roboto' !important;
+  color: #919094 !important;
+  border-radius: 0 0 8px 8px !important;
+}
+
+.ql-container.ql-snow {
+  border-radius: 0 0 8px 8px !important;
+  background: #2f3033 !important;
+  border: none !important;
+}
+
+.ql-toolbar.ql-snow .ql-formats {
+  color: #fff !important;
+}
+
+.ql-editor p,
+.ql-editor ol,
+.ql-editor ul,
+.ql-editor pre,
+.ql-editor blockquote {
+  font-size: 14px !important;
+  line-height: 20px !important;
+}
