@@ -18,6 +18,7 @@ const config: Config = {
         inter: ['Inter', 'sans-serif'],
         avenir: ['var(--font-avenir)'],
         poppins: ['Poppins', 'sans-serif'],
+        spaceGrotesk: ['Space Grotesk', 'sans-serif'],
       },
     },
   },
