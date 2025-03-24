@@ -1,7 +1,7 @@
-import BenefitSection from "../benefit-section"
-import HeroSection from "../hero-section"
-import MainSection from "../main-content-section"
-import PriceSection from "../Price/PriceSection"
+import BenefitSection from "./hackathon-component/benefit-section"
+import HeroSection from "./hackathon-component/hero-section"
+import MainSection from "./hackathon-component/main-content-section"
+import PriceSection from "./hackathon-component/Price/PriceSection"
 
 const NaijaMakeYourMove = () => {
   return (
