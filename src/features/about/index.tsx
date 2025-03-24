@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import background from '@/assets/about-background.png';
-import pic from '@/assets/Frame.png';
 import { BsArrowUpRight } from 'react-icons/bs';
 import styles from './index.module.scss';
 import { PageMaxWidth } from '@/components/page-max-width';
