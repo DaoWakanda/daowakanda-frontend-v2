@@ -18,6 +18,7 @@ const config: Config = {
         inter: ['Inter', 'sans-serif'],
         avenir: ['var(--font-avenir)'],
         poppins: ['Poppins', 'sans-serif'],
+        spaceGrotesk: ['Space Grotesk', 'sans-serif'],
       },
       borderImage: {
         'gradient': 'linear-gradient(270deg, rgba(255, 255, 255, 0.7) 0%, #C5EE4F 100%)'
