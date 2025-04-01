@@ -12,16 +12,20 @@ const config: Config = {
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
+        greenColor:'var(--greenColor)',
       },
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
         avenir: ['var(--font-avenir)'],
+        avenirLtsd:['var(--font-avenirLtsd)'],
         poppins: ['Poppins', 'sans-serif'],
+        plusJarkata: ['Plus Jakarta Sans', 'sans-serif'],
         spaceGrotesk: ['Space Grotesk', 'sans-serif'],
       },
       borderImage: {
         'gradient': 'linear-gradient(270deg, rgba(255, 255, 255, 0.7) 0%, #C5EE4F 100%)'
+
       },
     },
   },
