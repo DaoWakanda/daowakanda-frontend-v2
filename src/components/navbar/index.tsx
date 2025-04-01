@@ -91,14 +91,16 @@ export function Navbar() {
                   link="/about"
                 />
               </div>
-              <Button className="hidden lg:flex">Connect wallet</Button>
+              <div className="hidden lg:flex">
+                <Button>Connect wallet</Button>
+              </div>
             </div>
           </PageMaxWidth>
         </div>
       </nav>
 
       {/* Mobile Navigation */}
-      <div className="md:hidden">
+      <div className="lg:hidden">
         <MobileMenu isOpen={isOpen} onClose={toggleMenu} />
       </div>
     </>
