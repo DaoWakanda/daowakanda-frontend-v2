@@ -48,7 +48,7 @@ export function useProposals() {
         noPercentage,
         totalVotes: Math.floor(Math.random() * 100) + 10,
         createdBy: "03ad...753",
-        creatorAvatar: "/placeholder.svg?height=32&width=32",
+        creatorAvatar: "https://res.cloudinary.com/dlinprg6k/image/upload/v1742431389/avatars/1742431389019-6362722285.jpg",
         ...(status === "active"
           ? {
               endsIn: `${Math.floor(Math.random() * 12)}h:${Math.floor(Math.random() * 60)}m:${Math.floor(Math.random() * 60)}s`,

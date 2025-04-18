@@ -11,10 +11,10 @@ const ProposalHeroSection = () => {
     alt="Overlay"
     className="w-full h-full object-cover absolute inset-0 z-0"
      />
-       <div className="absolute inset-0 bg-voting-gradient" />
+       <div className="absolute inset-0 bg-custom-lime" />
 
      <PageMaxWidth>
-        <div className="container mx-auto px-4 relative z-10 font-inter">
+        <div className="container mx-auto px-4 relative z-5 font-inter">
           <div className="max-w-2xl">
             <p className="text-sm mb-2  md:text-[16px]">DaoWakanda Governance:</p>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
