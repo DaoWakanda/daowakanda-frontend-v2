@@ -1,7 +1,12 @@
 import React from 'react';
 import { PageMaxWidth } from '@/components/page-max-width';
+import Link from 'next/link';
 
-const ProposalDetailsPage = () => {
+interface ProposalDetailsProps {
+  proposalId: string;
+}
+
+const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
   return (
     <PageMaxWidth>
       <div className="mt-10 w-full font-inter h-full flex flex-col justify-center items-center">
@@ -15,7 +20,9 @@ const ProposalDetailsPage = () => {
                 className="h-[20px] w-[20px]"
               />
             </p>
-            <p className="ml-2 text-sm">Proposal</p>
+            <Link href="/proposals">
+              <button className="ml-2 text-sm cursor-pointer">Proposal</button>
+            </Link>
           </div>
           <div className="w-full mt-2 font-bold text-18 md:text-[22px] text-white">
             J4J #1: Supply Reduction Proposal
@@ -189,4 +196,4 @@ const ProposalDetailsPage = () => {
   );
 };
 
-export default ProposalDetailsPage;
+export default ProposalDetails;
