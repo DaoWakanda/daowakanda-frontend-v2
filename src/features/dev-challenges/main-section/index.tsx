@@ -38,7 +38,7 @@ export function MainSection({active, onclick, showFilter }: Props) {
         {/* bottom section */}
       <div className='flex flex-row gap-6 w-full min-h-screen md:my-[77px] my-8'>
         {/* left section */}
-        <div className='flex-col  md:sticky md:top-[120px] hidden md:flex  w-[280px] min-h-[600px] mt-16'>
+        <div className='flex-col  md:sticky md:top-[120px] hidden lg:flex  w-[280px] min-h-[600px] mt-16'>
           <LeftSection />
         </div>
         {/* right section */}
@@ -53,7 +53,7 @@ export function MainSection({active, onclick, showFilter }: Props) {
             </div>
           </div>
          
-          <div className='grid md:grid-cols-3 grid-cols-1 gap-4 border-blue'>
+          <div className='grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 border-blue'>
             {
               [1,2,3,4,5,6,7,8,9].map((_, index)=> (
                 <Card key={index} />
