@@ -13,6 +13,7 @@ import { DeleteModal } from "@/components/ui/delete-modal"
 import LeadershipBoard from "../leadership-board"
 import ProposalsuccessModal from "../success-modal-proposal"
 import FailureProposalModal from "../failure-modal-proposal"
+import { PageMaxWidth } from "@/components/page-max-width"
 
 
 
@@ -103,6 +104,7 @@ const ProposalsContent = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 min-h-screen bg-black font-roboto">
+      <PageMaxWidth>
       <div className="lg:w-full ">
             {/* Tabs and Search */}
             {!isMobile && (
@@ -162,7 +164,7 @@ const ProposalsContent = () => {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className="!bg-[#1B1B1F] text-[#46464A] border-gray-700 rounded-full px-6 py-6 h-auto  flex justify-between items-center text-xs "
+                      className="!bg-[#1B1B1F] text-[#46464A] border-gray-700 rounded-full px-2 py-2 h-auto  flex justify-between items-center text-[10px] "
                     >
                       <span>
                         {activeTab === "all"
@@ -173,7 +175,7 @@ const ProposalsContent = () => {
                               ? "Approved"
                               : "Denied"}
                       </span>
-                      <ChevronDown className="h-5 w-5 ml-2 text-[#46464A]" />
+                      <ChevronDown className="h-5 w-5  text-[#46464A]" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="bg-[#1B1B1F] border-gray-700 text-[#46464A] text-xs">
@@ -291,8 +293,7 @@ const ProposalsContent = () => {
                          
                           />
                         </div>
-    
-
+                        </PageMaxWidth>
     </div>
   )
 }
