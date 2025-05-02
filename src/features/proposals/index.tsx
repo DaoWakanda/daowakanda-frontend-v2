@@ -5,8 +5,8 @@ import ProposalsContent from './proposals components/proposals-content'
 const ProposalPage = () => {
   return (
     <div>
-        <ProposalHeroSection />
-        <ProposalsContent />
+      <ProposalHeroSection />
+      <ProposalsContent />
     </div>
   )
 }
