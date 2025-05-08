@@ -27,6 +27,9 @@ const config: Config = {
         'gradient': 'linear-gradient(270deg, rgba(255, 255, 255, 0.7) 0%, #C5EE4F 100%)'
 
       },
+      backgroundImage: {
+        'custom-lime': 'linear-gradient(89.68deg, #C5EE4F 28.7%, rgba(113, 136, 45, 0.3) 63.66%)',
+      },
     },
   },
   plugins: [],
