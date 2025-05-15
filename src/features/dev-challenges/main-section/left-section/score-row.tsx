@@ -1,15 +1,15 @@
+import { LeaderBoardItem } from '@/interface/challenge.interface';
 import React from 'react';
 
 interface Props{
   index: any;
-  title: string;
-  score: number;
+  leaderboard: LeaderBoardItem
 }
 
-export const RowData = ({ index, title, score}: Props) =>{
+export const RowData = ({ index, leaderboard }: Props) =>{
 
   const stripImage =()=>{
-    const [first, last] = title.trim().split(' ');
+    const [first, last] = leaderboard?.name.trim().split(' ');
     const merged = first.split('')[0].toUpperCase() + last.split('')[0].toUpperCase();
 
     return merged;
@@ -22,11 +22,11 @@ export const RowData = ({ index, title, score}: Props) =>{
 
         <div className='flex gap-1 items-center'>
           <div className='text-[12px] font-normal bg-black rounded-full p-1 text-white'>{stripImage()}</div>
-          <div className='font-normal text-sm'>{title}</div>
+          <div className='font-normal text-sm'>{leaderboard?.name}</div>
         </div>
        
       </div>
-      <div className='font-normal text-sm'>{score}</div>
+      <div className='font-normal text-sm'>{leaderboard?.totalAlgos}</div>
     </div>
   );
 };

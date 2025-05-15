@@ -1,4 +1,4 @@
-import { FetchPaginatedDataDto } from './pagination.interface';
+import { FetchPaginatedDataDto, PaginationResponse } from './pagination.interface';
 
 export type TriviaDifficulty = 'novice' | 'amateur' | 'pro';
 
@@ -28,8 +28,17 @@ export interface ITrivia {
   endTimeStamp: number;
 }
 
+export type ITriviaRes = PaginationResponse<ITrivia>;
+
 export interface FetchPaginatedTrivia extends FetchPaginatedDataDto {
   status?: TriviaStatus;
+}
+
+export interface FetchTriviaDto {
+  page?: number;
+  numOfItemsPerPage?: number;
+  filterBy?: TriviaDifficulty;
+  searchTerm?: string;
 }
 
 export interface ISubmission {
@@ -42,4 +51,23 @@ export interface ISubmission {
   createdAt: string;
   walletAddress: string;
   bounty: number;
+}
+
+export interface LeaderBoardItem {
+  name: string;
+  totalAlgos: number;
+}
+
+export interface ITriviaBounty {
+  id: string;
+  githubLink: string;
+  title: string;
+  smartContractId: number;
+  bounty: number;
+}
+
+export interface SubmitTriviaAnswer {
+  userId: string;
+  triviaId: string;
+  githubRepoLink: string;
 }
