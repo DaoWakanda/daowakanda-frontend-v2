@@ -7,15 +7,37 @@ interface Props{
 
 const TaskWinners = ({ data }: Props) => {
   
-  const stripImage = ({ text }:any) => {
-      const [first, last] = text?.trim().split(' ');
-      const merged = first.split('')[0].toUpperCase() + last.split('')[0].toUpperCase();
+ function getInitials(fullName: string): string {
+   const parts = fullName.trim().split(' ');
 
-      return merged;
-    };
+   if (parts.length < 2) {
+     throw new Error('Full name must include at least a first and last name.');
+   }
+
+   const firstInitial = parts[0][0].toUpperCase();
+   const lastInitial = parts[1][0].toUpperCase();
+
+   return firstInitial + lastInitial;
+ }
+  const generatedColors = new Set<string>();
+
+  function getUniqueBackgroundColor(): string {
+    let color: string;
+
+    do {
+      color =
+        '#' +
+        Math.floor(Math.random() * 0xffffff)
+          .toString(16)
+          .padStart(6, '0');
+    } while (generatedColors.has(color));
+
+    generatedColors.add(color);
+    return color;
+  }
   
   return (
-    <div className="bg-[#211F26] mx-auto md:mx-0 text-white rounded-[16px] py-4 px-2 w-[396px] md:w-[526px] min-h-[500px] font-roboto">
+    <div className="bg-[#211F26] mx-auto md:mx-0 text-white rounded-[16px] py-4 px-2 w-[80%%] md:w-[100%] min-h-fit font-roboto">
       <div className="flex gap-8 p-4 border-b-2 mb-2 border-[#484646]">
         <span>
           <svg
@@ -58,8 +80,11 @@ const TaskWinners = ({ data }: Props) => {
               <span className="text-sm">{index + 1}</span>
               <div className="flex-1 flex items-center gap-2">
                 <div className="w-[25px] aspect-square rounded-[50px] overflow-hidden">
-                  <div className="text-[12px] font-normal bg-black rounded-full p-1 text-white">
-                    {/* {item?.name?.split('')[0].toUpperCase() + item?.name?.split('')[0].toUpperCase();} */}
+                  <div
+                    className="text-[12px] font-normal rounded-full p-1 text-white"
+                    style={{ background: getUniqueBackgroundColor() }}
+                  >
+                    {getInitials(item?.name)}
                   </div>
                 </div>
                 <h3 className="capitalize font-normal text-[16px]">{item?.name}</h3>

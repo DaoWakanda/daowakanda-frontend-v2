@@ -16,7 +16,6 @@ import { useNotify } from '@/hooks/useNotify';
 import Skeleton from 'react-loading-skeleton';
 import { createSanitizedMarkup } from '@/utils';
 import toast from 'react-hot-toast';
-// import LeaderboardTable from "@/components/leaderboard-table"
 
 export const DevChallengesDetailPage = () => {
   const developerProfile = useRecoilValue(DeveloperProfileAtom);

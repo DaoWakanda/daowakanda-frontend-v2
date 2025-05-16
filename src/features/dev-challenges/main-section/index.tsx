@@ -7,7 +7,7 @@ import { LeftSection } from './left-section';
 import { FaSliders } from 'react-icons/fa6';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { useDebounce } from '@/hooks/use-debounce';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { TriviasAtom, TriviaSearchTerm } from '@/state/developer.atom';
 import { FetchTriviaDto, LeaderBoardItem } from '@/interface/challenge.interface';
 import { useDeveloperActions } from '@/actions/developers/developer.action';
@@ -19,14 +19,14 @@ interface Props {
 }
 
 export function MainSection({ active, onclick, showFilter }: Props) {
-  const [searchText, setSearchText] = useState('');
+  // const [searchText, setSearchText] = useState('');
   const { getAllTrivia, fetchLeaderboard } = useDeveloperActions();
   const [leaderboardItems, setLeaderboardItems] = useState<LeaderBoardItem[]>();
   const trivias = useRecoilValue(TriviasAtom);
   const [filter, setFilter] = useState<FetchTriviaDto>({
     numOfItemsPerPage: 40,
   });
-  const searchTerm = useRecoilValue(TriviaSearchTerm);
+  const [searchTerm, setSearchTerm] = useRecoilState(TriviaSearchTerm);
   const { debounce } = useDebounce();
 
   const triviaSize = trivias?.data?.length || 0;
@@ -67,9 +67,9 @@ export function MainSection({ active, onclick, showFilter }: Props) {
           <input
             type="text"
             placeholder="Search by name, author or category..."
-            value={searchText}
+            value={searchTerm}
             className="w-full md:px-[50px] h-full outline-none bg-inherit ml-auto"
-            onChange={(e: any) => setSearchText(e.target.value)}
+            onChange={(e: any) => setSearchTerm(e.target.value)}
           />
         </div>
         <div
