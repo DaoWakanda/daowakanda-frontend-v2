@@ -11,15 +11,23 @@ import { NavItemDesktop } from './nav-item.desktop';
 import { usePathname } from 'next/navigation';
 import { Button } from '../button';
 import { MobileMenu } from './mobile-menu';
+import { CiBellOn } from 'react-icons/ci';
+import Notifications from '../notifications';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+
   const pathname = usePathname();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  const toggleNotifications = () => {
+    console.log('Notification button clicked');
+    setShowNotifications(!showNotifications);
+  };
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-10 w-full flex flex-col">
@@ -91,8 +99,28 @@ export function Navbar() {
                   link="/about"
                 />
               </div>
-              <div className="hidden lg:flex">
-                <Button>Connect wallet</Button>
+              <div className="flex">
+                <div className="hidden lg:flex justify-center items-center">
+                  <Button>Connect wallet</Button>
+                </div>
+
+                <div className="ml-5">
+                  <div
+                    className="relative border border-[#c5ee4f] w-[30px] lg:w-[40px] h-[30px] lg:h-[40px] rounded-full cursor-pointer flex items-center justify-center"
+                    onClick={toggleNotifications}
+                  >
+                    <CiBellOn className="w-6 h-6 text-[#c5ee4f]" />
+                  </div>
+                </div>
+                {showNotifications && (
+                  <>
+                    <div
+                      className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                      onClick={() => setShowNotifications(false)}
+                    />
+                    <Notifications onClose={() => setShowNotifications(false)} />
+                  </>
+                )}
               </div>
             </div>
           </PageMaxWidth>
