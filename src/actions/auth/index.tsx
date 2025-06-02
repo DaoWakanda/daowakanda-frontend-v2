@@ -2,6 +2,7 @@ import { useClient } from '@/hooks/use-client';
 import { Token } from '@/interface';
 import { ILogin } from '@/interface/auth.interface';
 import { authAtom } from '@/state';
+import { useWallet } from '@txnlab/use-wallet';
 import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { useSetRecoilState } from 'recoil';
@@ -9,16 +10,14 @@ import { useSetRecoilState } from 'recoil';
 export const useAuthActions = () => {
   const client = useClient();
   const setAuth = useSetRecoilState(authAtom);
+  const { providers } = useWallet();
 
   const logout = useCallback(async () => {
-    await fetch('/api/auth', {
-      method: 'DELETE',
+    providers?.forEach((provider) => {
+      provider.disconnect();
     });
-
     setAuth(null);
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
+    localStorage.removeItem('auth');
   }, []);
 
   const login = useCallback(async (dto: ILogin) => {

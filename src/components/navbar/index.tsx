@@ -13,12 +13,26 @@ import { Button } from '../button';
 import { MobileMenu } from './mobile-menu';
 import { CiBellOn } from 'react-icons/ci';
 import Notifications from '../notifications';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { authAtom, ConnectWalletVisibleAtom } from '@/state';
+import { WalletConnectModal } from '../wallet-connect-modal';
+import { useWallet } from '@txnlab/use-wallet';
+import classNames from 'classnames';
+import { BackgroundOverlay } from '../background-overlay';
+import { useAuthActions } from '@/actions/auth';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showWalletConnect, setShowWalletConnect] = useRecoilState(ConnectWalletVisibleAtom);
+  const [showProfilePopup, setShowProfilePopup] = useState(false);
+  const { logout } = useAuthActions();
+  const auth = useRecoilValue(authAtom);
+  const { activeAddress } = useWallet();
 
   const pathname = usePathname();
+
+  const userIsLoggedin = !!auth && !!activeAddress;
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -28,6 +42,7 @@ export function Navbar() {
     console.log('Notification button clicked');
     setShowNotifications(!showNotifications);
   };
+
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-10 w-full flex flex-col">
@@ -38,7 +53,19 @@ export function Navbar() {
                 <DaowakandaIcon />
                 <DaowakandaTextIcon className="hidden lg:block" />
               </Link>
-              <div className="lg:hidden flex-1 flex justify-end">
+              <div className="lg:hidden flex-1 flex justify-end gap-4">
+                {!!activeAddress && (
+                  <button
+                    className={classNames(
+                      'flex flex-col py-[8px] px-[25.5px] bg-[#FFF] rounded-lg',
+                      'text-[#000000] font-[600] text-base leading-[24px]',
+                    )}
+                    onClick={() => setShowProfilePopup(!showProfilePopup)}
+                  >
+                    {activeAddress.slice(0, 6)}...{activeAddress.slice(activeAddress.length - 3)}
+                  </button>
+                )}
+
                 <button
                   onClick={toggleMenu}
                   className="inline-flex items-center justify-center rounded-md text-[#0F172A] dark:text-white"
@@ -100,19 +127,34 @@ export function Navbar() {
                 />
               </div>
               <div className="flex">
-                <div className="hidden lg:flex justify-center items-center">
-                  <Button>Connect wallet</Button>
+                <div className="hidden lg:flex justify-center items-center relative">
+                  {!activeAddress && (
+                    <Button onClick={() => setShowWalletConnect(true)}>Connect wallet</Button>
+                  )}
+                  {!!activeAddress && (
+                    <button
+                      className={classNames(
+                        'flex flex-col py-[10px] px-[25.5px] bg-[#FFF] rounded-lg',
+                        'text-[#000000] font-[600] text-base leading-[24px]',
+                      )}
+                      onClick={() => setShowProfilePopup(!showProfilePopup)}
+                    >
+                      {activeAddress.slice(0, 6)}...{activeAddress.slice(activeAddress.length - 3)}
+                    </button>
+                  )}
                 </div>
 
-                <div className="ml-5">
-                  <div
-                    className="relative border border-[#c5ee4f] w-[30px] lg:w-[40px] h-[30px] lg:h-[40px] rounded-full cursor-pointer flex items-center justify-center"
-                    onClick={toggleNotifications}
-                  >
-                    <CiBellOn className="w-6 h-6 text-[#c5ee4f]" />
+                {userIsLoggedin && (
+                  <div className="ml-5">
+                    <div
+                      className="relative border border-[#c5ee4f] w-[30px] lg:w-[40px] h-[30px] lg:h-[40px] rounded-full cursor-pointer flex items-center justify-center"
+                      onClick={toggleNotifications}
+                    >
+                      <CiBellOn className="w-6 h-6 text-[#c5ee4f]" />
+                    </div>
                   </div>
-                </div>
-                {showNotifications && (
+                )}
+                {showNotifications && userIsLoggedin && (
                   <>
                     <div
                       className="fixed inset-0 bg-black bg-opacity-50 z-40"
@@ -127,10 +169,65 @@ export function Navbar() {
         </div>
       </nav>
 
+      <BackgroundOverlay
+        onClose={() => setShowProfilePopup(false)}
+        visible={showProfilePopup && !!activeAddress}
+        wrapperStyle={{
+          top: 80,
+          justifyContent: 'flex-start',
+          alignItems: 'flex-end',
+        }}
+      >
+        <PageMaxWidth>
+          <div className={classNames('flex flex-row')}>
+            <div onClick={() => setShowProfilePopup(false)} className="flex flex-1"></div>
+            <div
+              className={classNames(
+                'bg-[#0F0D13] mt-8 max-w-[100vw] w-[389px] border-[2px] border-[#79747E]',
+                'rounded-2xl py-4 px-8 flex flex-row items-center gap-4',
+              )}
+            >
+              <img
+                src={`https://ui-avatars.com/api/?name=${activeAddress}&background=random&font-size=0.35&rounded=true`}
+                className={classNames('w-[100px] h-[100px] rounded-[100px]')}
+              />
+              <div className="flex flex-col gap-1">
+                <div className="text-[#E5E5EA] font-[500] text-sm leading-[24px]">
+                  {activeAddress?.slice(0, 6)}...{activeAddress?.slice(activeAddress.length - 10)}
+                </div>
+                <button
+                  className={classNames(
+                    'flex flex-col py-[10px] px-[25.5px] bg-[#FFF] rounded-lg',
+                    'text-[#00484F] font-[600] text-sm leading-[24px] font-inter',
+                  )}
+                  onClick={() => setShowProfilePopup(!showProfilePopup)}
+                >
+                  Edit Profile
+                </button>
+                <button
+                  className={classNames(
+                    'flex flex-col rounded-lg',
+                    'text-[#cc7d6f] font-[400] text-sm leading-[24px] font-inter',
+                  )}
+                  onClick={() => {
+                    logout();
+                    setShowProfilePopup(false);
+                  }}
+                >
+                  Disconnect Wallet
+                </button>
+              </div>
+            </div>
+          </div>
+        </PageMaxWidth>
+      </BackgroundOverlay>
+
       {/* Mobile Navigation */}
       <div className="lg:hidden">
         <MobileMenu isOpen={isOpen} onClose={toggleMenu} />
       </div>
+
+      {showWalletConnect && <WalletConnectModal onClose={() => setShowWalletConnect(false)} />}
     </>
   );
 }
