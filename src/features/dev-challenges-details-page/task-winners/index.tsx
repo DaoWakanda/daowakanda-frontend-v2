@@ -1,8 +1,43 @@
-import React from 'react'
+import { LeaderBoardItem } from '@/interface/challenge.interface';
+import React from 'react';
 
-const TaskWinners = () => {
+interface Props{
+  data: LeaderBoardItem[] | undefined;
+}
+
+const TaskWinners = ({ data }: Props) => {
+  
+ function getInitials(fullName: string): string {
+   const parts = fullName.trim().split(' ');
+
+   if (parts.length < 2) {
+     throw new Error('Full name must include at least a first and last name.');
+   }
+
+   const firstInitial = parts[0][0].toUpperCase();
+   const lastInitial = parts[1][0].toUpperCase();
+
+   return firstInitial + lastInitial;
+ }
+  const generatedColors = new Set<string>();
+
+  function getUniqueBackgroundColor(): string {
+    let color: string;
+
+    do {
+      color =
+        '#' +
+        Math.floor(Math.random() * 0xffffff)
+          .toString(16)
+          .padStart(6, '0');
+    } while (generatedColors.has(color));
+
+    generatedColors.add(color);
+    return color;
+  }
+  
   return (
-    <div className="bg-[#211F26] mx-auto md:mx-0 text-white rounded-[16px] py-4 px-2 w-[396px] md:w-[526px] min-h-[500px] font-roboto">
+    <div className="bg-[#211F26] mx-auto md:mx-0 text-white rounded-[16px] py-4 px-2 w-[80%%] md:w-[100%] min-h-fit font-roboto">
       <div className="flex gap-8 p-4 border-b-2 mb-2 border-[#484646]">
         <span>
           <svg
@@ -40,123 +75,23 @@ const TaskWinners = () => {
           <span>Points</span>
         </div>
         <div className="flex flex-col gap-1">
-          <div className="flex gap-2 items-center p-2">
-            <span className="text-sm">1.</span>
-            <div className="flex-1 flex items-center gap-2">
-              <div className="w-[25px] aspect-square rounded-[50px] overflow-hidden">
-                <img
-                  src="https://res.cloudinary.com/dlinprg6k/image/upload/v1746430342/8d8fa4fd596ec1625410a650be71b638a1a652c0_s7u6no.jpg"
-                  alt="profile picture"
-                />
+          {data?.map((item, index) => (
+            <div className="flex gap-2 items-center p-2" key={index}>
+              <span className="text-sm">{index + 1}</span>
+              <div className="flex-1 flex items-center gap-2">
+                <div className="w-[25px] aspect-square rounded-[50px] overflow-hidden">
+                  <div
+                    className="text-[12px] font-normal rounded-full p-1 text-white"
+                    style={{ background: getUniqueBackgroundColor() }}
+                  >
+                    {getInitials(item?.name)}
+                  </div>
+                </div>
+                <h3 className="capitalize font-normal text-[16px]">{item?.name}</h3>
               </div>
-              <h3 className="capitalize font-normal text-[16px]">john Doe</h3>
+              <p className="text-sm">{item?.totalAlgos}</p>
             </div>
-            <p className="text-sm">520</p>
-          </div>
-          <div className="flex gap-2 items-center p-2">
-            <span className="text-sm">1.</span>
-            <div className="flex-1 flex items-center gap-2">
-              <div className="w-[25px] aspect-square rounded-[50px] overflow-hidden">
-                <img
-                  src="https://res.cloudinary.com/dlinprg6k/image/upload/v1746430342/8d8fa4fd596ec1625410a650be71b638a1a652c0_s7u6no.jpg"
-                  alt="profile picture"
-                />
-              </div>
-              <h3 className="capitalize font-normal text-[16px]">john Doe</h3>
-            </div>
-            <p className="text-sm">520</p>
-          </div>
-          <div className="flex gap-2 items-center p-2">
-            <span className="text-sm">1.</span>
-            <div className="flex-1 flex items-center gap-2">
-              <div className="w-[25px] aspect-square rounded-[50px] overflow-hidden">
-                <img
-                  src="https://res.cloudinary.com/dlinprg6k/image/upload/v1746430342/8d8fa4fd596ec1625410a650be71b638a1a652c0_s7u6no.jpg"
-                  alt="profile picture"
-                />
-              </div>
-              <h3 className="capitalize font-normal text-[16px]">john Doe</h3>
-            </div>
-            <p className="text-sm">520</p>
-          </div>{' '}
-          <div className="flex gap-2 items-center p-2">
-            <span className="text-sm">1.</span>
-            <div className="flex-1 flex items-center gap-2">
-              <div className="w-[25px] aspect-square rounded-[50px] overflow-hidden">
-                <img
-                  src="https://res.cloudinary.com/dlinprg6k/image/upload/v1746430342/8d8fa4fd596ec1625410a650be71b638a1a652c0_s7u6no.jpg"
-                  alt="profile picture"
-                />
-              </div>
-              <h3 className="capitalize font-normal text-[16px]">john Doe</h3>
-            </div>
-            <p className="text-sm">520</p>
-          </div>{' '}
-          <div className="flex gap-2 items-center p-2">
-            <span className="text-sm">1.</span>
-            <div className="flex-1 flex items-center gap-2">
-              <div className="w-[25px] aspect-square rounded-[50px] overflow-hidden">
-                <img
-                  src="https://res.cloudinary.com/dlinprg6k/image/upload/v1746430342/8d8fa4fd596ec1625410a650be71b638a1a652c0_s7u6no.jpg"
-                  alt="profile picture"
-                />
-              </div>
-              <h3 className="capitalize font-normal text-[16px]">john Doe</h3>
-            </div>
-            <p className="text-sm">520</p>
-          </div>{' '}
-          <div className="flex gap-2 items-center p-2">
-            <span className="text-sm">1.</span>
-            <div className="flex-1 flex items-center gap-2">
-              <div className="w-[25px] aspect-square rounded-[50px] overflow-hidden">
-                <img
-                  src="https://res.cloudinary.com/dlinprg6k/image/upload/v1746430342/8d8fa4fd596ec1625410a650be71b638a1a652c0_s7u6no.jpg"
-                  alt="profile picture"
-                />
-              </div>
-              <h3 className="capitalize font-normal text-[16px]">Rebecca Abam</h3>
-            </div>
-            <p className="text-sm">520</p>
-          </div>{' '}
-          <div className="flex gap-2 items-center p-2">
-            <span className="text-sm">1.</span>
-            <div className="flex-1 flex items-center gap-2">
-              <div className="w-[25px] aspect-square rounded-[50px] overflow-hidden">
-                <img
-                  src="https://res.cloudinary.com/dlinprg6k/image/upload/v1746430342/8d8fa4fd596ec1625410a650be71b638a1a652c0_s7u6no.jpg"
-                  alt="profile picture"
-                />
-              </div>
-              <h3 className="capitalize font-normal text-[16px]">Deborah Yahaya</h3>
-            </div>
-            <p className="text-sm">520</p>
-          </div>{' '}
-          <div className="flex gap-2 items-center p-2">
-            <span className="text-sm">1.</span>
-            <div className="flex-1 flex items-center gap-2">
-              <div className="w-[25px] aspect-square rounded-[50px] overflow-hidden">
-                <img
-                  src="https://res.cloudinary.com/dlinprg6k/image/upload/v1746430342/8d8fa4fd596ec1625410a650be71b638a1a652c0_s7u6no.jpg"
-                  alt="profile picture"
-                />
-              </div>
-              <h3 className="capitalize font-normal text-[16px]">Peter Oyelowo</h3>
-            </div>
-            <p className="text-sm">520</p>
-          </div>{' '}
-          <div className="flex gap-2 items-center p-2">
-            <span className="text-sm">1.</span>
-            <div className="flex-1 flex items-center gap-2">
-              <div className="w-[25px] aspect-square rounded-[50px] overflow-hidden">
-                <img
-                  src="https://res.cloudinary.com/dlinprg6k/image/upload/v1746430342/8d8fa4fd596ec1625410a650be71b638a1a652c0_s7u6no.jpg"
-                  alt="profile picture"
-                />
-              </div>
-              <h3 className="capitalize font-normal text-[16px]">Kelly Legend</h3>
-            </div>
-            <p className="text-sm">520</p>
-          </div>
+          ))}
         </div>
       </div>
     </div>

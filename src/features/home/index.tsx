@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './index.module.scss';
 import HeroSection from '@/features/home/landing-page-components/hero-section';
 import MainSection from '@/features/home/landing-page-components/main-Section';
@@ -10,6 +10,7 @@ import NotificationBot from './landing-page-components/notification-bot-section'
 import { VerificationSentModal } from '@/components/verification-sent-modal';
 
 export function Home() {
+  const [isShowVerification, setIsShowVerification] = useState(false);
   return (
     <div className={`${styles['container']}`}>
       <HeroSection />
@@ -17,7 +18,7 @@ export function Home() {
       <BlogSection />
       <CommunitySection />
       <NotificationBot />
-      <VerificationSentModal />
+      {isShowVerification && <VerificationSentModal />}
     </div>
   );
 }
