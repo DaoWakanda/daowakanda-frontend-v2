@@ -8,6 +8,7 @@ interface BackgroundOverlayProps {
   onClose?: () => any;
   className?: string;
   overlayStyle?: React.CSSProperties;
+  wrapperStyle?: React.CSSProperties;
 }
 
 export const BackgroundOverlay = ({
@@ -16,9 +17,10 @@ export const BackgroundOverlay = ({
   onClose = () => null,
   className,
   overlayStyle,
+  wrapperStyle = {},
 }: BackgroundOverlayProps) => {
   return visible ? (
-    <div className={classNames(styles['wrapper'], className)}>
+    <div className={classNames(styles['wrapper'], className)} style={wrapperStyle}>
       <div className={styles['overlay']} onClick={onClose} style={overlayStyle}></div>
       {children}
     </div>

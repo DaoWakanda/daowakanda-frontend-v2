@@ -8,6 +8,9 @@ import { DaowakandaIcon } from '@/assets/daowakanda.icon';
 import { usePathname, useRouter } from 'next/navigation';
 import { WalletIcon } from '@/assets/wallet.icon';
 import { NavItemMobile } from './nav-item.mobile';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { authAtom, ConnectWalletVisibleAtom } from '@/state';
+import { useWallet } from '@txnlab/use-wallet';
 
 interface Props {
   isOpen: boolean;
@@ -18,6 +21,12 @@ export function MobileMenu({ isOpen, onClose }: Props) {
   const [open, setOpen] = useState(false);
   const { push } = useRouter();
   const pathname = usePathname();
+  const [_, setShowWalletConnect] = useRecoilState(ConnectWalletVisibleAtom);
+
+  const auth = useRecoilValue(authAtom);
+  const { activeAddress } = useWallet();
+
+  const userIsLoggedin = !!auth && !!activeAddress;
 
   const handleClose = () => {
     setOpen(false);
@@ -102,15 +111,18 @@ export function MobileMenu({ isOpen, onClose }: Props) {
             />
             <NavItemMobile isActive={pathname.includes('/about')} label="About" link="/about" />
           </div>
-          <button
-            className={classNames(
-              'flex items-center justify-center gap-4 py-2 px-4 rounded-[50px]',
-              'border-[1px] border-white h-[60px] bg-[#2F3033]',
-            )}
-          >
-            <WalletIcon />
-            <span className="font-avenir text-sm font-[700] text-white">Connect wallet</span>
-          </button>
+          {!userIsLoggedin && (
+            <button
+              className={classNames(
+                'flex items-center justify-center gap-4 py-2 px-4 rounded-[50px]',
+                'border-[1px] border-white h-[60px] bg-[#2F3033]',
+              )}
+              onClick={() => setShowWalletConnect(true)}
+            >
+              <WalletIcon />
+              <span className="font-avenir text-sm font-[700] text-white">Connect wallet</span>
+            </button>
+          )}
         </div>
       </div>
     </BackgroundOverlay>

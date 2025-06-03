@@ -1,6 +1,7 @@
 'use client';
 
 import { ICreateProfile } from '@/interface/profile.interface';
+import { useWallet } from '@txnlab/use-wallet';
 
 interface FormProp {
   handleSubmit: (e: React.FormEvent) => void;
@@ -9,6 +10,8 @@ interface FormProp {
 }
 
 const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
+  const { activeAddress } = useWallet();
+
   return (
     <form onSubmit={handleSubmit} className="space-y-5 font-roboto">
       <div className="grid grid-cols-2 gap-4">
@@ -71,7 +74,7 @@ const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
             id="state"
             name="state"
             className="w-full px-4 py-3 rounded-lg text-sm bg-[#24252D] text-white outline-none focus:ring-1 focus:ring-[#C5EE4F] bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'white\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E')] bg-no-repeat bg-right pr-4 bg-[length:1em]  border-[0.5px]  border-[#49454F]"
-            value={formData.state}
+            value={formData.stateOfResidence}
             onChange={handleChange}
           >
             <option value="" disabled selected>
@@ -110,7 +113,7 @@ const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
           name="github"
           placeholder="Github link"
           className="w-full px-4 py-3 rounded-lg text-sm bg-[#24252D] text-white outline-none focus:ring-1 focus:ring-[#C5EE4F]  border-[0.5px]  border-[#49454F]"
-          value={formData.github}
+          value={formData.githubLink}
           onChange={handleChange}
         />
       </div>
@@ -125,8 +128,8 @@ const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
           name="wallet"
           placeholder="0x3f5f3b5bf6fb8f3ef6d9f6f65f6f"
           className="w-full px-4 py-3 text-sm rounded-lg bg-[#24252D] text-white outline-none focus:ring-1 focus:ring-[#C5EE4F]  border-[0.5px]  border-[#49454F]"
-          value={formData.wallet}
-          onChange={handleChange}
+          value={activeAddress}
+          disabled
         />
       </div>
 

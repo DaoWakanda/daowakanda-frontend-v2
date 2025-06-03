@@ -8,13 +8,17 @@ import {
   RequestOptions,
   Token,
 } from '@/interface';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { authAtom } from '@/state';
 import config from '@/config';
+import { useWallet } from '@txnlab/use-wallet';
+import { ProfileAtom } from '@/state/profile.atom';
 
 export const useClient = () => {
   const baseApiUrl = config.API_URL;
   const [session, setSession] = useRecoilState(authAtom);
+  const setProfile = useSetRecoilState(ProfileAtom);
+  const { providers } = useWallet();
 
   const generateAuthHeader = useCallback((auth?: Token) => {
     const token = auth && auth.accessToken;
@@ -27,35 +31,18 @@ export const useClient = () => {
     }
   }, []);
 
-  const logout = async () => {
-    await fetch('/api/auth', {
-      method: 'DELETE',
+  const logout = useCallback(async () => {
+    providers?.forEach((provider) => {
+      provider.disconnect();
     });
 
-    setSession(null);
+    localStorage.removeItem('auth');
+    setProfile(null);
+
     setTimeout(() => {
-      window.location.reload();
-    }, 500);
-  };
-
-  async function getFallBackToken(): Promise<Token | undefined> {
-    try {
-      const response = await fetch('/api/auth');
-      const data = await response.json();
-
-      if (!!data.accessToken && !!data.expiresIn && !!data.expiryTime) {
-        const newToken: Token = {
-          accessToken: data.accessToken,
-          expiresIn: data.expiresIn,
-          expiryTime: data.expiryTime,
-        };
-
-        return newToken;
-      }
-    } catch (err) {
-      return undefined;
-    }
-  }
+      setSession(null);
+    }, 1000);
+  }, [providers]);
 
   async function handleResponse<R = any, E = any>(
     response: globalThis.Response,
@@ -112,7 +99,7 @@ export const useClient = () => {
           method,
           headers: {
             'Content-Type': 'application/json',
-            ...generateAuthHeader(options?.token || session || (await getFallBackToken())),
+            ...generateAuthHeader(options?.token || session || undefined),
             ...options?.headers,
           },
         };
@@ -193,7 +180,7 @@ export const useClient = () => {
           method,
           headers: {
             'Content-Type': 'application/json',
-            ...generateAuthHeader(options?.token || session || (await getFallBackToken())),
+            ...generateAuthHeader(options?.token || session || undefined),
             ...options?.headers,
           },
         };

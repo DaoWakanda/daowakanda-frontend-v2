@@ -8,10 +8,9 @@ const ProfileForm: React.FC = () => {
     firstName: '',
     lastName: '',
     country: '',
-    state: '',
+    stateOfResidence: '',
     email: '',
-    github: '',
-    wallet: '',
+    githubLink: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

@@ -1,14 +1,18 @@
 import { useSetRecoilState } from 'recoil';
 import { generateQueryFromObject } from '@/utils';
 import { useNotify } from '@/hooks/useNotify';
-import { FetchTriviaDto, ITrivia, LeaderBoardItem, SubmitTriviaAnswer } from '@/interface/challenge.interface';
-import { DeveloperProfileAtom, TriviasAtom } from '@/state/developer.atom';
+import {
+  FetchTriviaDto,
+  ITrivia,
+  LeaderBoardItem,
+  SubmitTriviaAnswer,
+} from '@/interface/challenge.interface';
+import { TriviasAtom } from '@/state/trivia.atom';
 import { useClient } from '@/hooks/use-client';
 
 export const useDeveloperActions = () => {
   const client = useClient();
   const { notify } = useNotify();
-  const setDeveloperProfile = useSetRecoilState(DeveloperProfileAtom);
   const setTrivias = useSetRecoilState(TriviasAtom);
 
   // const createDeveloperAccount = async (dto: ICreateDeveloperDto) => {

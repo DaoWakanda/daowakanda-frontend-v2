@@ -8,7 +8,7 @@ import { FaSliders } from 'react-icons/fa6';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { TriviasAtom, TriviaSearchTerm } from '@/state/developer.atom';
+import { TriviasAtom, TriviaSearchTerm } from '@/state/trivia.atom';
 import { FetchTriviaDto, LeaderBoardItem } from '@/interface/challenge.interface';
 import { useDeveloperActions } from '@/actions/developers/developer.action';
 
@@ -103,15 +103,9 @@ export function MainSection({ active, onclick, showFilter }: Props) {
           </div>
 
           <div className="grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 border-blue">
-            {triviaSize > 0
-              && trivias?.data.map((trivia, index) => <Card key={index} {...trivia} />)
-            }
-            {
-              triviaSize <= 0 && 
-              [1, 2, 3, 4, 5, 6].map((_, index) => (
-                <CardLoader />
-              ))
-            }
+            {triviaSize > 0 &&
+              trivias?.data.map((trivia, index) => <Card key={index} {...trivia} />)}
+            {triviaSize <= 0 && [1, 2, 3, 4, 5, 6].map((_, index) => <CardLoader />)}
           </div>
         </div>
       </div>
