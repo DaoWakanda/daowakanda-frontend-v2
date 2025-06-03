@@ -40,6 +40,7 @@
     "react-loading-skeleton": "^3.5.0",
     "react-quill": "^2.0.0",
     "react-responsive": "^10.0.1",
+    "react-spinners": "^0.17.0",
     "recoil": "^0.7.7",
     "sass": "^1.79.5"
   },

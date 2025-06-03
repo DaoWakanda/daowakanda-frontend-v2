@@ -10,7 +10,6 @@ import { WalletIcon } from '@/assets/wallet.icon';
 import { NavItemMobile } from './nav-item.mobile';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { authAtom, ConnectWalletVisibleAtom } from '@/state';
-import { useAuthActions } from '@/actions/auth';
 import { useWallet } from '@txnlab/use-wallet';
 
 interface Props {

@@ -8,7 +8,6 @@ import AccessDeniedPage from '@/features/dev-challenges-details-page/access-deni
 import TaskWinners from '@/features/dev-challenges-details-page/task-winners';
 import { useParams } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
-import { DeveloperProfileAtom } from '@/state/developer.atom';
 import { ITrivia, LeaderBoardItem } from '@/interface/challenge.interface';
 import { useDeveloperActions } from '@/actions/developers/developer.action';
 import { useWallet } from '@txnlab/use-wallet';
@@ -16,9 +15,10 @@ import { useNotify } from '@/hooks/useNotify';
 import Skeleton from 'react-loading-skeleton';
 import { createSanitizedMarkup } from '@/utils';
 import toast from 'react-hot-toast';
+import { ProfileAtom } from '@/state/profile.atom';
 
 export const DevChallengesDetailPage = () => {
-  const developerProfile = useRecoilValue(DeveloperProfileAtom);
+  const developerProfile = useRecoilValue(ProfileAtom);
   const [trivia, setTrivia] = useState<ITrivia>();
   const [timeLeft, setTimeLeft] = useState<string>('00:00:00:00');
 

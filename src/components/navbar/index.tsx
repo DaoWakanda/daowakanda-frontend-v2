@@ -2,7 +2,7 @@
 
 import { DaowakandaIcon } from '@/assets/daowakanda.icon';
 import { PageMaxWidth } from '../page-max-width';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import { DaowakandaTextIcon } from '@/assets/daowakanda-text.icon';
@@ -20,14 +20,22 @@ import { useWallet } from '@txnlab/use-wallet';
 import classNames from 'classnames';
 import { BackgroundOverlay } from '../background-overlay';
 import { useAuthActions } from '@/actions/auth';
+import { useNotify } from '@/hooks/useNotify';
+import { PageLoader } from '../page-loader';
+import { useProfileActions } from '@/actions/profile';
+import { ProfileAtom } from '@/state/profile.atom';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showWalletConnect, setShowWalletConnect] = useRecoilState(ConnectWalletVisibleAtom);
   const [showProfilePopup, setShowProfilePopup] = useState(false);
-  const { logout } = useAuthActions();
+  const profile = useRecoilValue(ProfileAtom);
+  const [loggingIn, setLoggingIn] = useState(false);
+  const { logout, login, signAuthTransaction } = useAuthActions();
+  const { getProfile } = useProfileActions();
   const auth = useRecoilValue(authAtom);
+  const { notify } = useNotify();
   const { activeAddress } = useWallet();
 
   const pathname = usePathname();
@@ -39,9 +47,39 @@ export function Navbar() {
   };
 
   const toggleNotifications = () => {
-    console.log('Notification button clicked');
     setShowNotifications(!showNotifications);
   };
+
+  const onSignAuthTransaction = async () => {
+    if (loggingIn || !activeAddress) return;
+
+    setLoggingIn(true);
+    const authTxnBase64 = await signAuthTransaction();
+
+    if (!authTxnBase64) {
+      logout();
+    } else {
+      const token = await login(authTxnBase64, activeAddress);
+
+      if (!token) {
+        logout();
+      } else {
+        notify.success('Logged in successfully!');
+      }
+    }
+
+    setLoggingIn(false);
+  };
+
+  useEffect(() => {
+    if (!!activeAddress && !auth) {
+      onSignAuthTransaction();
+    }
+
+    if (!!activeAddress && !!auth) {
+      getProfile();
+    }
+  }, [activeAddress, auth]);
 
   return (
     <>
@@ -53,7 +91,7 @@ export function Navbar() {
                 <DaowakandaIcon />
                 <DaowakandaTextIcon className="hidden lg:block" />
               </Link>
-              <div className="lg:hidden flex-1 flex justify-end gap-4">
+              <div className="lg:hidden flex-1 flex justify-end gap-4 items-center">
                 {!!activeAddress && (
                   <button
                     className={classNames(
@@ -64,6 +102,17 @@ export function Navbar() {
                   >
                     {activeAddress.slice(0, 6)}...{activeAddress.slice(activeAddress.length - 3)}
                   </button>
+                )}
+
+                {userIsLoggedin && (
+                  <div className="flex lg:hidden">
+                    <div
+                      className="relative border border-[#c5ee4f] w-[30px] lg:w-[40px] h-[30px] lg:h-[40px] rounded-full cursor-pointer flex items-center justify-center"
+                      onClick={toggleNotifications}
+                    >
+                      <CiBellOn className="w-6 h-6 text-[#c5ee4f]" />
+                    </div>
+                  </div>
                 )}
 
                 <button
@@ -85,7 +134,7 @@ export function Navbar() {
                       label: 'DAO Voting',
                       description:
                         'Participate in making decisions for the  community via DAO voting.',
-                      link: '/governance',
+                      link: '/proposals',
                     },
                     {
                       label: 'Research forum',
@@ -145,7 +194,7 @@ export function Navbar() {
                 </div>
 
                 {userIsLoggedin && (
-                  <div className="ml-5">
+                  <div className="ml-5 hidden lg:flex">
                     <div
                       className="relative border border-[#c5ee4f] w-[30px] lg:w-[40px] h-[30px] lg:h-[40px] rounded-full cursor-pointer flex items-center justify-center"
                       onClick={toggleNotifications}
@@ -188,12 +237,26 @@ export function Navbar() {
               )}
             >
               <img
-                src={`https://ui-avatars.com/api/?name=${activeAddress}&background=random&font-size=0.35&rounded=true`}
+                src={`https://ui-avatars.com/api/?name=${
+                  profile ? `${profile.firstName} ${profile.lastName}` : activeAddress
+                }&background=random&font-size=0.35&rounded=true`}
                 className={classNames('w-[100px] h-[100px] rounded-[100px]')}
               />
-              <div className="flex flex-col gap-1">
-                <div className="text-[#E5E5EA] font-[500] text-sm leading-[24px]">
-                  {activeAddress?.slice(0, 6)}...{activeAddress?.slice(activeAddress.length - 10)}
+              <div className="flex flex-col gap-1 flex-1">
+                <div
+                  style={{ textAlign: profile ? 'center' : 'left' }}
+                  className="text-[#E5E5EA] font-[500] text-sm leading-[24px]"
+                >
+                  {profile ? (
+                    <>
+                      {profile?.firstName} {profile?.lastName}
+                    </>
+                  ) : (
+                    <>
+                      {activeAddress?.slice(0, 6)}...
+                      {activeAddress?.slice(activeAddress.length - 10)}
+                    </>
+                  )}
                 </div>
                 <button
                   className={classNames(
@@ -226,6 +289,9 @@ export function Navbar() {
       <div className="lg:hidden">
         <MobileMenu isOpen={isOpen} onClose={toggleMenu} />
       </div>
+
+      {/* Loading Overlay */}
+      <PageLoader visible={loggingIn} title="Logging In..." />
 
       {showWalletConnect && <WalletConnectModal onClose={() => setShowWalletConnect(false)} />}
     </>

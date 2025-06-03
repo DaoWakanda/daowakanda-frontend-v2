@@ -19,7 +19,7 @@ export function NavItemDesktop({ label, link = '#', subItems, isActive }: Props)
         href={link}
         className={classNames(
           `font-[350] text-base leading-[26.67px] font-avenir hover:text-white transition-colors duration-300`,
-          isActive ? 'text-white' : 'text-[#757575]',
+          isActive ? 'text-white' : 'text-[#f1f1f1]',
           'h-20 flex items-center justify-center',
         )}
       >
