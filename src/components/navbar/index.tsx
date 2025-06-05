@@ -265,7 +265,14 @@ export function Navbar() {
                   )}
                   onClick={() => setShowProfilePopup(!showProfilePopup)}
                 >
-                  Edit Profile
+                  {profile && <h1>Edit Profile</h1>}
+                  {!profile &&
+                    (
+                    <Link href={'/create-profile'}>
+                      Create Profile
+                    </Link>
+                    )
+                  } 
                 </button>
                 <button
                   className={classNames(
