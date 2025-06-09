@@ -2,8 +2,18 @@
 import React, { useState } from 'react';
 import FormField from '../form-field';
 import { ICreateProfile } from '@/interface/profile.interface';
+import { useProfileActions } from '@/actions/profile';
+import { useNotify } from '@/hooks/useNotify';
+import { useRouter } from 'next/navigation';
+
 
 const ProfileForm: React.FC = () => {
+  const { createAccount,getProfile} = useProfileActions();
+    
+  const { notify } = useNotify();
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<ICreateProfile>({
     firstName: '',
     lastName: '',
@@ -13,15 +23,32 @@ const ProfileForm: React.FC = () => {
     githubLink: '',
   });
 
+  const allFieldsFilled = Object.values(formData).every(
+    (val) =>
+      typeof val === 'string' ? val.trim() !== '' : val !== null && val !== undefined
+  );
+  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-  };
+
+    if (loading) return; // prevent duplicate submits
+    setLoading(true); // ⏳ show spinner on button
+    const response = await createAccount(formData);
+    await getProfile();
+
+    if (response) {
+      notify.success('Your account was created successfully.');
+      router.push('/developers'); // ✅ navigate on success
+    }
+  }
+
 
   return (
     <div className="rounded-[30px] p-8 shadow-lg backdrop-blur-sm bg-[#1F2431] w-full  mx-auto mb-[50px] flex flex-col md:gap-3">
@@ -47,7 +74,14 @@ const ProfileForm: React.FC = () => {
         </div>
       </div>
       <div>
-        <FormField formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} />
+        <FormField
+          formData={formData}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          allFieldsFilled={allFieldsFilled}
+          loading={loading}
+          setFormData={setFormData}
+        />
       </div>
     </div>
   );

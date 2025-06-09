@@ -2,18 +2,33 @@
 
 import { ICreateProfile } from '@/interface/profile.interface';
 import { useWallet } from '@txnlab/use-wallet';
+import CountrySelect from './country-select';
+import StateSelect from './state-select';
+import { useCountriesStates } from '@/hooks/useCountriesStates';
+import { Loader2 } from 'lucide-react';
 
 interface FormProp {
   handleSubmit: (e: React.FormEvent) => void;
   formData: ICreateProfile;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  loading: boolean;
+  allFieldsFilled: boolean;
+  setFormData: React.Dispatch<React.SetStateAction<ICreateProfile>>;
 }
 
-const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
+const FormField = ({
+  handleSubmit,
+  formData,
+  handleChange,
+  loading,
+  allFieldsFilled,
+  setFormData,
+}: FormProp) => {
   const { activeAddress } = useWallet();
-
+  const { states, fetchStates, loadingStates } = useCountriesStates();
   return (
     <form onSubmit={handleSubmit} className="space-y-5 font-roboto">
+      
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label htmlFor="firstName" className="block text-sm text-gray-300 mb-1">
@@ -45,49 +60,22 @@ const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="country" className="block text-sm text-gray-300 mb-1">
-            Country
-          </label>
-          <select
-            id="country"
-            name="country"
-            className="w-full px-4 py-3 rounded-lg text-sm bg-[#24252D] text-white outline-none focus:ring-1 focus:ring-[#C5EE4F] bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'white\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E')] bg-no-repeat bg-right pr-4 bg-[length:1em]  border-[0.5px]  border-[#49454F]"
-            value={formData.country}
-            onChange={handleChange}
-          >
-            <option value="" disabled selected>
-              Select country
-            </option>
-            <option value="us">United States</option>
-            <option value="ca">Canada</option>
-            <option value="uk">United Kingdom</option>
-            <option value="au">Australia</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="state" className="block text-sm text-gray-300 mb-1">
-            State of Residence
-          </label>
-          <select
-            id="state"
-            name="state"
-            className="w-full px-4 py-3 rounded-lg text-sm bg-[#24252D] text-white outline-none focus:ring-1 focus:ring-[#C5EE4F] bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'white\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E')] bg-no-repeat bg-right pr-4 bg-[length:1em]  border-[0.5px]  border-[#49454F]"
-            value={formData.stateOfResidence}
-            onChange={handleChange}
-          >
-            <option value="" disabled selected>
-              Select state
-            </option>
-            <option value="ny">New York</option>
-            <option value="ca">California</option>
-            <option value="tx">Texas</option>
-            <option value="fl">Florida</option>
-          </select>
-        </div>
-      </div>
+      <div className="grid grid-cols-2 relative z-50 gap-2">
+        <CountrySelect
+          value={formData.country}
+          onChange={(country) => {
+            setFormData((prev) => ({ ...prev, country }));
+            fetchStates(country);
+          }}
+        />
 
+        <StateSelect
+          value={formData.stateOfResidence}
+          onChange={(state) => setFormData((prev) => ({ ...prev, stateOfResidence: state }))}
+          states={states}
+          loading={loadingStates}
+        />
+      </div>
       <div>
         <label htmlFor="email" className="block text-sm text-gray-300 mb-1">
           Email Address:
@@ -110,7 +98,7 @@ const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
         <input
           type="text"
           id="github"
-          name="github"
+          name="githubLink"
           placeholder="Github link"
           className="w-full px-4 py-3 rounded-lg text-sm bg-[#24252D] text-white outline-none focus:ring-1 focus:ring-[#C5EE4F]  border-[0.5px]  border-[#49454F]"
           value={formData.githubLink}
@@ -142,9 +130,34 @@ const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
         </button>
         <button
           type="submit"
-          className="bg-[#C5EE4F] text-black font-medium py-3 px-6 rounded-lg hover:bg-opacity-90"
+          disabled={!allFieldsFilled || loading}
+          className={`w-full flex items-center justify-center gap-2 text-black font-medium py-3 px-6 rounded-lg transition-all
+          ${allFieldsFilled ? 'bg-[#C5EE4F] hover:bg-opacity-90' : 'bg-gray-300 cursor-not-allowed'}
+        `}
         >
-          Proceed
+          {loading ? (
+            <>
+              <svg
+                className="animate-spin h-5 w-5 text-black"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+              </svg>
+              Submitting
+            </>
+          ) : (
+            'Proceed'
+          )}
         </button>
       </div>
     </form>

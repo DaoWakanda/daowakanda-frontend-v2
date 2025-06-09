@@ -69,7 +69,7 @@ export const useProfileActions = () => {
     }
   };
 
-  //   try {
+  //   try {update 
   //     const url = `user-trivia/unclaimed-bounty/${address}`;
   //     const response = await fetchWrapper.get(url);
 
