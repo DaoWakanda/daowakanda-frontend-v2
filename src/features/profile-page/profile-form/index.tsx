@@ -5,6 +5,7 @@ import { ICreateProfile } from '@/interface/profile.interface';
 import { useProfileActions } from '@/actions/profile';
 import { useNotify } from '@/hooks/useNotify';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 
 const ProfileForm: React.FC = () => {
@@ -44,7 +45,7 @@ const ProfileForm: React.FC = () => {
     await getProfile();
 
     if (response) {
-      notify.success('Your account was created successfully.');
+      toast.success('Your account was created successfully.');
       router.push('/developers'); // ✅ navigate on success
     }
   }

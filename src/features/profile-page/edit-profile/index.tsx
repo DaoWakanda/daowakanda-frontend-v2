@@ -10,6 +10,7 @@ import { useCountriesStates } from '@/hooks/useCountriesStates';
 import { CameraIcon, Loader2 } from 'lucide-react';
 import CountrySelect from '../form-field/country-select';
 import StateSelect from '../form-field/state-select';
+import { toast } from 'react-hot-toast';
 
 
 
@@ -62,12 +63,13 @@ const EditProfile = ({ onClose }: EditProfileProps) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await updateProfile(formData);
     if (loading) return;
     setLoading(true);
+    const response = await updateProfile(formData);
     if (response) {
       await getProfile();
-        setLoading(false);
+      setLoading(false);
+      toast.success('Profile updated successfully!',);
         onClose();
     }
     };
@@ -85,11 +87,13 @@ const EditProfile = ({ onClose }: EditProfileProps) => {
       const reader = new FileReader();
 
       reader.onloadend = async () => {
-        const base64 = reader.result?.toString();
-        if (!base64) return;
+        const fullBase64 = reader.result?.toString();
+        if (!fullBase64) return;
+
+        const base64 = fullBase64.split(',')[1];
+        const toastId = toast.loading('Uploading image...');
 
         try {
-          setUploading(true);
           const response = await uploadImage(base64);
 
           if (response?.imageUrl) {
@@ -104,11 +108,11 @@ const EditProfile = ({ onClose }: EditProfileProps) => {
               ...prev!,
               image: response.imageUrl,
             }));
-            // notify.success('Image uploaded successfully!');
           }
+          toast.success('Image uploaded successfully!', { id: toastId });
         } catch (err) {
           console.error('Upload error', err);
-        //   notify.error('Failed to upload image.');
+          toast.error( 'Image upload failed.', { id: toastId });
         } finally {
           setUploading(false);
         }
@@ -126,28 +130,24 @@ const EditProfile = ({ onClose }: EditProfileProps) => {
         <div className="relative ">
           {formData.image && (
             <img
-              src={
-                formData.image
-              }
+              src={formData.image}
               alt="Preview"
               className="mt-3 w-24 h-24 rounded-full object-cover  mx-auto border-4"
             />
           )}
           {!formData.image && (
             <img
-              src={
-                   `https://ui-avatars.com/api/?name=${
-                      profile ? `${formData.firstName} ${formData.lastName}` : activeAddress
-                    }&background=random&font-size=0.35&rounded=true`
-              }
+              src={`https://ui-avatars.com/api/?name=${
+                profile ? `${formData.firstName} ${formData.lastName}` : activeAddress
+              }&background=random&font-size=0.35&rounded=true`}
               alt="Preview"
               className="mt-3 w-24 h-24 rounded-full object-cover  mx-auto border-4"
             />
           )}
-          <div className="z-10 absolute top-[90%] left-[70%] ">
+          <div className="z-10 absolute top-[90%] left-[60%]  ">
             <label
               htmlFor="file-upload"
-              className="absolute bottom-0 right-0 bg-black/70 p-1.5 rounded-full cursor-pointer border-2"
+              className="absolute bottom-0 right-0 bg-black p-1.5 rounded-full cursor-pointer border-2"
             >
               <CameraIcon />
             </label>
