@@ -16,9 +16,12 @@ import Skeleton from 'react-loading-skeleton';
 import { createSanitizedMarkup } from '@/utils';
 import toast from 'react-hot-toast';
 import { ProfileAtom } from '@/state/profile.atom';
+import { authAtom } from '@/state';
 
 export const DevChallengesDetailPage = () => {
   const developerProfile = useRecoilValue(ProfileAtom);
+  const authDeveloper = useRecoilValue(authAtom);
+
   const [trivia, setTrivia] = useState<ITrivia>();
   const [timeLeft, setTimeLeft] = useState<string>('00:00:00:00');
 
@@ -147,8 +150,10 @@ export const DevChallengesDetailPage = () => {
               {trivia?.title || <Skeleton baseColor="#202020" highlightColor="#444" width={100} />}
             </Link>
           </div>
-          {!developerProfile ? (
-            <AccessDeniedPage />
+          {!authDeveloper && !developerProfile ? (
+            <AccessDeniedPage isConnected={false} />
+          ) : authDeveloper && !developerProfile ? (
+            <AccessDeniedPage isConnected={true} />
           ) : (
             <div className="bg-gray-900 rounded-2xl overflow-hidden">
               <div className="p-6 md:p-10">
@@ -269,7 +274,7 @@ export const DevChallengesDetailPage = () => {
             </div>
           )}
         </div>
-        {developerProfile && trivia?.status === 'expired' && (
+        {developerProfile && authDeveloper && trivia?.status === 'expired' && (
           <div>
             <TaskWinners data={leaderboardItems} />
           </div>

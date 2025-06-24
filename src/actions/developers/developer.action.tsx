@@ -99,7 +99,7 @@ export const useDeveloperActions = () => {
 
   const submitTriviaAnswer = async (dto: SubmitTriviaAnswer) => {
     try {
-      const url = `user-trivia/${dto.triviaId}/submit/${dto.userId}`;
+      const url = `v2/challenges/${dto.triviaId}/submit/${dto.userId}`;
       const response = await client.post(url, {
         githubRepoLink: dto.githubRepoLink,
       });
