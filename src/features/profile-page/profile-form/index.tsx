@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import FormField from '../form-field';
 import { ICreateProfile } from '@/interface/profile.interface';
+import { useProfileActions } from '@/actions/profile';
+import { useNotify } from '@/hooks/useNotify';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const ProfileForm: React.FC = () => {
   const [formData, setFormData] = useState<ICreateProfile>({
@@ -12,15 +15,51 @@ const ProfileForm: React.FC = () => {
     email: '',
     githubLink: '',
   });
+  const [loading, setLoading] = useState(false);
+  const { createAccount, getProfile } = useProfileActions();
+  const { notify } = useNotify();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const getSafeReturnTo = (value: string | null) => {
+    if (!value) return null;
+    const decoded = decodeURIComponent(value).trim();
+
+    // Prevent open redirects: only allow internal paths.
+    if (!decoded.startsWith('/')) return null;
+    if (decoded.startsWith('//')) return null;
+
+    return decoded;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => {
+      const next = { ...prev, [name]: value };
+      if (name === 'country') {
+        next.stateOfResidence = '';
+      }
+      return next;
+    });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    if (loading) return;
+
+    setLoading(true);
+    try {
+      const result = await createAccount(formData);
+      if (!result) return;
+
+      notify.success('Profile submitted successfully');
+
+      const returnTo = getSafeReturnTo(searchParams.get('returnTo'));
+      getProfile();
+      router.replace(returnTo ?? '/developers');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -47,7 +86,12 @@ const ProfileForm: React.FC = () => {
         </div>
       </div>
       <div>
-        <FormField formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} />
+        <FormField
+          formData={formData}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          loading={loading}
+        />
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import RecoilContextProvider from '@/providers/recoil-provider';
 import { WalletConnectProvider } from '@/providers';
 import { PageLayout } from '@/components/page-layout';
+import { SnackbarProvider } from 'notistack';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',

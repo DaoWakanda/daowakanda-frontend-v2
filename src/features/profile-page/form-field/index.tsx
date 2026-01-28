@@ -1,16 +1,30 @@
 'use client';
 
+import { Button } from '@/components/button';
 import { ICreateProfile } from '@/interface/profile.interface';
+import { getCountryOptions, getStateOptions } from '@/utils/location';
 import { useWallet } from '@txnlab/use-wallet';
+import { useMemo } from 'react';
 
 interface FormProp {
   handleSubmit: (e: React.FormEvent) => void;
   formData: ICreateProfile;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  loading: boolean;
 }
 
-const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
+const FormField = ({ handleSubmit, formData, handleChange, loading }: FormProp) => {
   const { activeAddress } = useWallet();
+  const countryOptions = useMemo(() => getCountryOptions(), []);
+  const stateOptions = useMemo(() => getStateOptions(formData.country), [formData.country]);
+
+  const canSubmit = useMemo(() => {
+    return formData.firstName.trim() !== '' &&
+      formData.lastName.trim() !== '' &&
+      formData.country.trim() !== '' &&
+      formData.stateOfResidence.trim() !== '' &&
+      formData.email.trim() !== '';
+  }, [formData]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 font-roboto">
@@ -57,13 +71,14 @@ const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
             value={formData.country}
             onChange={handleChange}
           >
-            <option value="" disabled selected>
+            <option value="" disabled>
               Select country
             </option>
-            <option value="us">United States</option>
-            <option value="ca">Canada</option>
-            <option value="uk">United Kingdom</option>
-            <option value="au">Australia</option>
+            {countryOptions.map((c) => (
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
+            ))}
           </select>
         </div>
         <div>
@@ -72,18 +87,26 @@ const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
           </label>
           <select
             id="state"
-            name="state"
+            name="stateOfResidence"
             className="w-full px-4 py-3 rounded-lg text-sm bg-[#24252D] text-white outline-none focus:ring-1 focus:ring-[#C5EE4F] bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'white\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E')] bg-no-repeat bg-right pr-4 bg-[length:1em]  border-[0.5px]  border-[#49454F]"
             value={formData.stateOfResidence}
             onChange={handleChange}
+            disabled={!formData.country}
           >
-            <option value="" disabled selected>
-              Select state
+            <option value="" disabled>
+              {formData.country ? 'Select state' : 'Select a country first'}
             </option>
-            <option value="ny">New York</option>
-            <option value="ca">California</option>
-            <option value="tx">Texas</option>
-            <option value="fl">Florida</option>
+            {formData.country && stateOptions.length === 0 ? (
+              <option value="" disabled>
+                No states/regions available
+              </option>
+            ) : (
+              stateOptions.map((s) => (
+                <option key={s.value} value={s.value}>
+                  {s.label}
+                </option>
+              ))
+            )}
           </select>
         </div>
       </div>
@@ -110,7 +133,7 @@ const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
         <input
           type="text"
           id="github"
-          name="github"
+          name="githubLink"
           placeholder="Github link"
           className="w-full px-4 py-3 rounded-lg text-sm bg-[#24252D] text-white outline-none focus:ring-1 focus:ring-[#C5EE4F]  border-[0.5px]  border-[#49454F]"
           value={formData.githubLink}
@@ -136,16 +159,14 @@ const FormField = ({ handleSubmit, formData, handleChange }: FormProp) => {
       <div className="grid grid-cols-2 gap-4 pt-4 text-[16px]">
         <button
           type="button"
-          className="bg-[#A9A9A9] bg-opacity-30 text-white font-medium py-3 px-6 rounded-lg hover:bg-opacity-40"
+          disabled={loading}
+          className="bg-[#A9A9A9] bg-opacity-30 text-white font-medium py-3 px-6 rounded-lg hover:bg-opacity-40 disabled:opacity-60 disabled:cursor-not-allowed"
         >
           Back
         </button>
-        <button
-          type="submit"
-          className="bg-[#C5EE4F] text-black font-medium py-3 px-6 rounded-lg hover:bg-opacity-90"
-        >
+        <Button disabled={!canSubmit} loading={loading} type="submit">
           Proceed
-        </button>
+        </Button>
       </div>
     </form>
   );
