@@ -78,3 +78,23 @@ img{
   object-position: center;
   font-style: italic;
 }
+
+.main {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 16px;
+  margin-top: 25px;
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.6)
+    ),
+    url('https://res.cloudinary.com/dvujkjs1q/image/upload/v1752781161/Full_Premier_League_table.jpg_1_rvn1sa.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
