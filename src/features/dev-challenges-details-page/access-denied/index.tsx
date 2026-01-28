@@ -1,6 +1,7 @@
 import { Button } from '@/components/button';
 import { ConnectWalletVisibleAtom } from '@/state';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 import { useRecoilState } from 'recoil';
 
@@ -9,6 +10,7 @@ interface Props {
 }
 const AccessDeniedPage = ({ isConnected }: Props) => {
   const [showWalletConnect, setShowWalletConnect] = useRecoilState(ConnectWalletVisibleAtom);
+  const pathname = usePathname();
 
   return (
     <div className="bg-[#1C1B1C] w-full min-h-screen rounded-[16px] p-6 md:p-10 ">
@@ -26,7 +28,7 @@ const AccessDeniedPage = ({ isConnected }: Props) => {
             : ` Access to this task has been denied, connect your wallet to gain access.`}
         </p>
         {isConnected ? (
-          <Link className="text-[#C7F284] text-[16px]" href="/developers/signup">
+          <Link className="text-[#C7F284] text-[16px]" href={`/create-profile?returnTo=${encodeURIComponent(pathname)}`}>
             Proceed to update KYC
           </Link>
         ) : (

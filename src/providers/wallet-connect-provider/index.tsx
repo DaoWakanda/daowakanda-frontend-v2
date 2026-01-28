@@ -6,6 +6,7 @@ import algosdk from 'algosdk';
 import { ConnectWalletVisibleAtom } from '@/state';
 import { WalletConnectModal } from '@/components/wallet-connect-modal';
 import { getAlgoClientConfig, getWalletProviders } from '@/utils/get-algo-client-config';
+import { SnackbarProvider } from 'notistack';
 
 interface Props {
   children: React.ReactNode;
@@ -29,11 +30,13 @@ export const WalletConnectProvider = ({ children }: Props) => {
   });
 
   return (
-    <WalletProvider value={walletProviders}>
-      {connectWalletVisible && (
-        <WalletConnectModal onClose={() => setConnectWalletVisible(false)} />
-      )}
-      {children}
-    </WalletProvider>
+    <SnackbarProvider>
+      <WalletProvider value={walletProviders}>
+        {connectWalletVisible && (
+          <WalletConnectModal onClose={() => setConnectWalletVisible(false)} />
+        )}
+        {children}
+      </WalletProvider>
+    </SnackbarProvider>
   );
 };
