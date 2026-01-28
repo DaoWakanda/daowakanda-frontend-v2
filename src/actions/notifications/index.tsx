@@ -6,29 +6,21 @@ export const useNotificationActions = () => {
   const client = useClient();
   const { notify } = useNotify();
 
-  const getUnclaimedBounties = async (): Promise<IUnclaimedBounty[]> => {
-    try {
-      const response = await client.get<IUnclaimedBounty[]>('v2/challenges/unclaimed-bounty');
-      return response.data || [];
-    } catch (error) {
-      notify.error('Failed to fetch notifications');
-      console.error('Notification fetch error:', error);
-      return [];
+  const getUnclaimedBounties = async () => {
+    const response = await client.get<IUnclaimedBounty[]>('v2/challenges/unclaimed-bounty');
+    if (response.data) {
+      return response.data;
     }
+    notify.error(response.error?.toString() || 'Failed to fetch notifications');
   };
 
   const claimBounty = async (submissionId: string) => {
-    try {
-      const response = await client.patch(`v2/challenges/${submissionId}/claim`);
-      if (response.data?.success) {
-        notify.success('Algos claimed successfully!');
-        // return response.data;
-      }
-      throw new Error(response.data?.error || 'Claim failed');
-    } catch (error) {
-      notify.error(error instanceof Error ? error.message : 'Claim failed');
-      return { success: false, error: 'Claim failed' };
+    const response = await client.patch(`v2/challenges/${submissionId}/claim`);
+    if (response.data) {
+      notify.success('Algos claimed successfully!');
+      return response.data;
     }
+    notify.error(response.error?.toString() || 'Failed to claim bounty');
   };
 
   return { getUnclaimedBounties, claimBounty };
