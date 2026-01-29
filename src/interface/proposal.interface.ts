@@ -1,3 +1,5 @@
+import { PaginationResponse } from './pagination.interface';
+
 export interface IAsset {
   asset_id: number;
   name: string;
@@ -12,3 +14,49 @@ export interface IAsset {
   usd_value: string | null;
   is_collectible: boolean;
 }
+
+export interface IProposalCard {
+  id: number;
+  title: string;
+  description: string;
+  status: 'active' | 'approved' | 'denied';
+  votingTag: string;
+  yesPercentage: number;
+  noPercentage: number;
+  totalVotes: number;
+  createdBy: string;
+  creatorAvatar: string;
+  endsIn?: string;
+  timestamp?: string;
+  onDelete: (id: number) => void;
+}
+
+export interface ProposalApi {
+  appId: string;
+  asaId: string;
+  creator: string;
+  description: string;
+  startDate: number;
+  endDate: number;
+  ongoing: boolean;
+  yesVotes: string[];
+  noVotes: string[];
+  registeredVoters: string[];
+  title: string;
+}
+
+export interface IProposalCardApi {
+  proposal: ProposalApi;
+  onDelete: (id: string) => void; // appId is string
+}
+
+
+
+export interface FetchProposalsDto {
+  page?: number;
+  numOfItemsPerPage?: number;
+  order?: 'asc' | 'desc';
+  searchTerm?: string;
+}
+
+export type IProposalRes = PaginationResponse<IProposalCard>;

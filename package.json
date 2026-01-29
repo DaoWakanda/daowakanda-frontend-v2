@@ -26,6 +26,7 @@
     "algosdk": "^2.7.0",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
+    "country-state-city": "^3.2.1",
     "dompurify": "^3.2.1",
     "lucide-react": "^0.479.0",
     "lute-connect": "^1.4.1",
