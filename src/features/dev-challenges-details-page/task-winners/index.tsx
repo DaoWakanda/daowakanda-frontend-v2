@@ -1,24 +1,24 @@
+import { PageMaxWidth } from '@/components/page-max-width';
 import { LeaderBoardItem } from '@/interface/challenge.interface';
 import React from 'react';
 
-interface Props{
+interface Props {
   data: LeaderBoardItem[] | undefined;
 }
 
 const TaskWinners = ({ data }: Props) => {
-  
- function getInitials(fullName: string): string {
-   const parts = fullName.trim().split(' ');
+  function getInitials(fullName: string): string {
+    const parts = fullName.trim().split(' ');
 
-   if (parts.length < 2) {
-     throw new Error('Full name must include at least a first and last name.');
-   }
+    if (parts.length < 2) {
+      throw new Error('Full name must include at least a first and last name.');
+    }
 
-   const firstInitial = parts[0][0].toUpperCase();
-   const lastInitial = parts[1][0].toUpperCase();
+    const firstInitial = parts[0][0].toUpperCase();
+    const lastInitial = parts[1][0].toUpperCase();
 
-   return firstInitial + lastInitial;
- }
+    return firstInitial + lastInitial;
+  }
   const generatedColors = new Set<string>();
 
   function getUniqueBackgroundColor(): string {
@@ -35,9 +35,9 @@ const TaskWinners = ({ data }: Props) => {
     generatedColors.add(color);
     return color;
   }
-  
+
   return (
-    <div className="bg-[#211F26] mx-auto md:mx-0 text-white rounded-[16px] py-4 px-2 w-[80%%] md:w-[100%] min-h-fit font-roboto">
+    <div className="bg-[#211F26] text-white rounded-[16px] py-4 px-4 w-[90%] md:w-[97%] mx-auto min-h-fit font-roboto">
       <div className="flex gap-8 p-4 border-b-2 mb-2 border-[#484646]">
         <span>
           <svg
@@ -67,9 +67,9 @@ const TaskWinners = ({ data }: Props) => {
             />
           </svg>
         </span>
-        <h2 className="text-[22px] font-bold">Task Winners</h2>
+        <h2 className="text-lg font-bold">Task Winners</h2>
       </div>
-      <div className="gap-4 py-2">
+      <div className="gap-2 py-2">
         <div className="flex justify-between items-center p-2 gap-16 rounded-lg bg-[#2E2D3580] text-[#8E8E93] text-sm">
           <span>Rank</span>
           <span>Points</span>
@@ -96,6 +96,6 @@ const TaskWinners = ({ data }: Props) => {
       </div>
     </div>
   );
-}
+};
 
-export default TaskWinners
+export default TaskWinners;

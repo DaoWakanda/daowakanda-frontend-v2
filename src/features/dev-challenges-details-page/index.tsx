@@ -136,8 +136,8 @@ export const DevChallengesDetailPage = () => {
   }, [Number(trivia?.endTimeStamp)]);
 
   return (
-    <div className="min-h-screen bg-black text-white pt-[100px] font-roboto">
-      <PageMaxWidth>
+    <PageMaxWidth>
+      <div className="min-h-screen bg-black text-white pt-[100px] font-roboto">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center gap-2 mb-4 hover:text-white ">
             <Link href="/developers" className="  flex items-center gap-1 text-gray-500">
@@ -155,6 +155,7 @@ export const DevChallengesDetailPage = () => {
           ) : authDeveloper && !developerProfile ? (
             <AccessDeniedPage isConnected={true} />
           ) : (
+            // <PageMaxWidth></PageMaxWidth>
             <div className="bg-gray-900 rounded-2xl overflow-hidden">
               <div className="p-6 md:p-10">
                 <h1 className="text-3xl font-bold mb-4">{trivia?.title}</h1>
@@ -279,7 +280,7 @@ export const DevChallengesDetailPage = () => {
             <TaskWinners data={leaderboardItems} />
           </div>
         )}
-      </PageMaxWidth>
-    </div>
+      </div>
+    </PageMaxWidth>
   );
 };

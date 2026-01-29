@@ -29,45 +29,50 @@ const statusStylesMap: Record<TriviaDifficulty, StatusStyles> = {
   },
 };
 
-
 export function Card({
-  id, title, duration, difficulty, prize, maxWinners, winnersCount, 
-  description, skill, createdAt, status, endTimeStamp
-}:ITrivia) {
-  
-  const statusClass = classNames(
-    statusStylesMap[difficulty].text,
-    statusStylesMap[difficulty].bg
-  );
+  id,
+  title,
+  duration,
+  difficulty,
+  prize,
+  maxWinners,
+  winnersCount,
+  description,
+  skill,
+  createdAt,
+  status,
+  endTimeStamp,
+}: ITrivia) {
+  const statusClass = classNames(statusStylesMap[difficulty].text, statusStylesMap[difficulty].bg);
 
-   const [timeLeft, setTimeLeft] = useState<string>('00:00:00:00');
+  const [timeLeft, setTimeLeft] = useState<string>('00:00:00:00');
 
-   useEffect(() => {
-     const updateTimer = () => {
-       const currentTime = Math.floor(Date.now() / 1000);
-       const difference = endTimeStamp / 1000 - currentTime;
+  useEffect(() => {
+    const updateTimer = () => {
+      const currentTime = Math.floor(Date.now() / 1000);
+      const difference = endTimeStamp / 1000 - currentTime;
 
-       if (difference > 0) {
-         const days = Math.floor(difference / (60 * 60 * 24));
-         const hours = Math.floor((difference % (60 * 60 * 24)) / (60 * 60));
-         const minutes = Math.floor((difference % 3600) / 60);
-         const seconds = Math.floor(difference % 60);
+      if (difference > 0) {
+        const days = Math.floor(difference / (60 * 60 * 24));
+        const hours = Math.floor((difference % (60 * 60 * 24)) / (60 * 60));
+        const minutes = Math.floor((difference % 3600) / 60);
+        const seconds = Math.floor(difference % 60);
 
-         const formattedTime = `${String(days).padStart(2, '0')} days ${String(hours).padStart(
-           2,
-           '0',
-         )} hrs ${String(minutes).padStart(2, '0')}mins ${String(seconds).padStart(2, '0')}secs`;
-         setTimeLeft(formattedTime);
-       } else {
-         setTimeLeft('00:00:00');
-       }
-     };
+        const formattedTime = `${String(days).padStart(2, '0')} days ${String(hours).padStart(
+          2,
+          '0',
+        )} hrs ${String(minutes).padStart(2, '0')}mins ${String(seconds).padStart(2, '0')}secs`;
+        setTimeLeft(formattedTime);
+      } else {
+        setTimeLeft('00:00:00');
+      }
+    };
 
-     updateTimer();
-     const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+    const timerInterval = setInterval(updateTimer, 1000);
 
-     return () => clearInterval(timerInterval);
-   }, [endTimeStamp]);
+    return () => clearInterval(timerInterval);
+  }, [endTimeStamp]);
 
   const shortdesc = description?.length > 200 ? description?.slice(0, 200) : description;
 
@@ -80,8 +85,8 @@ export function Card({
         {skill}
       </div>
 
-      <div className="flex flex-1 flex-col w-full min-h-[240px] gap-4 bg-[#211F26] rounded-2xl md:py-[10px] md:px-5 px-2">
-        <div className="flex items-start justify-start text-[#F2F2F7] font-bold font-roboto text-[24px]">
+      <div className="flex flex-1 flex-col w-full min-h-[240px] gap-4 bg-[#211F26] rounded-2xl md:py-[10px] md:px-2 px-2">
+        <div className="flex items-start justify-start text-[#F2F2F7] font-bold font-roboto text-[16px]">
           {title}
         </div>
 
@@ -119,7 +124,6 @@ export function Card({
 }
 
 export function CardLoader() {
-
   return (
     <div className="w-full min-h-[300px] rounded-2xl bg-[#D1D1D6] flex flex-col">
       <div className="w-full min-h-[40px] flex items-center justify-center text-[#46464A] text-[14px] font-bold">

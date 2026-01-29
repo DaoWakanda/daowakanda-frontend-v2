@@ -11,30 +11,30 @@ import { LeaderBoardModal } from './modals/leaderboard-modal';
 import { FilterListModal } from './modals/filterlist-modal';
 
 export function DevChallengesPage() {
-  const[showEarning, setShowEarning] = useState(false);
-  const[leaderBoardActive, setLeaderBoardActive] = useState(false);
-  const[filterListActive, setFilterListActive] = useState(false);
+  const [showEarning, setShowEarning] = useState(false);
+  const [leaderBoardActive, setLeaderBoardActive] = useState(false);
+  const [filterListActive, setFilterListActive] = useState(false);
 
-  const onClickEarning =()=>{
+  const onClickEarning = () => {
     setShowEarning(!showEarning);
-  }
+  };
 
-  const showLeaderBoard = ()=>{
+  const showLeaderBoard = () => {
     setLeaderBoardActive(true);
     setShowEarning(false);
-  }
+  };
 
-  const closeLeaderBoard = ()=>{
+  const closeLeaderBoard = () => {
     setLeaderBoardActive(false);
-  }
+  };
 
-  const showFilterList = ()=>{
+  const showFilterList = () => {
     setFilterListActive(true);
-  }
+  };
 
-  const closeFilterList =()=>{
+  const closeFilterList = () => {
     setFilterListActive(false);
-  }
+  };
 
   return (
     <div className="w-full min-h-screen relative">
@@ -45,15 +45,9 @@ export function DevChallengesPage() {
         </div>
       </PageMaxWidth>
 
-      {
-        showEarning && <ShortListModal onclick={showLeaderBoard}/>
-      }
-      {
-        leaderBoardActive && <LeaderBoardModal onclose={closeLeaderBoard} />
-      }
-      {
-        filterListActive && <FilterListModal onclose={closeFilterList} /> 
-      }
+      {showEarning && <ShortListModal onclick={showLeaderBoard} />}
+      {leaderBoardActive && <LeaderBoardModal onclose={closeLeaderBoard} />}
+      {filterListActive && <FilterListModal onclose={closeFilterList} />}
     </div>
   );
 }
