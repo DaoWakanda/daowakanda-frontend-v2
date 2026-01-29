@@ -24,7 +24,7 @@ const Notifications = ({ onClose }: NotificationsProps) => {
       try {
         setLoading(true);
         const data = await getUnclaimedBounties();
-      setNotifications(data ?? []);
+        setNotifications(data ?? []);
       } catch (error) {
         console.error('Failed to fetch notifications:', error);
       } finally {
