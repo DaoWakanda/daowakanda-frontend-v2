@@ -24,7 +24,7 @@ const Notifications = ({ onClose }: NotificationsProps) => {
       try {
         setLoading(true);
         const data = await getUnclaimedBounties();
-        setNotifications(data);
+      setNotifications(data ?? []);
       } catch (error) {
         console.error('Failed to fetch notifications:', error);
       } finally {
@@ -73,8 +73,8 @@ const Notifications = ({ onClose }: NotificationsProps) => {
           <ClaimButton
             notification={notifications[selectedNotification]}
             onClose={() => setSelectedNotification(null)}
-            onClick={() => handleClaimReward(notifications[selectedNotification].id)}
-            claiming={claiming}
+            // onClick={() => handleClaimReward(notifications[selectedNotification].id)}
+            // claiming={claiming}
           />
         </div>
       )}
