@@ -71,9 +71,7 @@ export function LeftSection({ leaderboardItems, filter, setFilter }: leaderboard
           <div className="flex flex-col w-full min-h-[124px] gap-4">
             <div className="text-sm font-normal text-white">Difficulty Level</div>
             <div className="flex flex-col gap-2 w-full min-h-[88px]">
-              {options?.map((item, index) => (
-                <Option optionName={item} index={index}/>
-              ))}
+              {options?.map((item, index) => <Option optionName={item} index={index} />)}
             </div>
           </div>
           {/* skill */}
@@ -110,13 +108,11 @@ export function LeftSection({ leaderboardItems, filter, setFilter }: leaderboard
             <div className="text-[#8E8E93] font-normal text-sm">Points</div>
           </div>
           <div className="w-full h-full px-2 flex flex-col gap-2">
-            {leaderboardItems?.map((item, index) => (
-              <RowData leaderboard={item} index={index} />
-            ))}
+            {leaderboardItems?.map((item, index) => <RowData leaderboard={item} index={index} />)}
           </div>
-          <div className="text-[#C5EE4F] text-sm font-normal h-5 w-full flex items-center justify-center cursor-pointer">
+          {/* <div className="text-[#C5EE4F] text-sm font-normal h-5 w-full flex items-center justify-center cursor-pointer">
             View full list
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

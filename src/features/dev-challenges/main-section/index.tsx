@@ -102,7 +102,7 @@ export function MainSection({ active, onclick, showFilter }: Props) {
             </div>
           </div>
 
-          <div className="grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 border-blue">
+          <div className="grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 ">
             {triviaSize > 0 &&
               trivias?.data.map((trivia, index) => <Card key={index} {...trivia} />)}
             {triviaSize <= 0 && [1, 2, 3, 4, 5, 6].map((_, index) => <CardLoader />)}
