@@ -74,9 +74,9 @@ const ProfileForm: React.FC = () => {
           formData={formData}
           handleChange={handleChange}
           handleSubmit={handleSubmit}
-          allFieldsFilled={allFieldsFilled}
+          // allFieldsFilled={allFieldsFilled}
           loading={loading}
-          setFormData={setFormData}
+          // setFormData={setFormData}
         />
       </div>
     </div>
