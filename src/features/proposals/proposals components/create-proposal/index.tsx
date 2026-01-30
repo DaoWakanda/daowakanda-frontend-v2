@@ -3,7 +3,7 @@ import { IoMdClose } from 'react-icons/io';
 import { BackgroundOverlay } from '@/components/background-overlay';
 import { useNotify } from '@/hooks/useNotify';
 import { ThreeDots } from 'react-loader-spinner';
-import { useWallet } from '@txnlab/use-wallet-react';
+import { useWallet } from '@txnlab/use-wallet';
 import { useProposalContract } from '@/actions/proposals/proposal.contract';
 import { useProposalActions } from '@/actions/proposals';
 import { ICreateProposalContract } from '@/interface/proposal.interface';
@@ -16,7 +16,6 @@ interface Props {
 }
 
 export function CreateProposalModal({
-  isActive,
   onClose,
   getAllProposals,
 }: Props) {
@@ -110,10 +109,10 @@ export function CreateProposalModal({
   return (
     <>
       <BackgroundOverlay visible onClose={onClose}>
-        <div className="flex flex-col justify-start items-start bg-[#101010] text-white rounded-[32px] border border-white w-[90%] md:w-[780px] min-h-[536px] md:min-h-[355px] py-[50px] px-4 md:py-[90px] md:px-[50px] gap-2.5 bg-[url('https://res.cloudinary.com/dlinprg6k/image/upload/v1727834390/Ellipse_3_4_ac08lo.png')] bg-no-repeat bg-cover bg-[70%]">
+        <div className="flex flex-col justify-start items-start bg-[#101010] text-white rounded-[32px] border border-white w-[90%] md:w-[780px] min-h-[536px] md:min-h-[355px] py-[50px] px-4 md:py-[20px] md:px-[50px] gap-2.5 bg-[url('https://res.cloudinary.com/dlinprg6k/image/upload/v1727834390/Ellipse_3_4_ac08lo.png')] bg-no-repeat bg-cover bg-[70%]">
           <div className="flex items-center justify-end w-full">
             <IoMdClose
-              className="bg-white w-12 h-12 rounded-[50px] p-[3px] text-[#5e5e62] cursor-pointer"
+              className="bg-white w-6 h-6 rounded-[50px] p-[3px] text-[#5e5e62] cursor-pointer"
               onClick={onClose}
             />
           </div>
@@ -153,7 +152,7 @@ export function CreateProposalModal({
                     description: evt.target.value,
                   }))
                 }
-                className="w-full bg-[#2f3033] py-[10px] px-2 rounded-lg outline-none text-[#919094] font-['Roboto'] text-xs md:text-sm font-normal border-none min-h-[500px]"
+                className="w-full bg-[#2f3033] py-[10px] px-2 rounded-lg outline-none text-[#919094] font-['Roboto'] text-xs md:text-sm font-normal border-none min-h-[200px]"
                 required
               ></textarea>
             </div>

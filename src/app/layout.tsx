@@ -31,8 +31,57 @@ const avenirLtsd = localFont({
 
 
 export const metadata: Metadata = {
-  title: 'Daowakanda Admin',
-  description: 'Daowakanda Admin',
+  title: 'Wakanda DAO',
+  description:
+    'This is a decentralized autonomous organization to revolutionize community engagement and participation starting with Algorand Nigeria',
+  keywords: [
+    'DaoWakanda',
+    'Wakanda',
+    'Community DAO',
+    'DAO',
+    'DAO Voting System',
+    'Coding Challenges',
+    'Decentralized',
+    'Autonomous',
+    'Organization',
+    'Algorand',
+  ],
+  openGraph: {
+    title: 'DaoWakanda',
+    description:
+      'This is a decentralized autonomous organization to revolutionize community engagement and participation starting with Algorand Nigeria',
+    url: 'https://www.daowakanda.org',
+    siteName: 'DaoWakanda',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dlinprg6k/image/upload/v1710183598/Group_5_nlkqfr.png',
+        width: 1200,
+        height: 630,
+        alt: 'DaoWakanda',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  icons: {
+    icon: [
+      {
+        url: 'https://res.cloudinary.com/dlinprg6k/image/upload/v1710183598/Group_5_nlkqfr.png',
+        type: 'image/png',
+      },
+    ],
+    apple: [
+      {
+        url: 'https://res.cloudinary.com/dlinprg6k/image/upload/v1710183598/Group_5_nlkqfr.png',
+        type: 'image/png',
+      },
+    ],
+    shortcut: 'https://res.cloudinary.com/dlinprg6k/image/upload/v1710183598/Group_5_nlkqfr.png',
+  },
+  metadataBase: new URL('https://www.daowakanda.org'),
+  alternates: {
+    canonical: '/',
+  },
 };
 
 export default function RootLayout({
@@ -43,6 +92,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <link
           href="https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap"
           rel="stylesheet"

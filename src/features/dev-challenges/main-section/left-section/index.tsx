@@ -52,7 +52,7 @@ export function LeftSection({ leaderboardItems, filter, setFilter }: leaderboard
           className="w-6 h-6 rounded-[4px] border-[1.5px] border-[#D0D5DD]"
           style={{ background: optionName === filter?.filterBy ? 'black' : 'white' }}
         ></div>
-        <div className="font-normal text-sm text-[#919094]">{optionName}</div>
+        <div className="font-normal text-sm text-[#919094] capitalize">{optionName}</div>
       </div>
     );
   };

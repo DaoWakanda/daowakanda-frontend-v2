@@ -5,8 +5,9 @@ import {
   ICreateProposalContractApi,
   IVoteProposalDto,
 } from '@/interface/proposal.interface';
+import { getAlgodClient } from '@/utils/get-algo-client-config';
 import * as algokit from '@algorandfoundation/algokit-utils';
-import { useWallet } from '@txnlab/use-wallet-react';
+import { useWallet } from '@txnlab/use-wallet';
 import {
   makeAssetTransferTxnWithSuggestedParamsFromObject,
   makePaymentTxnWithSuggestedParamsFromObject,
@@ -14,7 +15,8 @@ import {
 import { useCallback } from 'react';
 
 export const useProposalContract = () => {
-  const { activeAddress, transactionSigner: signer, algodClient } = useWallet();
+  const { activeAddress, signer, clients } = useWallet();
+  const algodClient = getAlgodClient();
   const { notify } = useNotify();
 
   const createProposal = useCallback(

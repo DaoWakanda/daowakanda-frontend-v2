@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Search, ChevronDown, FilePlus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import {
@@ -14,15 +14,15 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useMobile } from '@/hooks/use-mobile';
 import { ProposalCard } from '../proposal-card';
 import { DeleteModal } from '@/components/ui/delete-modal';
-import LeadershipBoard from '../leadership-board';
+// import LeadershipBoard from '../leadership-board'; // unused import, commented for eslint
 import ProposalsuccessModal from '../success-modal-proposal';
 import FailureProposalModal from '../failure-modal-proposal';
 import { PageMaxWidth } from '@/components/page-max-width';
 import { Pagination } from '@/components/pagination';
 import { useProposalActions } from '@/actions/proposals';
-import { ProposalApi } from '@/interface/proposal.interface';
-import { Pagination as PaginationType } from '@/interface/pagination.interface';
-import { filterProposals, ProposalTab } from '../../utils/proposal-filters';
+import type { ProposalApi } from '@/interface/proposal.interface';
+import type { Pagination as PaginationType } from '@/interface/pagination.interface';
+import { filterProposals, type ProposalTab } from '../../utils/proposal-filters';
 import { CreateProposalModal } from '../create-proposal';
 
 interface ProposalsState {
@@ -31,7 +31,14 @@ interface ProposalsState {
   loading: boolean;
 }
 
-const ProposalsContent = () => {
+const tabLabels: Record<ProposalTab, string> = {
+  all: 'All',
+  'in-progress': 'In progress',
+  approved: 'Approved',
+  denied: 'Denied',
+};
+
+const ProposalsContent: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ProposalTab>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,8 +59,8 @@ const ProposalsContent = () => {
   const { getAllProposals } = useProposalActions();
 
   // Fetch proposals from API
-  const fetchProposals = async (page: number) => {
-    setProposalsState((prev) => ({ ...prev, loading: true }));
+  const fetchProposals = useCallback(async (page: number) => {
+    setProposalsState(prev => ({ ...prev, loading: true }));
 
     try {
       const response = await getAllProposals({ page });
@@ -65,58 +72,51 @@ const ProposalsContent = () => {
           loading: false,
         });
       } else {
-        setProposalsState((prev) => ({ ...prev, loading: false }));
+        setProposalsState(prev => ({ ...prev, loading: false }));
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to fetch proposals:', error);
-      setProposalsState((prev) => ({ ...prev, loading: false }));
+      setProposalsState(prev => ({ ...prev, loading: false }));
     }
-  };
+  }, []);
 
   // Fetch proposals whenever currentPage changes
   useEffect(() => {
-    fetchProposals(currentPage);
-  }, [currentPage]);
+    void fetchProposals(currentPage);
+  }, [currentPage, fetchProposals]);
 
   // Filter proposals based on tab and search query
-  const filteredProposals = useMemo(() => {
-    return filterProposals(proposalsState.proposals, activeTab, searchQuery);
-  }, [proposalsState.proposals, activeTab, searchQuery]);
+  const filteredProposals = useMemo(() => (
+    filterProposals(proposalsState.proposals, activeTab, searchQuery)
+  ), [proposalsState.proposals, activeTab, searchQuery]);
 
   // Handlers
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
-  };
+  }, []);
 
-  const handleDeleteClick = (appId: string) => {
+  const handleDeleteClick = useCallback((appId: string) => {
     const proposal = proposalsState.proposals.find((p) => p.appId === appId);
     if (proposal) {
       setSelectedProposal(proposal);
       setShowDeleteModal(true);
     }
-  };
+  }, [proposalsState.proposals]);
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     if (selectedProposal) {
       // TODO: Implement delete functionality
       setShowDeleteModal(false);
       setSelectedProposal(null);
     }
-  };
+  }, [selectedProposal]);
 
-  const handleClaimFunding = () => {
+  const handleClaimFunding = useCallback(() => {
     setShowSuccessModal(false);
-  };
+  }, []);
 
-  const getTabLabel = (tab: ProposalTab): string => {
-    const labels: Record<ProposalTab, string> = {
-      all: 'All',
-      'in-progress': 'In progress',
-      approved: 'Approved',
-      denied: 'Denied',
-    };
-    return labels[tab];
-  };
+  const getTabLabel = useCallback((tab: ProposalTab): string => tabLabels[tab], []);
 
   return (
     <div className="container mx-auto px-4 py-8 min-h-screen bg-black font-roboto">
@@ -165,10 +165,14 @@ const ProposalsContent = () => {
                     placeholder="Search proposals"
                     className="pl-10 bg-[#1B1B1F] border-none outline-none w-full text-[#46464A] placeholder:text-[#46464A]"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={e => setSearchQuery(e.target.value)}
                   />
                 </div>
-                <Button className="bg-[#C7C6CA] hover:bg-gray-700 text-black !rounded-[32px]" onClick={() => setShowCreateProposalModal(true)}>
+                <Button
+                  className="bg-[#C7C6CA] hover:bg-gray-700 text-black !rounded-[32px]"
+                  onClick={() => setShowCreateProposalModal(true)}
+                  type="button"
+                >
                   <FilePlus className="h-8 w-7 text-black" /> Create Proposal
                 </Button>
               </div>
@@ -183,6 +187,7 @@ const ProposalsContent = () => {
                   <Button
                     variant="outline"
                     className="!bg-[#1B1B1F] text-[#46464A] border-gray-700 rounded-full px-2 py-2 h-auto flex justify-between items-center text-[10px]"
+                    type="button"
                   >
                     <span>{getTabLabel(activeTab)}</span>
                     <ChevronDown className="h-5 w-5 text-[#46464A]" />
@@ -206,10 +211,14 @@ const ProposalsContent = () => {
                   placeholder="Search proposals"
                   className="pl-12 pr-12 py-6 h-auto bg-[#1B1B1F] placeholder:text-[#46464A] border-none rounded-full"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                 />
               </div>
-              <Button className="cursor-pointer p-0 flex items-center justify-center bg-gray-200 rounded-full overflow-hidden" onClick={() => setShowCreateProposalModal(true)}>
+              <Button
+                className="cursor-pointer p-0 flex items-center justify-center bg-gray-200 rounded-full overflow-hidden"
+                onClick={() => setShowCreateProposalModal(true)}
+                type="button"
+              >
                 <FilePlus className="h-6 w-6 text-black" />
               </Button>
             </div>
@@ -222,7 +231,11 @@ const ProposalsContent = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 rounded-[32px] bg-[#19191BCC]">
               {filteredProposals.length > 0 ? (
                 filteredProposals.map((proposal) => (
-                  <ProposalCard key={proposal.appId} proposal={proposal} onDelete={handleDeleteClick} />
+                  <ProposalCard
+                    key={proposal.appId}
+                    proposal={proposal}
+                    onDelete={handleDeleteClick}
+                  />
                 ))
               ) : (
                 <div className="col-span-full text-center text-gray-400 py-8">
@@ -241,9 +254,11 @@ const ProposalsContent = () => {
             )}
           </div>
 
-          {/* <div className="sticky top-[100px] gap-3 md:w-[25%] h-[550px] flex flex-col">
+          {/* 
+          <div className="sticky top-[100px] gap-3 md:w-[25%] h-[550px] flex flex-col">
             <LeadershipBoard />
-          </div> */}
+          </div>
+          */}
         </div>
 
         {/* Modals */}
@@ -258,7 +273,13 @@ const ProposalsContent = () => {
           handleClaimFunding={handleClaimFunding}
         />
         <FailureProposalModal open={showFailureModal} onOpenChange={setShowFailureModal} />
-        {showCreateProposalModal && (<CreateProposalModal isActive={showCreateProposalModal} onClose={() => setShowCreateProposalModal(false)} getAllProposals={() => fetchProposals(currentPage)} />)}
+        {showCreateProposalModal && (
+          <CreateProposalModal
+            isActive={showCreateProposalModal}
+            onClose={() => setShowCreateProposalModal(false)}
+            getAllProposals={() => fetchProposals(currentPage)}
+          />
+        )}
       </PageMaxWidth>
     </div>
   );

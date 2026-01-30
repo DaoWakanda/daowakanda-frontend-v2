@@ -10,7 +10,7 @@ export const RowData = ({ index, leaderboard }: Props) =>{
 
   const stripImage =()=>{
     const [first, last] = leaderboard?.name.trim().split(' ');
-    const merged = first.split('')[0]?.toUpperCase() + last.split('')[0]?.toUpperCase();
+    const merged = first.split('')[0]?.toUpperCase() + (last.split('')[0]?.toUpperCase() || "");
 
     return merged;
   }
