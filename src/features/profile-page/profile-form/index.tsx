@@ -4,9 +4,16 @@ import FormField from '../form-field';
 import { ICreateProfile } from '@/interface/profile.interface';
 import { useProfileActions } from '@/actions/profile';
 import { useNotify } from '@/hooks/useNotify';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 const ProfileForm: React.FC = () => {
+  const { createAccount, getProfile } = useProfileActions();
+
+  const { notify } = useNotify();
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<ICreateProfile>({
     firstName: '',
     lastName: '',
@@ -15,50 +22,27 @@ const ProfileForm: React.FC = () => {
     email: '',
     githubLink: '',
   });
-  const [loading, setLoading] = useState(false);
-  const { createAccount, getProfile } = useProfileActions();
-  const { notify } = useNotify();
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const getSafeReturnTo = (value: string | null) => {
-    if (!value) return null;
-    const decoded = decodeURIComponent(value).trim();
-
-    // Prevent open redirects: only allow internal paths.
-    if (!decoded.startsWith('/')) return null;
-    if (decoded.startsWith('//')) return null;
-
-    return decoded;
-  };
+  const allFieldsFilled = Object.values(formData).every((val) =>
+    typeof val === 'string' ? val.trim() !== '' : val !== null && val !== undefined,
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => {
-      const next = { ...prev, [name]: value };
-      if (name === 'country') {
-        next.stateOfResidence = '';
-      }
-      return next;
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loading) return;
 
-    setLoading(true);
-    try {
-      const result = await createAccount(formData);
-      if (!result) return;
+    if (loading) return; // prevent duplicate submits
+    setLoading(true); // ⏳ show spinner on button
+    const response = await createAccount(formData);
+    await getProfile();
 
-      notify.success('Profile submitted successfully');
-
-      const returnTo = getSafeReturnTo(searchParams.get('returnTo'));
-      getProfile();
-      router.replace(returnTo ?? '/developers');
-    } finally {
-      setLoading(false);
+    if (response) {
+      toast.success('Your account was created successfully.');
+      router.push('/developers'); // ✅ navigate on success
     }
   };
 
@@ -90,7 +74,9 @@ const ProfileForm: React.FC = () => {
           formData={formData}
           handleChange={handleChange}
           handleSubmit={handleSubmit}
+          allFieldsFilled={allFieldsFilled}
           loading={loading}
+          setFormData={setFormData}
         />
       </div>
     </div>
