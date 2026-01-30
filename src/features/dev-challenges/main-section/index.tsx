@@ -81,7 +81,7 @@ export function MainSection({ active, onclick, showFilter }: Props) {
       </div>
 
       {/* bottom section */}
-      <div className="flex flex-row gap-6 w-full min-h-screen md:my-[77px] my-8">
+      <div className="flex flex-row gap-6 w-full min-h-screen md:my-[77px] my-8 relative items-start">
         {/* left section */}
         <div className="flex-col  md:sticky md:top-[120px] hidden lg:flex  w-[280px] min-h-[600px] mt-16">
           <LeftSection leaderboardItems={leaderboardItems} filter={filter} setFilter={setFilter} />

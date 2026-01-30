@@ -14,13 +14,14 @@ interface Props {
     description?: string;
     link: string;
   }[];
+  onClick?: () => void;
 }
 
-export function NavItemMobile({ label, link = '#', subItems, isActive }: Props) {
+export function NavItemMobile({ label, link = '#', subItems, isActive, onClick }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2" onClick={onClick}>
       <div className="flex items-center gap-2 h-10 justify-between">
         <Link
           href={link}

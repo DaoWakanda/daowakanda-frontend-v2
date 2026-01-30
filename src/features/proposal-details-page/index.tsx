@@ -1,18 +1,80 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import { PageMaxWidth } from '@/components/page-max-width';
 import Link from 'next/link';
+import { useProposalActions } from '@/actions/proposals';
+import { ProposalApi } from '@/interface/proposal.interface';
+import { useWallet } from '@txnlab/use-wallet';
+import { useNotify } from '@/hooks/useNotify';
+import Skeleton from 'react-loading-skeleton';
+import { VoteModal } from './vote-modal';
+
 
 interface ProposalDetailsProps {
   proposalId: string;
 }
 
 const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
+  const [proposal, setProposal] = useState<ProposalApi | null>(null);
+  const { activeAddress } = useWallet();
+  const [voteModalActive, setVoteModalActive] = useState(false);
+  const { getProposal } = useProposalActions();
+  const {notify} = useNotify();
+  const loading = !proposal;
+  
+  const fetchProposal = async () => {
+    const response = await getProposal(proposalId);
+    if (response) {
+      setProposal(response);
+    }
+  };
+
+  const calculatePercentage = () => {
+    if (!proposal) {
+      return {
+        yes: 50,
+        no: 50,
+      };
+    }
+
+    const yesPercentage =
+      (100 * proposal.yesVotes.length) /
+      (proposal.yesVotes.length + proposal.noVotes.length);
+    const finalYesPercentage = isNaN(yesPercentage) ? 50 : yesPercentage;
+
+    return {
+      yes: finalYesPercentage,
+      no: 100 - finalYesPercentage,
+    };
+  };
+
+  const percentage = calculatePercentage();
+  const now = Date.now();
+
+  const openVoteModal = () => {
+    if (!activeAddress) {
+      notify.error('Please connect your wallet to vote');
+      return;
+    }
+    setVoteModalActive(true);
+  };
+  const closeVoteModal = () => {
+    setVoteModalActive(false);
+  };
+
+  useEffect(() => {
+    fetchProposal();
+  }, [proposalId]);
+
   return (
     <PageMaxWidth>
       <div className="mt-10 w-full font-inter h-full flex flex-col justify-center items-center">
-        <div className="mt-[60px] ml:mt-20 w-full md:w-[1026px] h-[240px] rounded-[12px] p-[15px] md:p-[30px] border-[1px] border-white bg-[#4D4D4D4D] bg-[url('https://res.cloudinary.com/dlinprg6k/image/upload/v1744623266/Ellipse_3_cpmbt5.png')] bg-cover bg-center">
+        <div className="mt-[60px] ml:mt-20 w-full h-[240px] rounded-[12px] p-[15px] md:p-[30px] border-[1px] border-white bg-[#4D4D4D4D] bg-[url('https://res.cloudinary.com/dlinprg6k/image/upload/v1744623266/Ellipse_3_cpmbt5.png')] bg-cover bg-center">
           <div className="flex items-center text-[#E8F9FF80]">
-            <h1 className="text-sm">Governance</h1>
+            <Link href="/proposals">
+              <h1 className="text-sm">Governance</h1>
+            </Link>
             <p className="ml-2">
               <img
                 src="https://res.cloudinary.com/dlinprg6k/image/upload/v1744636481/SVG_kqi79j.png"
@@ -25,27 +87,41 @@ const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
             </Link>
           </div>
           <div className="w-full mt-2 font-bold text-18 md:text-[22px] text-white">
-            J4J #1: Supply Reduction Proposal
+          {loading ? (
+              <Skeleton width={150} />
+            ) : (
+              `#${proposal.appId}: ${proposal.title}`
+            )}
           </div>
           <div className="w-full text-[13px] md:text-[15px] text-white mt-3">
-            Lorem ipsum dolor sit amet consectetur. Eu facilisi vel auctor diam. Hac condimentum eu
-            cursus rhoncus tristique urna malesuada sit. Est donec in non massa ultricies pharetra.
-            Nec risus urna odio massa aliquam.
+          {loading ? (
+              <Skeleton width={200} count={2} />
+            ) : (
+              `${proposal.description}`
+            )}
           </div>
           <div className="flex justify-end mt-3">
-            <button className="p-[10px] w-full md:w-[15%] rounded-lg bg-[#C5EE4F] text-sm text-[#00484F] font-semibold">
-              Proceed to vote
-            </button>
+            {(proposal?.endDate || 0) > now && (
+              <button onClick={openVoteModal} className="p-[10px] w-full md:w-[15%] rounded-lg bg-[#C5EE4F] text-sm text-[#00484F] font-semibold">
+                Proceed to vote
+              </button>
+            )}
           </div>
         </div>
         {/* Cards section*/}
         <div className="mt-5 md:mt-5 w-full h-auto flex flex-col md:flex-row justify-center items-center gap-5">
           {/* Results */}
-          <div className="w-full md:w-[326px] h-[250px] border-[0.5px] border-[#8E8E93] rounded-lg bg-[#4D4D4D4D] bg-[url('https://res.cloudinary.com/dlinprg6k/image/upload/v1744623317/Ellipse_4_bz10oa.png')] bg-cover bg-center">
+          <div className="w-full md:flex-1 h-[250px] border-[0.5px] border-[#8E8E93] rounded-lg bg-[#4D4D4D4D] bg-[url('https://res.cloudinary.com/dlinprg6k/image/upload/v1744623317/Ellipse_4_bz10oa.png')] bg-cover bg-center">
             <div className="flex flex-col w-full text-[#E8F9FFF2] p-5">
               <div className="flex gap-24">
                 <h1 className="text-[18px] font-bold">Results</h1>
-                <p className="text-sm">274,033,926 votes</p>
+                <p className="text-sm">{loading ? (
+                    <Skeleton width={100} />
+                  ) : (
+                    `${
+                      proposal.yesVotes.length + proposal.noVotes.length
+                    } votes`
+                  )}</p>
               </div>
 
               <div className="mt-5">
@@ -53,10 +129,10 @@ const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
                   <div className="h-full flex animate-pulse">
                     <div
                       className="bg-green-500 transition-all duration-1000"
-                      style={{ width: '95%' }}
+                      style={{ width: `${percentage.yes}%` }}
                     ></div>
-                    <div className="bg-gray-400" style={{ width: '3%' }}></div>
-                    <div className="bg-red-500" style={{ width: '2%' }}></div>
+                    <div className="bg-gray-400" style={{ width: '0%' }}></div>
+                    <div className="bg-red-500" style={{ width: `${percentage.no}%` }}></div>
                   </div>
                 </div>
               </div>
@@ -66,26 +142,34 @@ const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
                   <div className="bg-[#48B748] h-5 w-5 rounded-full">
                     <h1 className="ml-8 ">Approved</h1>
                   </div>
-                  <p>260,131,475 (95%)</p>
+                  <p>{loading ? (
+                    <Skeleton width={150} />
+                  ) : (
+                    `${proposal.yesVotes.length} (${percentage.yes}%)`
+                  )}</p>
                 </div>
                 <div className="flex justify-between mt-2">
                   <div className=" h-5 w-5 rounded-full bg-[#AEAEB2] ">
                     <h1 className="ml-8 ">Maybe</h1>
                   </div>
-                  <p>9,382,737 (3%)</p>
+                  <p>0 (0%)</p>
                 </div>
                 <div className="flex justify-between mt-2">
                   <div className="bg-[#FF3B30] h-5 w-5 rounded-full">
                     <h1 className="ml-8 ">Denied</h1>
                   </div>
-                  <p>4,519,713 (2%)</p>
+                  <p>  {loading ? (
+                    <Skeleton width={150} />
+                  ) : (
+                    `${proposal.noVotes.length} (${percentage.no}%)`
+                  )}</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* progress card */}
-          <div className="w-full md:w-[326px] h-[250px] border-[0.5px] border-[#8E8E93] rounded-lg bg-[#4D4D4D4D] bg-[url('https://res.cloudinary.com/dlinprg6k/image/upload/v1744623317/Ellipse_4_bz10oa.png')] bg-cover bg-center">
+          <div className="w-full md:flex-1 h-[250px] border-[0.5px] border-[#8E8E93] rounded-lg bg-[#4D4D4D4D] bg-[url('https://res.cloudinary.com/dlinprg6k/image/upload/v1744623317/Ellipse_4_bz10oa.png')] bg-cover bg-center">
             <div className="flex flex-col w-full text-[#E8F9FFF2] p-5">
               {/*created */}
               <div className="flex gap-3 items-start">
@@ -97,7 +181,11 @@ const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
                 </div>
                 <div className="flex-1">
                   <h1 className="text-sm">Created</h1>
-                  <p className="text-[11px] text-[#AEAEB2]">01 August 2024, 03:44:11 PM</p>
+                  <p className="text-[11px] text-[#AEAEB2]">{loading ? (
+                      <Skeleton width={150} />
+                    ) : (
+                      `${new Date(proposal.startDate).toString()}`
+                    )}</p>
                 </div>
               </div>
               {/* In progress */}
@@ -110,7 +198,11 @@ const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
                 </div>
                 <div className="flex-1">
                   <h1 className="text-sm">In Progress</h1>
-                  <p className="text-[11px] text-[#AEAEB2]">01 August 2024, 04:16:01 PM</p>
+                  <p className="text-[11px] text-[#AEAEB2]"> {loading ? (
+                      <Skeleton width={150} />
+                    ) : (
+                      `${(proposal?.endDate || 0) > now ? new Date(Date.now()).toDateString() : ''}`
+                    )}</p>
                 </div>
               </div>
               {/* Ended */}
@@ -124,13 +216,25 @@ const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
                 </div>
                 <div className="flex-1">
                   <h1 className="text-sm">Ended</h1>
-                  <p className="text-[11px] text-[#AEAEB2]">04 August 2024, 04:16:01 PM</p>
+                  <p className="text-[11px] text-[#AEAEB2]">
+                    {loading ? (
+                      <Skeleton width={150} />
+                    ) : (
+                      `${new Date(proposal.endDate).toDateString()}`
+                    )}
+                  </p>
                 </div>
               </div>
               {/* Queued */}
               <div className="flex gap-3 items-start">
                 <div className="flex flex-col items-center pt-1">
-                  <div className="relative w-5 h-5 rounded-full border-2 border-[D1D5DB]"></div>
+                  {(proposal?.endDate || 0) < now ? (
+                    <div className="bg-[#C7F284] w-5 h-5 rounded-full flex items-center justify-center text-black text-xs font-bold">
+                      ✓
+                    </div>
+                  ) : (
+                    <div className="relative w-5 h-5 rounded-full border-2 border-[#D1D5DB]"></div>
+                  )}
                   <div className="mt-1 w-0.5 h-1 bg-[#D1D5DB] rounded-md"></div>
                 </div>
                 <h1 className="text-sm">Queued</h1>
@@ -138,14 +242,20 @@ const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
               {/* Executed */}
               <div className="flex gap-3 items-start">
                 <div className="flex flex-col items-center pt-1">
-                  <div className="relative w-5 h-5 rounded-full border-2 border-[D1D5DB]"></div>
+                  {(proposal?.endDate || 0) < now ? (
+                    <div className="bg-[#C7F284] w-5 h-5 rounded-full flex items-center justify-center text-black text-xs font-bold">
+                      ✓
+                    </div>
+                  ) : (
+                    <div className="relative w-5 h-5 rounded-full border-2 border-[#D1D5DB]"></div>
+                  )}
                 </div>
                 <h1 className="text-sm">Executed</h1>
               </div>
             </div>
           </div>
           {/* Status card */}
-          <div className="w-full md:w-[326px] h-[250px] border-[0.5px] border-[#8E8E93] rounded-lg bg-[#4D4D4D4D] bg-[url('https://res.cloudinary.com/dlinprg6k/image/upload/v1744623317/Ellipse_4_bz10oa.png')] bg-cover bg-center">
+          <div className="w-full md:flex-1 h-[250px] border-[0.5px] border-[#8E8E93] rounded-lg bg-[#4D4D4D4D] bg-[url('https://res.cloudinary.com/dlinprg6k/image/upload/v1744623317/Ellipse_4_bz10oa.png')] bg-cover bg-center">
             <div className="flex flex-col w-full text-[#E8F9FFF2] p-5">
               <div className="flex gap-3 justify-start items-center">
                 <img
@@ -154,8 +264,25 @@ const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
                   className="w-4"
                 />
                 <p className="text-[#AEAEB2]">Status: </p>
-                <div className="border-[1px] border-[#75E0A74D] rounded-full w-[100px] h-auto text-[#75E0A7] text-bold text-center">
-                  Approved
+                <div className="border-[1px] border-[#75E0A74D] rounded-full w-[100px] h-auto text-[#75E0A7] text-bold text-center"
+                style={{
+                  color: loading ? '#FFF' :
+                    now < proposal.endDate
+                      ? '#FFF'
+                      : proposal.yesVotes.length >=
+                        proposal.noVotes.length
+                      ? undefined
+                      : '#FF3B30',
+                }}
+                >
+                   {`${
+                        loading ? <Skeleton width={100} /> :
+                        now < proposal?.endDate || 0
+                          ? 'Ongoing'
+                          : proposal.yesVotes.length >= proposal.noVotes.length
+                          ? 'Approved'
+                          : 'Rejected'
+                      }`}
                 </div>
               </div>
               <div className="flex justify-start items-center gap-3 mt-3">
@@ -165,7 +292,11 @@ const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
                   className="w-4"
                 />
                 <p className="text-[#AEAEB2]">
-                  Created by: <span className="text-white">DLvz...qcWL</span>
+                  Created by: <span className="text-white"> {loading ? (
+                    <Skeleton width={200} />
+                  ) : (
+                    `${proposal.creator.slice(0, 10)}...`
+                  )}</span>
                 </p>
               </div>
               <div className="flex justify-start items-center gap-3 mt-3">
@@ -175,7 +306,11 @@ const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
                   className="w-4"
                 />
                 <p className="text-[#AEAEB2]">
-                  Start: <span className="text-white">01 August 2024, 16.16 PM </span>
+                  Start: <span className="text-white">{loading ? (
+                    <Skeleton width={150} />
+                  ) : (
+                    `${new Date(proposal.startDate).toDateString()}`
+                  )} </span>
                 </p>
               </div>
               <div className="flex justify-start items-center gap-3 mt-3">
@@ -185,13 +320,26 @@ const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
                   className="w-4"
                 />
                 <p className="text-[#AEAEB2]">
-                  End:<span className="text-white"> 04 August 2024, 16.16 PM</span>
+                  End:<span className="text-white"> {loading ? (
+                    <Skeleton width={150} />
+                  ) : (
+                    `${new Date(proposal.endDate).toDateString()}`
+                  )}</span>
                 </p>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {voteModalActive && !!proposal && (
+        <VoteModal
+          proposal={proposal}
+          isActive={voteModalActive}
+          onclick={closeVoteModal}
+          updateProposal={setProposal}
+        />
+      )}
     </PageMaxWidth>
   );
 };
