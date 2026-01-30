@@ -10,7 +10,7 @@ export function Footer() {
       links: [
         {
           label: 'Governance',
-          href: '/',
+          href: '/proposals',
         },
         {
           label: 'Communities',
@@ -18,7 +18,7 @@ export function Footer() {
         },
         {
           label: 'Developers',
-          href: '/',
+          href: '/developers',
         },
         {
           label: 'Research Forum',
@@ -31,7 +31,7 @@ export function Footer() {
       links: [
         {
           label: 'About',
-          href: '/',
+          href: '/about',
         },
         {
           label: 'FAQs',
@@ -39,7 +39,7 @@ export function Footer() {
         },
         {
           label: 'Blog',
-          href: '/',
+          href: 'https://medium.com/@daowakanda',
         },
         {
           label: 'Help Center',
@@ -57,25 +57,31 @@ export function Footer() {
               DaoWakanda Communities
             </h4>
             <div className="flex flex-col gap-2">
-              <Link className="flex items-center gap-2 h-[22px]" href="/">
+              <Link className="flex items-center gap-2 h-[22px]" href="https://x.com/DaoWakanda">
                 <FooterIcons.XIcon />
                 <h4 className="text-[#ABABAF] font-[400] text-[16px] leading-[100%] tracking-[-0.37px] font-avenir">
                   Twitter
                 </h4>
               </Link>
-              <Link className="flex items-center gap-2 h-[22px]" href="/">
+              <Link
+                className="flex items-center gap-2 h-[22px]"
+                href="https://github.com/DaoWakanda/Daowakanda"
+              >
                 <FooterIcons.GitHubIcon />
                 <h4 className="text-[#ABABAF] font-[400] text-[16px] leading-[100%] tracking-[-0.37px] font-avenir">
                   GitHub
                 </h4>
               </Link>
-              <Link className="flex items-center gap-2 h-[22px]" href="/">
+              <Link className="flex items-center gap-2 h-[22px]" href="https://t.me/daowakanda">
                 <FooterIcons.TelegramIcon />
                 <h4 className="text-[#ABABAF] font-[400] text-[16px] leading-[100%] tracking-[-0.37px] font-avenir">
                   Telegram
                 </h4>
               </Link>
-              <Link className="flex items-center gap-2 h-[22px]" href="/">
+              <Link
+                className="flex items-center gap-2 h-[22px]"
+                href="https://medium.com/@daowakanda"
+              >
                 <FooterIcons.BlogIcon />
                 <h4 className="text-[#ABABAF] font-[400] text-[16px] leading-[100%] tracking-[-0.37px] font-avenir">
                   Blog
