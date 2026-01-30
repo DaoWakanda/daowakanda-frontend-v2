@@ -1,7 +1,7 @@
 'use client';
 import { Trash2 } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-import { IProposalCard, IProposalCardApi } from '@/interface/proposal.interface';
+import { IProposalCardApi } from '@/interface/proposal.interface';
 
 export function ProposalCard({ proposal, onDelete }: IProposalCardApi) {
   // Status badge component
@@ -59,19 +59,19 @@ export function ProposalCard({ proposal, onDelete }: IProposalCardApi) {
   const shortenString = (str: string, start = 4, end = 4) =>
     str.length > start + end ? `${str.slice(0, start)}...${str.slice(-end)}` : str;
   return (
-    <div className="bg-[#2E2D3580] rounded-lg overflow-hidden border border-gray-800 font-roboto">
+    <div className="bg-[#2E2D3580] rounded-lg overflow-hidden border border-gray-800 font-roboto flex flex-col min-h-[300px]">
       {/* Card Header */}
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-1">
         <div className="flex gap-4 items-center">
           <div className="flex-1">
             <StatusBadge />
           </div>
-          <button
+          {/* <button
             onClick={() => onDelete(proposal.appId)}
             className="text-gray-400 hover:text-white cursor-pointer "
           >
             <Trash2 size={24} />
-          </button>
+          </button> */}
         </div>
         <div className="flex justify-between items-start mt-2">
           <h3 className="text-[22px] font-bold text-white">{proposal.title} </h3>

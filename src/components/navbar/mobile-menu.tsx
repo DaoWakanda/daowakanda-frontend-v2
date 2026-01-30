@@ -47,7 +47,7 @@ export function MobileMenu({ isOpen, onClose }: Props) {
     <BackgroundOverlay overlayStyle={{ background: 'none' }} visible={isOpen} onClose={handleClose}>
       <div
         className={classNames(
-          'self-end fixed h-screen w-full bg-[#4D4D4D4D] backdrop-blur-[25px]',
+          'self-end fixed h-svh w-full bg-[#4D4D4D4D] backdrop-blur-[25px]',
           'transition-all flex duration-300 flex-col gap-[55px]',
         )}
         style={{ transform: open ? 'translateX(0)' : 'translateX(100%)' }}
@@ -81,6 +81,7 @@ export function MobileMenu({ isOpen, onClose }: Props) {
                   link: 'https://medium.com/@daowakanda',
                 },
               ]}
+              onClick={handleClose}
             />
             <NavItemMobile
               label="Communities"
@@ -103,13 +104,15 @@ export function MobileMenu({ isOpen, onClose }: Props) {
                   link: 'https://t.me/daowakanda',
                 },
               ]}
+              onClick={handleClose}
             />
             <NavItemMobile
               isActive={pathname.includes('/developers')}
               label="AlgoDev"
               link="/developers"
+              onClick={handleClose}
             />
-            <NavItemMobile isActive={pathname.includes('/about')} label="About" link="/about" />
+            <NavItemMobile isActive={pathname.includes('/about')} label="About" link="/about" onClick={handleClose} />
           </div>
           {!userIsLoggedin && (
             <button
@@ -117,7 +120,7 @@ export function MobileMenu({ isOpen, onClose }: Props) {
                 'flex items-center justify-center gap-4 py-2 px-4 rounded-[50px]',
                 'border-[1px] border-white h-[60px] bg-[#2F3033]',
               )}
-              onClick={() => setShowWalletConnect(true)}
+              onClick={() => {setShowWalletConnect(true); handleClose();}}
             >
               <WalletIcon />
               <span className="font-avenir text-sm font-[700] text-white">Connect wallet</span>
