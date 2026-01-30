@@ -78,7 +78,7 @@ export function Card({
 
   return (
     <Link
-      className="w-full min-h-[300px] rounded-2xl bg-[#D1D1D6] flex flex-col"
+      className="w-full h-[300px] rounded-2xl bg-[#D1D1D6] flex flex-col"
       href={`/developers/${id}`}
     >
       <div className="w-full min-h-[40px] flex items-center justify-center text-[#46464A] text-[14px] font-bold">
@@ -90,7 +90,7 @@ export function Card({
           {title}
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-[2px] text-[#8E8E93] text-[14px] font-roboto font-semibold">
             <BsCalendar /> {new Date(createdAt).toDateString()}
           </div>
@@ -98,23 +98,25 @@ export function Card({
             <ImStopwatch /> {status === 'expired' ? 'Ended' : timeLeft}
           </div>
           <div
-            className={` rounded-lg px-2 text-sm font-semibold w-[71px] min-h-[24px] flex justify-center items-center ${statusClass}`}
+            className={`capitalize rounded-lg px-2 text-xs font-semibold w-[71px] min-h-[24px] flex justify-center items-center ${statusClass}`}
           >
-            {difficulty}{' '}
+            {difficulty}
           </div>
         </div>
 
         <div
-          className="flex text-[#D1D1D6] font-roboto font-normal text-[15px] leading-6"
+          className="flex text-[#D1D1D6] font-roboto font-normal text-[15px] leading-6 line-clamp-3"
           dangerouslySetInnerHTML={createSanitizedMarkup(shortdesc)}
         />
 
+        <div className="flex flex-1"></div>
+
         <div className="flex items-center gap-2 w-full h-[40px] text-white font-roboto">
-          <div className="flex items-center text-[16px] font-semibold gap-1">
+          <div className="flex items-center text-[14px] font-semibold gap-1">
             Prize: <span className="font-normal">{prize} Algos</span>
           </div>
           <div className="bg-[#D9D9D9] rounded-full w-[5px] h-[5px]"></div>
-          <div className="flex items-center text-[16px] font-semibold gap-1">
+          <div className="flex items-center text-[14px] font-semibold gap-1">
             Max winners: <span className="font-normal">{maxWinners}</span>
           </div>
         </div>
