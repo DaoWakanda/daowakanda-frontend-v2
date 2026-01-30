@@ -67,7 +67,7 @@ export function MobileMenu({ isOpen, onClose }: Props) {
           <div className="flex flex-col gap-4">
             <NavItemMobile
               label="Governance"
-              link="#"
+              link="/proposals"
               isActive={pathname.includes('/governance')}
               subItems={[
                 {
@@ -112,7 +112,12 @@ export function MobileMenu({ isOpen, onClose }: Props) {
               link="/developers"
               onClick={handleClose}
             />
-            <NavItemMobile isActive={pathname.includes('/about')} label="About" link="/about" onClick={handleClose} />
+            <NavItemMobile
+              isActive={pathname.includes('/about')}
+              label="About"
+              link="/about"
+              onClick={handleClose}
+            />
           </div>
           {!userIsLoggedin && (
             <button
@@ -120,7 +125,10 @@ export function MobileMenu({ isOpen, onClose }: Props) {
                 'flex items-center justify-center gap-4 py-2 px-4 rounded-[50px]',
                 'border-[1px] border-white h-[60px] bg-[#2F3033]',
               )}
-              onClick={() => {setShowWalletConnect(true); handleClose();}}
+              onClick={() => {
+                setShowWalletConnect(true);
+                handleClose();
+              }}
             >
               <WalletIcon />
               <span className="font-avenir text-sm font-[700] text-white">Connect wallet</span>
