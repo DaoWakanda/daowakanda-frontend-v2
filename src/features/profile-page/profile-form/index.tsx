@@ -9,8 +9,6 @@ import toast from 'react-hot-toast';
 
 const ProfileForm: React.FC = () => {
   const { createAccount, getProfile } = useProfileActions();
-
-  const { notify } = useNotify();
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
@@ -22,10 +20,6 @@ const ProfileForm: React.FC = () => {
     email: '',
     githubLink: '',
   });
-
-  const allFieldsFilled = Object.values(formData).every((val) =>
-    typeof val === 'string' ? val.trim() !== '' : val !== null && val !== undefined,
-  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -74,9 +68,7 @@ const ProfileForm: React.FC = () => {
           formData={formData}
           handleChange={handleChange}
           handleSubmit={handleSubmit}
-          // allFieldsFilled={allFieldsFilled}
           loading={loading}
-          // setFormData={setFormData}
         />
       </div>
     </div>
