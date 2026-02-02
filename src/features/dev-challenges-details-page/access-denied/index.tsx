@@ -9,7 +9,7 @@ interface Props {
   isConnected: boolean;
 }
 const AccessDeniedPage = ({ isConnected }: Props) => {
-  const [showWalletConnect, setShowWalletConnect] = useRecoilState(ConnectWalletVisibleAtom);
+  const [, setShowWalletConnect] = useRecoilState(ConnectWalletVisibleAtom);
   const pathname = usePathname();
 
   return (
@@ -28,11 +28,14 @@ const AccessDeniedPage = ({ isConnected }: Props) => {
             : ` Access to this task has been denied, connect your wallet to gain access.`}
         </p>
         {isConnected ? (
-          <Link className="text-[#C7F284] text-[16px]" href={`/create-profile?returnTo=${encodeURIComponent(pathname)}`}>
+          <Link
+            className="text-[#C7F284] text-[16px]"
+            href={`/create-profile?returnTo=${encodeURIComponent(pathname)}`}
+          >
             Proceed to update KYC
           </Link>
         ) : (
-          <Button className="text-[#C7F284] text-[16px]"  onClick={() => setShowWalletConnect(true)}>
+          <Button className="text-[#C7F284] text-[16px]" onClick={() => setShowWalletConnect(true)}>
             Connect wallet
           </Button>
         )}

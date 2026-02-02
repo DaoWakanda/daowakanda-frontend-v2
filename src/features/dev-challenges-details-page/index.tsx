@@ -141,7 +141,7 @@ export const DevChallengesDetailPage = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center gap-2 mb-4 hover:text-white ">
             <Link href="/developers" className="  flex items-center gap-1 text-gray-500">
-              Tasks {trivia?.id}
+              Tasks
             </Link>
             <span>
               <ChevronRight />{' '}
