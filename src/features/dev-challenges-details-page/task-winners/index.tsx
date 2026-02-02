@@ -14,8 +14,8 @@ const TaskWinners = ({ data }: Props) => {
       throw new Error('Full name must include at least a first and last name.');
     }
 
-    const firstInitial = parts[0][0].toUpperCase();
-    const lastInitial = parts[1][0].toUpperCase();
+    const firstInitial = parts[0]?.[0]?.toUpperCase() || '';
+    const lastInitial = parts[1]?.[0]?.toUpperCase() || '';
 
     return firstInitial + lastInitial;
   }
