@@ -25,11 +25,16 @@ import { PageLoader } from '../page-loader';
 import { useProfileActions } from '@/actions/profile';
 import { ProfileAtom } from '@/state/profile.atom';
 
+import Modal from '@/features/profile-page/reusable-modal';
+import EditProfile from '@/features/profile-page/profile-edit';
+
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showWalletConnect, setShowWalletConnect] = useRecoilState(ConnectWalletVisibleAtom);
   const [showProfilePopup, setShowProfilePopup] = useState(false);
+  const [showEditProfilePopup, setShowEditProfilePopup] = useState(false);
   const profile = useRecoilValue(ProfileAtom);
   const [loggingIn, setLoggingIn] = useState(false);
   const { logout, login, signAuthTransaction } = useAuthActions();
@@ -237,9 +242,13 @@ export function Navbar() {
               )}
             >
               <img
-                src={`https://ui-avatars.com/api/?name=${
-                  profile ? `${profile.firstName} ${profile.lastName}` : activeAddress
-                }&background=random&font-size=0.35&rounded=true`}
+                src={
+                  profile?.image
+                    ? profile?.image
+                    : `https://ui-avatars.com/api/?name=${
+                        profile ? `${profile.firstName} ${profile.lastName}` : activeAddress
+                      }&background=random&font-size=0.35&rounded=true`
+                }
                 className={classNames('w-[100px] h-[100px] rounded-[100px]')}
               />
               <div className="flex flex-col gap-1 flex-1">
@@ -258,15 +267,25 @@ export function Navbar() {
                     </>
                   )}
                 </div>
+
                 <button
                   className={classNames(
-                    'flex flex-col py-[10px] px-[25.5px] bg-[#FFF] rounded-lg',
-                    'text-[#00484F] font-[600] text-sm leading-[24px] font-inter',
+                    'flex flex-col py-[10px] px-[25.5px] bg-white rounded-lg',
+                    'text-[#00484F] font-semibold text-sm leading-[24px] font-inter',
                   )}
-                  onClick={() => setShowProfilePopup(!showProfilePopup)}
+                  onClick={() => {
+                    if (profile) {
+                      setShowEditProfilePopup(true);
+                      setShowProfilePopup(false);
+                    }
+                  }}
                 >
-                  Edit Profile
+                  <Link href={profile ? '' : '/create-profile'} className="mt-2 block text-sm ">
+                    {' '}
+                    {profile ? 'Edit Profile' : 'Create Profile'}
+                  </Link>
                 </button>
+
                 <button
                   className={classNames(
                     'flex flex-col rounded-lg',
@@ -284,6 +303,11 @@ export function Navbar() {
           </div>
         </PageMaxWidth>
       </BackgroundOverlay>
+
+      {/* 🔽 Modal for editing profile */}
+      <Modal isOpen={showEditProfilePopup} onClose={() => setShowEditProfilePopup(false)}>
+        <EditProfile onClose={() => setShowEditProfilePopup(false)} />
+      </Modal>
 
       {/* Mobile Navigation */}
       <div className="lg:hidden">
