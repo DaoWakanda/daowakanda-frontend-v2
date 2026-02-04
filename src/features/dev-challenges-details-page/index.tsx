@@ -36,11 +36,6 @@ export const DevChallengesDetailPage = () => {
   const [githubLink, setGithubLink] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const steps = [
-    'Strikethrough select reesizing community share pixel horizontal layer. Plugin figjam group pen rectangle prototype outline prototype rectangle. Bullet connection device undo connection style flatten. Effect team shadow slice thumbnail community reesizing. Plugin italic subtract group inspect.',
-    'Auto polygon layer comment vector. Scrolling clip vertical blur inspect project vector select. Thumbnail overflow italic underline underline ipsum. Pencil selection vertical italic scale text. Flatten pixel outline invite subtract ipsum.',
-    'Duplicate auto rectangle plugin thumbnail follower. Content plugin vector list bullet background asset italic. Selection thumbnail shadow main thumbnail create community bold invite background. Layout device rectangle team editor team. Reesizing content device main edit component. Create ellipse object shadow flows inspect pixel draft scale. Distribute reesizing community font figma. Flows overflow arrange overflow rotate vertical move fill.',
-  ];
 
   const getLevelColor = (level: string) => {
     switch (level) {
@@ -242,13 +237,6 @@ export const DevChallengesDetailPage = () => {
                     </div>
                   )}
 
-                  <ol className="list-decimal pl-5 mt-6 space-y-4">
-                    {steps.map((step, index) => (
-                      <li key={index} className="text-gray-300">
-                        {step}
-                      </li>
-                    ))}
-                  </ol>
                 </div>
                 {trivia?.status !== 'expired' && (
                   <div className="mt-8">

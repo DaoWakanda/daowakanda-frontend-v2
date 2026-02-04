@@ -1,11 +1,13 @@
 import { BountyAppSpec } from '@/artifacts/Bounty.arc32';
 import { ApplicationClient } from '@algorandfoundation/algokit-utils/types/app-client';
 import * as algokit from '@algorandfoundation/algokit-utils';
-import { useWallet } from '@txnlab/use-wallet-react';
+import { useWallet } from '@txnlab/use-wallet';
 import algosdk from 'algosdk';
+import { getAlgodClient } from '@/utils/get-algo-client-config';
 
 export const useDeveloperContractActions = () => {
-  const { activeAddress, algodClient, transactionSigner } = useWallet();
+  const { activeAddress, signer: transactionSigner } = useWallet();
+  const algodClient = getAlgodClient();
 
   const claimReward = async (amount: number, smartContractId: number) => {
     if (!activeAddress) throw new Error('No connected wallet');
