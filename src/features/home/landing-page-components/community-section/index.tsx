@@ -19,7 +19,7 @@ const CommunitySection = () => {
                 community
               </p>
             </div>
-            <div className="grid grid-cols-2 grid-rows-3 gap-4 md:grid-cols-3 md:grid-rows-2  min-h-[302px] mb-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 grid-rows-3 gap-4 md:grid-cols-3 md:grid-rows-2  min-h-[302px] mb-16">
               <Link href="https://t.me/daowakanda" target="_blank" rel="noopener noreferrer">
                 <div className="flex w-full  p-4 rounded-[16px] bg-[#1E1E1E] cursor-pointer gap-4  items-center hover:bg-[#056da1] transition duration-100 ease-in-out">
                   <div className="w-[50px] h-[50px] md:w-[100.25px] md:h-[100px] ">
