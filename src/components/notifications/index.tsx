@@ -6,6 +6,8 @@ import { useMediaQuery } from 'react-responsive';
 import { useNotificationActions } from '@/actions/notifications';
 import { IUnclaimedBounty } from '@/interface/notifications.interface';
 import { NotificationSkeleton } from './notification-skeleton';
+import { useRecoilValue } from 'recoil';
+import { UnclaimedBountiesAtom } from '@/state/trivia.atom';
 
 interface NotificationsProps {
   onClose: () => void;
@@ -13,22 +15,14 @@ interface NotificationsProps {
 
 const Notifications = ({ onClose }: NotificationsProps) => {
   const [selectedNotification, setSelectedNotification] = useState<number | null>(null);
-  const [notifications, setNotifications] = useState<IUnclaimedBounty[]>([]);
-  const [loading, setLoading] = useState(true);
+  const notifications = useRecoilValue(UnclaimedBountiesAtom);
+  const loading = !notifications;;
   const [claiming, setClaiming] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   const { getUnclaimedBounties, claimBounty } = useNotificationActions();
 
   const fetchNotifications = async () => {
-    try {
-      setLoading(true);
-      const data = await getUnclaimedBounties();
-      setNotifications(data ?? []);
-    } catch (error) {
-      console.error('Failed to fetch notifications:', error);
-    } finally {
-      setLoading(false);
-    }
+    getUnclaimedBounties();
   };
 
   useEffect(() => {
@@ -48,7 +42,7 @@ const Notifications = ({ onClose }: NotificationsProps) => {
     try {
       const result = await claimBounty(bountyId);
       if (result.success) {
-        setNotifications((prev) => prev.filter((n) => n.id !== bountyId));
+        fetchNotifications();
         setSelectedNotification(null);
       }
     } finally {
@@ -67,7 +61,7 @@ const Notifications = ({ onClose }: NotificationsProps) => {
       }}
     >
       {/* Desktop View - Claim Button */}
-      {!isMobile && selectedNotification !== null && notifications[selectedNotification] && (
+      {!isMobile && selectedNotification !== null && notifications?.[selectedNotification] && (
         <div className="fixed top-[100px] right-[450px] z-50">
           <ClaimButton
             notification={notifications[selectedNotification]}

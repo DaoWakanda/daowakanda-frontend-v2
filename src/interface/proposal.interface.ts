@@ -50,13 +50,14 @@ export interface IProposalCardApi {
   onDelete: (id: string) => void; // appId is string
 }
 
-
+export type ProposalStatus = 'IN_PROGRESS' | 'APPROVED' | 'DENIED';
 
 export interface FetchProposalsDto {
   page?: number;
   numOfItemsPerPage?: number;
   order?: 'asc' | 'desc';
   searchTerm?: string;
+  status?: ProposalStatus;
 }
 
 export type IProposalRes = PaginationResponse<IProposalCard>;

@@ -28,7 +28,7 @@ export const DevChallengesDetailPage = () => {
   const { fetchLeaderboard } = useDeveloperActions();
   const [leaderboardItems, setLeaderboardItems] = useState<LeaderBoardItem[]>();
 
-  const { getTriviaById, submitTriviaAnswer } = useDeveloperActions();
+  const { getTriviaById, submitTriviaAnswer, getTriviaLeaderboard } = useDeveloperActions();
   const { activeAddress } = useWallet();
   const { notify } = useNotify();
   const params = useParams();
@@ -72,9 +72,8 @@ export const DevChallengesDetailPage = () => {
     toast.loading('Submitting your response...', { id: 'loader' });
 
     const res = await submitTriviaAnswer({
-      triviaId: params?.title as string,
+      triviaId: params?.id as string,
       githubRepoLink: githubLink,
-      userId: developerProfile.id,
     });
 
     toast.dismiss('loader');
@@ -88,7 +87,7 @@ export const DevChallengesDetailPage = () => {
   };
 
   const getLeaderboard = async () => {
-    const res = await fetchLeaderboard();
+    const res = await getTriviaLeaderboard(params?.id as string);
 
     if (res) {
       setLeaderboardItems(res);
@@ -96,8 +95,10 @@ export const DevChallengesDetailPage = () => {
   };
 
   useEffect(() => {
-    getLeaderboard();
-  }, []);
+    if (authDeveloper) {
+      getLeaderboard();
+    }
+  }, [authDeveloper]);
 
   useEffect(() => {
     fetchTrivia();
@@ -150,7 +151,6 @@ export const DevChallengesDetailPage = () => {
           ) : authDeveloper && !developerProfile ? (
             <AccessDeniedPage isConnected={true} />
           ) : (
-            // <PageMaxWidth></PageMaxWidth>
             <div className="bg-gray-900 rounded-2xl overflow-hidden">
               <div className="p-6 md:p-10">
                 <h1 className="text-3xl font-bold mb-4">{trivia?.title}</h1>
@@ -184,7 +184,7 @@ export const DevChallengesDetailPage = () => {
                   <div
                     className={`${getLevelColor(
                       trivia?.difficulty || '',
-                    )} text-black px-2 py-0.5 rounded text-xs`}
+                    )} text-black px-2 py-0.5 rounded text-xs capitalize`}
                   >
                     {trivia?.difficulty || (
                       <Skeleton baseColor="#202020" highlightColor="#444" width={50} />

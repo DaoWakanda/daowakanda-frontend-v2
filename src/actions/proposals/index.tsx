@@ -13,7 +13,7 @@ export const useProposalActions = () => {
     dto: FetchProposalsDto,
   ): Promise<PaginationResponse<ProposalApi> | null> => {
     const query = generateQueryFromObject(dto);
-    const url = `proposal/all?query=${query}`;
+    const url = `proposal/all?${query}`;
     const response = await client.get<PaginationResponse<ProposalApi>>(url);
 
     if (response.data) {

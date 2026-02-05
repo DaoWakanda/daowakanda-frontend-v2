@@ -220,7 +220,7 @@ const ProposalDetails = ({ proposalId }: ProposalDetailsProps) => {
                     {loading ? (
                       <Skeleton width={150} />
                     ) : (
-                      `${new Date(proposal.endDate).toDateString()}`
+                      `${(proposal?.endDate || 0) > now ? new Date(Date.now()).toDateString() : ''}`
                     )}
                   </p>
                 </div>

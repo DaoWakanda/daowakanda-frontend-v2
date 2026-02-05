@@ -79,55 +79,22 @@ export const useDeveloperActions = () => {
     }
   };
 
-  // const uploadImage = async (base64: string, userId: string) => {
-  //   try {
-  //     const url = `user/${userId}/upload-image`;
-  //     const response = await fetchWrapper.post(url, { base64 });
+  const getTriviaLeaderboard = async (triviaId: string) => {
+    const url = `v2/challenges/${triviaId}/leaderboard`;
+    const response = await client.get<LeaderBoardItem[]>(url);
 
-  //     if (response.data) {
-  //       return response.data;
-  //     }
+    if (response.data) {
+      return response.data;
+    }
 
-  //     notify.error(response.error?.toString() || 'Something went wrong');
-  //   } catch (error) {
-  //     notify.error(error?.toString() || 'Something went wrong');
-  //   }
-  // };
-
-  // const getUnclaimedRewards = async (address: string) => {
-  //   try {
-  //     const url = `user-trivia/unclaimed-bounty/${address}`;
-  //     const response = await fetchWrapper.get(url);
-
-  //     if (response.data) {
-  //       return response.data as ITriviaBounty[];
-  //     }
-
-  //     notify.error(response.error?.toString() || 'Something went wrong');
-  //   } catch (error) {
-  //     notify.error(error?.toString() || 'Something went wrong');
-  //   }
-  // };
-
-  // const claimReward = async (id: string) => {
-  //   try {
-  //     const url = `user-trivia/${id}/claim`;
-  //     const response = await fetchWrapper.patch(url);
-
-  //     if (response.data) {
-  //       return response.data;
-  //     }
-
-  //     notify.error(response.error?.toString() || 'Something went wrong');
-  //   } catch (error) {
-  //     notify.error(error?.toString() || 'Something went wrong');
-  //   }
-  // };
+    notify.error(response.error?.toString() || 'Something went wrong');
+  }
 
   return {
     getAllTrivia,
     getTriviaById,
     submitTriviaAnswer,
     fetchLeaderboard,
+    getTriviaLeaderboard,
   };
 };
