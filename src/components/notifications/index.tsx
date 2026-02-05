@@ -6,6 +6,8 @@ import { useMediaQuery } from 'react-responsive';
 import { useNotificationActions } from '@/actions/notifications';
 import { IUnclaimedBounty } from '@/interface/notifications.interface';
 import { NotificationSkeleton } from './notification-skeleton';
+import { useRecoilValue } from 'recoil';
+import { UnclaimedBountiesAtom } from '@/state/trivia.atom';
 
 interface NotificationsProps {
   onClose: () => void;
@@ -13,28 +15,19 @@ interface NotificationsProps {
 
 const Notifications = ({ onClose }: NotificationsProps) => {
   const [selectedNotification, setSelectedNotification] = useState<number | null>(null);
-  const [notifications, setNotifications] = useState<IUnclaimedBounty[]>([]);
-  const [loading, setLoading] = useState(true);
+  const notifications = useRecoilValue(UnclaimedBountiesAtom);
+  const loading = !notifications;;
   const [claiming, setClaiming] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   const { getUnclaimedBounties, claimBounty } = useNotificationActions();
 
+  const fetchNotifications = async () => {
+    getUnclaimedBounties();
+  };
+
   useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        setLoading(true);
-        const data = await getUnclaimedBounties();
-        setNotifications(data ?? []);
-      } catch (error) {
-        console.error('Failed to fetch notifications:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchNotifications();
   }, []);
-
-  console.log('notified');
 
   const handleNotificationClick = (index: number) => {
     if (isMobile) {
@@ -49,7 +42,7 @@ const Notifications = ({ onClose }: NotificationsProps) => {
     try {
       const result = await claimBounty(bountyId);
       if (result.success) {
-        setNotifications((prev) => prev.filter((n) => n.id !== bountyId));
+        fetchNotifications();
         setSelectedNotification(null);
       }
     } finally {
@@ -68,13 +61,12 @@ const Notifications = ({ onClose }: NotificationsProps) => {
       }}
     >
       {/* Desktop View - Claim Button */}
-      {!isMobile && selectedNotification !== null && notifications[selectedNotification] && (
+      {!isMobile && selectedNotification !== null && notifications?.[selectedNotification] && (
         <div className="fixed top-[100px] right-[450px] z-50">
           <ClaimButton
             notification={notifications[selectedNotification]}
             onClose={() => setSelectedNotification(null)}
-            // onClick={() => handleClaimReward(notifications[selectedNotification].id)}
-            // claiming={claiming}
+            refresh={fetchNotifications}
           />
         </div>
       )}
@@ -116,16 +108,14 @@ const Notifications = ({ onClose }: NotificationsProps) => {
                   <div className="p-4 cursor-pointer">
                     <div className="flex justify-between items-start">
                       <h3 className="text-[#c5ee4f] font-bold">{notification.title}</h3>
-                      <span className="bg-[#c5ee4f] text-[#00484F] px-2 py-1 rounded text-xs font-bold">
+                      {/* <span className="bg-[#c5ee4f] text-[#00484F] px-2 py-1 rounded text-xs font-bold">
                         {notification?.disbursementStatus} {notification?.bounty}
-                      </span>
+                      </span> */}
                     </div>
-                    <p className="text-white text-sm mt-2 line-clamp-2">{notification.title}</p>
-                    {/* {notification.expiresAt && (
-                      <p className="text-xs text-gray-400 mt-2">
-                        Expires: {new Date(notification.expiresAt).toLocaleDateString()}
-                      </p>
-                    )} */}
+                    <p className="text-white text-sm mt-2 line-clamp-2" title={notification.message}>
+                      Congratulations, you have been selected as part of the winners of {notification.title} task. You
+                      are entitled to claim {notification.bounty} Algo's as your reward.
+                    </p>
                   </div>
 
                   {isMobile && selectedNotification === index && (

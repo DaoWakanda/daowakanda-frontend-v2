@@ -27,6 +27,8 @@ import { ProfileAtom } from '@/state/profile.atom';
 
 import Modal from '@/features/profile-page/reusable-modal';
 import EditProfile from '@/features/profile-page/profile-edit';
+import { UnclaimedBountiesAtom } from '@/state/trivia.atom';
+import { useNotificationActions } from '@/actions/notifications';
 
 
 export function Navbar() {
@@ -42,6 +44,8 @@ export function Navbar() {
   const auth = useRecoilValue(authAtom);
   const { notify } = useNotify();
   const { activeAddress } = useWallet();
+  const { getUnclaimedBounties } = useNotificationActions();
+  const unclaimedBounties = useRecoilValue(UnclaimedBountiesAtom);
 
   const pathname = usePathname();
 
@@ -83,6 +87,7 @@ export function Navbar() {
 
     if (!!activeAddress && !!auth) {
       getProfile();
+      getUnclaimedBounties();
     }
   }, [activeAddress, auth]);
 
@@ -204,6 +209,11 @@ export function Navbar() {
                       className="relative border border-[#c5ee4f] w-[30px] lg:w-[40px] h-[30px] lg:h-[40px] rounded-full cursor-pointer flex items-center justify-center"
                       onClick={toggleNotifications}
                     >
+                      {unclaimedBounties && unclaimedBounties.length > 0 && (
+                        <span className="absolute top-0 right-0 w-4 h-4 flex items-center justify-center bg-red-500 rounded-full text-white text-xs font-semibold">
+                          {unclaimedBounties.length}
+                        </span>
+                      )}
                       <CiBellOn className="w-6 h-6 text-[#c5ee4f]" />
                     </div>
                   </div>

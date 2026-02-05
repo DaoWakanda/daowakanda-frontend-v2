@@ -1,17 +1,21 @@
 import { useClient } from '@/hooks/use-client';
 import { useNotify } from '@/hooks/useNotify';
-import { IUnclaimedBounty, IClaimResponse } from '@/interface/notifications.interface';
+import { IUnclaimedBounty } from '@/interface/notifications.interface';
+import { UnclaimedBountiesAtom } from '@/state/trivia.atom';
+import { useSetRecoilState } from 'recoil';
 
 export const useNotificationActions = () => {
   const client = useClient();
   const { notify } = useNotify();
+  const setUnclaimedBounties = useSetRecoilState(UnclaimedBountiesAtom);
 
   const getUnclaimedBounties = async () => {
     const response = await client.get<IUnclaimedBounty[]>('v2/challenges/unclaimed-bounty');
     if (response.data) {
+      setUnclaimedBounties(response.data);
       return response.data;
     }
-    notify.error(response.error?.toString() || 'Failed to fetch notifications');
+    // notify.error(response.error?.toString() || 'Failed to fetch notifications');
   };
 
   const claimBounty = async (submissionId: string) => {

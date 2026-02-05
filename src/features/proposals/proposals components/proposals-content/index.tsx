@@ -20,10 +20,11 @@ import FailureProposalModal from '../failure-modal-proposal';
 import { PageMaxWidth } from '@/components/page-max-width';
 import { Pagination } from '@/components/pagination';
 import { useProposalActions } from '@/actions/proposals';
-import type { ProposalApi } from '@/interface/proposal.interface';
+import type { ProposalApi, ProposalStatus } from '@/interface/proposal.interface';
 import type { Pagination as PaginationType } from '@/interface/pagination.interface';
 import { filterProposals, type ProposalTab } from '../../utils/proposal-filters';
 import { CreateProposalModal } from '../create-proposal';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface ProposalsState {
   proposals: ProposalApi[];
@@ -31,15 +32,15 @@ interface ProposalsState {
   loading: boolean;
 }
 
-const tabLabels: Record<ProposalTab, string> = {
+const tabLabels = {
   all: 'All',
-  'in-progress': 'In progress',
-  approved: 'Approved',
+  IN_PROGRESS: 'In progress',
+  APPROVED: 'Approved',
+  DENIED: 'Denied',
   denied: 'Denied',
 };
 
 const ProposalsContent: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ProposalTab>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [proposalsState, setProposalsState] = useState<ProposalsState>({
@@ -47,6 +48,9 @@ const ProposalsContent: React.FC = () => {
     pagination: null,
     loading: false,
   });
+  const searchParams = useSearchParams();
+  const status = searchParams.get('status');
+  const router = useRouter();
 
   // Modal states
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -58,12 +62,19 @@ const ProposalsContent: React.FC = () => {
   const isMobile = useMobile();
   const { getAllProposals } = useProposalActions();
 
+  const onTabChange = (value: string) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('status', value);
+    setCurrentPage(1);
+    router.push(`${url.toString()}`);
+  }
+
   // Fetch proposals from API
   const fetchProposals = useCallback(async (page: number) => {
     setProposalsState(prev => ({ ...prev, loading: true }));
 
     try {
-      const response = await getAllProposals({ page });
+      const response = await getAllProposals({ page, status: status === 'all' ? undefined : status as ProposalStatus, order: 'desc' });
 
       if (response) {
         setProposalsState({
@@ -79,17 +90,12 @@ const ProposalsContent: React.FC = () => {
       console.error('Failed to fetch proposals:', error);
       setProposalsState(prev => ({ ...prev, loading: false }));
     }
-  }, []);
+  }, [status]);
 
   // Fetch proposals whenever currentPage changes
   useEffect(() => {
-    void fetchProposals(currentPage);
-  }, [currentPage, fetchProposals]);
-
-  // Filter proposals based on tab and search query
-  const filteredProposals = useMemo(() => (
-    filterProposals(proposalsState.proposals, activeTab, searchQuery)
-  ), [proposalsState.proposals, activeTab, searchQuery]);
+    fetchProposals(currentPage);
+  }, [currentPage, status]);
 
   // Handlers
   const handlePageChange = useCallback((page: number) => {
@@ -116,8 +122,6 @@ const ProposalsContent: React.FC = () => {
     setShowSuccessModal(false);
   }, []);
 
-  const getTabLabel = useCallback((tab: ProposalTab): string => tabLabels[tab], []);
-
   return (
     <div className="container mx-auto px-4 py-8 min-h-screen bg-black font-roboto">
       <PageMaxWidth>
@@ -126,9 +130,10 @@ const ProposalsContent: React.FC = () => {
           {!isMobile && (
             <div className="hidden md:flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 h-full">
               <Tabs
-                defaultValue="all"
+                defaultValue={status || 'all'}
                 className="w-full md:w-[30%]"
-                onValueChange={(value) => setActiveTab(value as ProposalTab)}
+                onValueChange={onTabChange}
+                value={status || 'all'}
               >
                 <TabsList className="bg-transparent w-full flex justify-evenly">
                   <TabsTrigger
@@ -138,19 +143,19 @@ const ProposalsContent: React.FC = () => {
                     All
                   </TabsTrigger>
                   <TabsTrigger
-                    value="in-progress"
+                    value="IN_PROGRESS"
                     className="text-[#46464A] rounded-none data-[state=active]:!text-[#C5EE4F] data-[state=active]:border-b-2 data-[state=active]:border-lime-500 data-[state=active]:bg-transparent transition-colors duration-200"
                   >
                     In progress
                   </TabsTrigger>
                   <TabsTrigger
-                    value="approved"
+                    value="APPROVED"
                     className="text-[#46464A] rounded-none data-[state=active]:!text-[#C5EE4F] data-[state=active]:border-b-2 data-[state=active]:border-lime-500 data-[state=active]:bg-transparent transition-colors duration-200"
                   >
                     Approved
                   </TabsTrigger>
                   <TabsTrigger
-                    value="denied"
+                    value="DENIED"
                     className="text-[#46464A] rounded-none data-[state=active]:!text-[#C5EE4F] data-[state=active]:border-b-2 data-[state=active]:border-lime-500 data-[state=active]:bg-transparent transition-colors duration-200"
                   >
                     Denied
@@ -189,19 +194,19 @@ const ProposalsContent: React.FC = () => {
                     className="!bg-[#1B1B1F] text-[#46464A] border-gray-700 rounded-full px-2 py-2 h-auto flex justify-between items-center text-[10px]"
                     type="button"
                   >
-                    <span>{getTabLabel(activeTab)}</span>
+                    <span>{tabLabels[status as ProposalStatus]}</span>
                     <ChevronDown className="h-5 w-5 text-[#46464A]" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-[#1B1B1F] border-gray-700 text-[#46464A] text-xs">
-                  <DropdownMenuItem onClick={() => setActiveTab('all')}>All</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setActiveTab('in-progress')}>
+                  <DropdownMenuItem onClick={() => onTabChange('all')}>All</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onTabChange('IN_PROGRESS')}>
                     In progress
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setActiveTab('approved')}>
+                  <DropdownMenuItem onClick={() => onTabChange('APPROVED')}>
                     Approved
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setActiveTab('denied')}>Denied</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onTabChange('DENIED')}>Denied</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
               <div className="relative flex-1">
@@ -229,8 +234,8 @@ const ProposalsContent: React.FC = () => {
         <div className="flex relative gap-3 flex-col md:flex-row">
           <div className="flex-1">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 rounded-[32px] bg-[#19191BCC]">
-              {filteredProposals.length > 0 ? (
-                filteredProposals.map((proposal) => (
+              {proposalsState.proposals.length > 0 ? (
+                proposalsState.proposals.map((proposal) => (
                   <ProposalCard
                     key={proposal.appId}
                     proposal={proposal}

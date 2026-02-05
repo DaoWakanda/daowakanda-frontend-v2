@@ -67,7 +67,6 @@ export interface ITriviaBounty {
 }
 
 export interface SubmitTriviaAnswer {
-  userId: string;
   triviaId: string;
   githubRepoLink: string;
 }
