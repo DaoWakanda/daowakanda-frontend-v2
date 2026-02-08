@@ -3,5 +3,7 @@ interface PageMaxWidthProps {
 }
 
 export function PageMaxWidth({ children }: PageMaxWidthProps) {
-  return <div className="w-full max-w-7xl mx-auto px-4 lg:px-10">{children}</div>;
+  return (
+    <div className="w-full max-w-7xl mx-auto px-4 lg:px-10 flex flex-col relative">{children}</div>
+  );
 }

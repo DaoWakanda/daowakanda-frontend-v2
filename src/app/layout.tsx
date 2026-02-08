@@ -18,18 +18,6 @@ const geistMono = localFont({
   variable: '--font-geist-mono',
   weight: '100 900',
 });
-const avenir = localFont({
-  src: './fonts/avenir-font/AvenirLTStd-Medium.otf',
-  variable: '--font-avenir',
-  weight: '100 900',
-});
-const avenirLtsd = localFont({
-  src: './fonts/avenir-font/AvenirLTStd-Light.otf',
-  variable: '--font-avenirLtsd',
-  weight: '100 900',
-});
-
-
 export const metadata: Metadata = {
   title: 'Wakanda DAO',
   description:
@@ -109,16 +97,19 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&display=swap"
         />
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+          rel="stylesheet"
+        />
 
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
         />
-
+        <link rel="stylesheet" href="https://use.typekit.net/rmk6gqd.css"></link>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${avenir.variable} ${avenirLtsd.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster />
         <RecoilContextProvider>
