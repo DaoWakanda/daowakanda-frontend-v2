@@ -2,10 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://use.typekit.net/rmk6gqd.css');
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --greenColor:rgba(197, 238, 79, 1);
+  --greenColor: rgba(197, 238, 79, 1);
+  --font-degular: 'degular', sans-serif;
+  --font-degular-display: 'degular-display', sans-serif;
+  --font-avenir: 'Avenir', sans-serif;
+  --font-avenirLtsd: 'Avenir', sans-serif;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -27,12 +33,90 @@ body {
   }
 }
 
+/* Avenir LT Std – all weights and styles */
 @font-face {
   font-family: 'Avenir';
-  src: local('Avenir') url('./fonts/avenir-font/AvenirLTStd-Black.otf') format('otf');
-  font-weight: 300 900;
+  src: local('Avenir LT Std Light'), url('./fonts/avenir-font/AvenirLTStd-Light.otf') format('opentype');
+  font-weight: 300;
   font-display: swap;
   font-style: normal;
+}
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir LT Std Light Oblique'), url('./fonts/avenir-font/AvenirLTStd-LightOblique.otf') format('opentype');
+  font-weight: 300;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir LT Std Book'), url('./fonts/avenir-font/AvenirLTStd-Book.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir LT Std Book Oblique'), url('./fonts/avenir-font/AvenirLTStd-BookOblique.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir LT Std Roman'), url('./fonts/avenir-font/AvenirLTStd-Roman.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir LT Std Oblique'), url('./fonts/avenir-font/AvenirLTStd-Oblique.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir LT Std Medium'), url('./fonts/avenir-font/AvenirLTStd-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir LT Std Medium Oblique'), url('./fonts/avenir-font/AvenirLTStd-MediumOblique.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir LT Std Heavy'), url('./fonts/avenir-font/AvenirLTStd-Heavy.otf') format('opentype');
+  font-weight: 800;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir LT Std Heavy Oblique'), url('./fonts/avenir-font/AvenirLTStd-HeavyOblique.otf') format('opentype');
+  font-weight: 800;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir LT Std Black'), url('./fonts/avenir-font/AvenirLTStd-Black.otf') format('opentype');
+  font-weight: 900;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir LT Std Black Oblique'), url('./fonts/avenir-font/AvenirLTStd-BlackOblique.otf') format('opentype');
+  font-weight: 900;
+  font-display: swap;
+  font-style: italic;
 }
 
 .ql-toolbar.ql-snow {
@@ -71,7 +155,7 @@ body {
   line-height: 20px !important;
 }
 
-img{
+img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -88,11 +172,8 @@ img{
   justify-content: center;
   padding: 70px 16px;
   margin-top: 25px;
-  background-image: linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0.6),
-      rgba(0, 0, 0, 0.6)
-    ),
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
     url('https://res.cloudinary.com/dvujkjs1q/image/upload/v1752781161/Full_Premier_League_table.jpg_1_rvn1sa.png');
   background-repeat: no-repeat;
   background-size: cover;

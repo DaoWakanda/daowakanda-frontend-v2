@@ -1,4 +1,5 @@
 import { Footer } from '../footer';
+import { FooterV2 } from '../footer/v2';
 import { Navbar } from '../navbar';
 
 interface PageLayoutProps {
@@ -7,10 +8,10 @@ interface PageLayoutProps {
 
 export function PageLayout({ children }: PageLayoutProps) {
   return (
-    <div className="flex flex-col min-h-screen bg-black shadow-md">
-      <Navbar />
+    <div className="flex flex-col min-h-screen">
+      {/* <Navbar /> */}
       {children}
-      <Footer />
+      <FooterV2 />
     </div>
   );
 }
