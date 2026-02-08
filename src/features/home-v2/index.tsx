@@ -1,5 +1,6 @@
 import { HeroSection } from './components/hero-section';
 import { HowItWorks } from './components/how-it-works';
+import { Join } from './components/join';
 import { WhatWeDo } from './components/what-we-do';
 
 export const HomeV2 = () => {
@@ -8,6 +9,7 @@ export const HomeV2 = () => {
       <HeroSection />
       <WhatWeDo />
       <HowItWorks />
+      <Join />
     </div>
   );
 };
