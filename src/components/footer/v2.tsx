@@ -46,7 +46,11 @@ export const FooterV2 = () => {
         </div>
       </PageMaxWidth>
 
-      <LargeDaowakandaTextIcon className="absolute bottom-[0px] self-center" />
+      <PageMaxWidth className="flex-1 justify-end">
+        <div>
+          <LargeDaowakandaTextIcon className="w-full" />
+        </div>
+      </PageMaxWidth>
     </footer>
   );
 };
