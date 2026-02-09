@@ -4,24 +4,23 @@ import { Icons } from './icons';
 
 export const WhatWeDo = () => {
   return (
-    <div className="bg-[#fafafa] min-h-svh py-16 flex flex-col justify-center">
+    <div className="bg-[#fafafa] min-h-svh py-8 flex flex-col justify-center lg:py-16">
       <PageMaxWidth>
         <div
           className={classNames(
-            'flex flex-col pt-[200px] pb-6 px-6 bg-[#E2F0F1] rounded-[32px]',
-            'gap-12',
+            'flex flex-col bg-[#E2F0F1] rounded-2xl gap-8 px-4 pb-6 pt-12 lg:rounded-[32px] lg:pt-[200px] lg:px-6 lg:gap-12',
           )}
         >
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <Icons.WhatWeDo />
+          <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex justify-center">
+              <Icons.WhatWeDo className="w-full max-w-[345px] lg:max-w-[542px]" />
             </div>
-            <div>
-              <Icons.WhatWeDoText />
+            <div className="flex justify-center">
+              <Icons.WhatWeDoText className="w-full max-w-[345px] lg:max-w-[542px]" />
             </div>
           </div>
 
-          <div className="flex gap-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
             {whatWeDo.map((item) => (
               <WhatWeDoItem key={item.title} {...item} />
             ))}
@@ -42,13 +41,21 @@ const WhatWeDoItem = ({ title, description, image }: WhatWeDoItemProps) => {
   return (
     <div
       className={classNames(
-        'flex flex-col gap-5 justify-between p-5 bg-white rounded-[8px] flex-1',
+        'flex flex-col gap-4 justify-between p-4 bg-white rounded-[8px] flex-1 lg:gap-5 lg:p-5',
       )}
     >
       <div className="flex flex-col gap-1">
-        <h4 className={classNames('text-black font-semibold text-[36px] font-degular')}>{title}</h4>
+        <h4
+          className={classNames(
+            'text-black font-semibold font-degular text-[24px] leading-tight lg:text-[36px]',
+          )}
+        >
+          {title}
+        </h4>
         <p
-          className={classNames('text-[#8E8E93] font-[350] text-[16px] leading-[28px] font-avenir')}
+          className={classNames(
+            'text-[#8E8E93] font-[350] font-avenir text-[14px] leading-[22px] lg:text-[16px] lg:leading-[28px]',
+          )}
         >
           {description}
         </p>
