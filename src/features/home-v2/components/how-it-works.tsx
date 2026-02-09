@@ -1,11 +1,50 @@
+'use client';
+
 import { PageMaxWidth } from '@/components/page-max-width';
 import classNames from 'classnames';
+import { motion } from 'framer-motion';
+import { springTransition, viewportOnce } from '../motion';
+
+const titleVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: springTransition,
+  },
+};
+
+const stepCardVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: springTransition,
+  },
+};
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.08 },
+  },
+};
 
 export const HowItWorks = () => {
   return (
-    <div className="bg-[#fafafa] flex flex-col pt-12 gap-10 lg:pt-[96px] lg:gap-20">
+    <motion.div
+      className="bg-[#fafafa] flex flex-col pt-12 gap-10 lg:pt-[96px] lg:gap-20"
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce}
+      variants={containerVariants}
+    >
       <PageMaxWidth>
-        <div className="flex flex-col items-center text-center">
+        <motion.div
+          className="flex flex-col items-center text-center"
+          variants={titleVariants}
+        >
           <h4
             className={classNames(
               'text-black font-semibold font-degularDisplay text-[14px] lg:text-[18px]',
@@ -29,14 +68,17 @@ export const HowItWorks = () => {
               How Projects Move Through Daowakanda
             </h4>
           </div>
-        </div>
+        </motion.div>
       </PageMaxWidth>
-      <div className="flex flex-col lg:flex-row">
+      <motion.div
+        className="flex flex-col lg:flex-row"
+        variants={containerVariants}
+      >
         {howItWorks.map((item) => (
           <HowItWorksItem key={item.index} {...item} />
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
@@ -58,11 +100,12 @@ const HowItWorksItem = ({
   bgColor,
 }: HowItWorksItemProps) => {
   return (
-    <div
+    <motion.div
       className={classNames(
         'flex flex-col flex-1 min-h-[320px] px-5 pt-6 lg:min-h-[495px] lg:px-[50px] lg:pt-[50px]',
       )}
       style={{ backgroundColor: bgColor }}
+      variants={stepCardVariants}
     >
       <p
         className={classNames(
@@ -93,7 +136,7 @@ const HowItWorksItem = ({
       <div className="flex flex-col flex-1 items-center justify-end relative min-h-[180px] lg:h-[299px]">
         {image}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

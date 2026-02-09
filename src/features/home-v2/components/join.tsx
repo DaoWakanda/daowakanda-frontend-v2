@@ -1,13 +1,54 @@
+'use client';
+
 import { PageMaxWidth } from '@/components/page-max-width';
+import { motion } from 'framer-motion';
 import { Icons } from './icons';
+import { springTransition, viewportOnce } from '../motion';
+
+const blockVariants = {
+  hidden: { opacity: 0, y: 36 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: springTransition,
+  },
+};
+
+const imageVariants = {
+  hidden: { opacity: 0, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { ...springTransition, delay: 0.06 },
+  },
+};
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.15, delayChildren: 0.05 },
+  },
+};
 
 export const Join = () => {
   return (
-    <div className="flex flex-col bg-[#1F1F1F] py-12 lg:py-[200px]">
+    <motion.div
+      className="flex flex-col bg-[#1F1F1F] py-12 lg:py-[200px]"
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce}
+      variants={containerVariants}
+    >
       <PageMaxWidth>
         <div className="flex flex-col gap-16 lg:gap-[100px]">
-          <div className="flex flex-col gap-8 items-center lg:flex-row lg:gap-[64px]">
-            <div className="flex flex-col gap-4 w-full lg:max-w-[470px] lg:flex-1 lg:gap-6">
+          <motion.div
+            className="flex flex-col gap-8 items-center lg:flex-row lg:gap-[64px]"
+            variants={containerVariants}
+          >
+            <motion.div
+              className="flex flex-col gap-4 w-full lg:max-w-[470px] lg:flex-1 lg:gap-6"
+              variants={blockVariants}
+            >
               <div className="flex flex-col gap-4 lg:gap-5">
                 <h2 className="text-white font-medium font-degularDisplay text-[28px] leading-tight lg:text-[46px]">
                   Join as a Community Member
@@ -52,24 +93,36 @@ export const Join = () => {
                   <Icons.ArrowRight />
                 </div>
               </button>
-            </div>
+            </motion.div>
 
-            <div className="flex w-full lg:flex-1 rounded-xl overflow-hidden lg:rounded-[20px] order-first lg:order-none">
+            <motion.div
+              className="flex w-full lg:flex-1 rounded-xl overflow-hidden lg:rounded-[20px] order-first lg:order-none"
+              variants={imageVariants}
+            >
               <img
                 src="https://res.cloudinary.com/dlinprg6k/image/upload/v1770559178/daowakanda/7249c972edee0bce1e35066fc2a472527e850194_f0in3c.jpg"
                 className="w-full h-[auto] object-cover rounded-xl lg:rounded-[20px]"
               />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div className="flex flex-col gap-8 items-center lg:flex-row lg:gap-[64px]">
-            <div className="flex w-full lg:flex-1 rounded-xl overflow-hidden lg:rounded-[20px] order-first lg:order-none">
+          <motion.div
+            className="flex flex-col gap-8 items-center lg:flex-row lg:gap-[64px]"
+            variants={containerVariants}
+          >
+            <motion.div
+              className="flex w-full lg:flex-1 rounded-xl overflow-hidden lg:rounded-[20px] order-first lg:order-none"
+              variants={imageVariants}
+            >
               <img
                 src="https://res.cloudinary.com/dlinprg6k/image/upload/v1770559180/daowakanda/088e5f7cacd960fbb726ad765983516b9b8df349_kplpu9.jpg"
                 className="w-full h-[auto] object-contain rounded-xl lg:rounded-[20px]"
               />
-            </div>
-            <div className="flex flex-col gap-4 w-full lg:max-w-[470px] lg:flex-1 lg:gap-6">
+            </motion.div>
+            <motion.div
+              className="flex flex-col gap-4 w-full lg:max-w-[470px] lg:flex-1 lg:gap-6"
+              variants={blockVariants}
+            >
               <div className="flex flex-col gap-4 lg:gap-5">
                 <h2 className="text-white font-medium font-degularDisplay text-[28px] leading-tight lg:text-[46px]">
                   Apply as a Founder
@@ -114,10 +167,10 @@ export const Join = () => {
                   <Icons.ArrowRight />
                 </div>
               </button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </PageMaxWidth>
-    </div>
+    </motion.div>
   );
 };

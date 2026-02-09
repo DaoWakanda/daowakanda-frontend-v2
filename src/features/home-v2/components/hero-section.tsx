@@ -1,21 +1,47 @@
+'use client';
+
 import { PageMaxWidth } from '@/components/page-max-width';
 import classNames from 'classnames';
+import { motion } from 'framer-motion';
 import { Icons } from './icons';
+import { springTransition } from '../motion';
+
+const fadeUpSpring = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: springTransition,
+  },
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.08, delayChildren: 0.06 },
+  },
+};
 
 export const HeroSection = () => {
   return (
-    <div
+    <motion.div
       className={classNames(
         'flex flex-col min-h-svh bg-[#FAFAFA] justify-end relative',
         'pb-8 pt-16 lg:pb-[75px] lg:pt-[125px]',
       )}
+      initial="hidden"
+      animate="visible"
+      variants={staggerContainer}
     >
       <Icons.HeroSectionBlur className="absolute top-0 left-0" />
       <Icons.HeroSectionBlur2 className="absolute top-0 left-0" />
       <PageMaxWidth>
-        <div className="flex flex-col gap-10 items-center lg:gap-[184px]">
+        <motion.div
+          className="flex flex-col gap-10 items-center lg:gap-[184px]"
+          variants={staggerContainer}
+        >
           <div className="flex flex-col gap-6 text-center w-full max-w-[683px] mx-auto lg:gap-10">
-            <div className="flex flex-col gap-2">
+            <motion.div className="flex flex-col gap-2" variants={fadeUpSpring}>
               <h2
                 className={classNames(
                   'text-[#00484F] font-bold font-degular',
@@ -33,9 +59,12 @@ export const HeroSection = () => {
                 Daowakanda is a DAO studio focused on execution not speculation. We support serious
                 builders with governance, structure, capital alignment, and long-term scale.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="flex flex-col gap-3 justify-center px-4 sm:flex-row sm:gap-5 sm:px-9">
+            <motion.div
+              className="flex flex-col gap-3 justify-center px-4 sm:flex-row sm:gap-5 sm:px-9"
+              variants={fadeUpSpring}
+            >
               <button
                 className={classNames(
                   'bg-[#FCD701] text-black font-semibold font-degular rounded-[1000px] relative hover:bg-[#FCD701]/80',
@@ -60,10 +89,13 @@ export const HeroSection = () => {
               >
                 <span>Apply as a Founder</span>
               </button>
-            </div>
+            </motion.div>
           </div>
 
-          <div className="flex flex-col w-full border border-[#8E8E93] lg:flex-row">
+          <motion.div
+            className="flex flex-col w-full border border-[#8E8E93] lg:flex-row"
+            variants={fadeUpSpring}
+          >
             <div className="flex py-5 px-4 flex-1 border-b border-[#8E8E93] lg:border-b-0 lg:border-r lg:py-[30px] lg:px-5">
               <p
                 className={classNames(
@@ -112,9 +144,9 @@ export const HeroSection = () => {
                 </p>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </PageMaxWidth>
-    </div>
+    </motion.div>
   );
 };
