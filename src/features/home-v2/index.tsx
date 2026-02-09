@@ -1,3 +1,5 @@
+import { FAQ } from '@/components/faq';
+import { Blog } from './components/blog';
 import { HeroSection } from './components/hero-section';
 import { HowItWorks } from './components/how-it-works';
 import { Join } from './components/join';
@@ -10,6 +12,8 @@ export const HomeV2 = () => {
       <WhatWeDo />
       <HowItWorks />
       <Join />
+      <Blog />
+      <FAQ />
     </div>
   );
 };

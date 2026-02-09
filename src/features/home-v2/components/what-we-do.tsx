@@ -1,34 +1,87 @@
+'use client';
+
 import { PageMaxWidth } from '@/components/page-max-width';
 import classNames from 'classnames';
+import { motion } from 'framer-motion';
 import { Icons } from './icons';
+import { springTransition, viewportOnce } from '../motion';
+
+const slideUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: springTransition,
+  },
+};
+
+const slideInLeft = {
+  hidden: { opacity: 0, x: -24 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: springTransition,
+  },
+};
+
+const slideInRight = {
+  hidden: { opacity: 0, x: 24 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: springTransition,
+  },
+};
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.1, delayChildren: 0.05 },
+  },
+};
 
 export const WhatWeDo = () => {
   return (
-    <div className="bg-[#fafafa] min-h-svh py-16 flex flex-col justify-center">
+    <motion.div
+      className="bg-[#fafafa] min-h-svh py-8 flex flex-col justify-center lg:py-16"
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce}
+      variants={containerVariants}
+    >
       <PageMaxWidth>
-        <div
+        <motion.div
           className={classNames(
-            'flex flex-col pt-[200px] pb-6 px-6 bg-[#E2F0F1] rounded-[32px]',
-            'gap-12',
+            'flex flex-col bg-[#E2F0F1] rounded-2xl gap-8 px-4 pb-6 pt-12 lg:rounded-[32px] lg:pt-[200px] lg:px-6 lg:gap-12',
           )}
+          variants={slideUp}
         >
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <Icons.WhatWeDo />
-            </div>
-            <div>
-              <Icons.WhatWeDoText />
-            </div>
+          <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <motion.div
+              className="flex justify-center"
+              variants={slideInLeft}
+            >
+              <Icons.WhatWeDo className="w-full max-w-[345px] lg:max-w-[542px]" />
+            </motion.div>
+            <motion.div
+              className="flex justify-center"
+              variants={slideInRight}
+            >
+              <Icons.WhatWeDoText className="w-full max-w-[345px] lg:max-w-[542px]" />
+            </motion.div>
           </div>
 
-          <div className="flex gap-6">
+          <motion.div
+            className="flex flex-col gap-4 lg:flex-row lg:gap-6"
+            variants={containerVariants}
+          >
             {whatWeDo.map((item) => (
               <WhatWeDoItem key={item.title} {...item} />
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </PageMaxWidth>
-    </div>
+    </motion.div>
   );
 };
 
@@ -38,17 +91,36 @@ interface WhatWeDoItemProps {
   image: string;
 }
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 32, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: springTransition,
+  },
+};
+
 const WhatWeDoItem = ({ title, description, image }: WhatWeDoItemProps) => {
   return (
-    <div
+    <motion.div
       className={classNames(
-        'flex flex-col gap-5 justify-between p-5 bg-white rounded-[8px] flex-1',
+        'flex flex-col gap-4 justify-between p-4 bg-white rounded-[8px] flex-1 lg:gap-5 lg:p-5',
       )}
+      variants={cardVariants}
     >
       <div className="flex flex-col gap-1">
-        <h4 className={classNames('text-black font-semibold text-[36px] font-degular')}>{title}</h4>
+        <h4
+          className={classNames(
+            'text-black font-semibold font-degular text-[24px] leading-tight lg:text-[36px]',
+          )}
+        >
+          {title}
+        </h4>
         <p
-          className={classNames('text-[#8E8E93] font-[350] text-[16px] leading-[28px] font-avenir')}
+          className={classNames(
+            'text-[#8E8E93] font-[350] font-avenir text-[14px] leading-[22px] lg:text-[16px] lg:leading-[28px]',
+          )}
         >
           {description}
         </p>
@@ -56,7 +128,7 @@ const WhatWeDoItem = ({ title, description, image }: WhatWeDoItemProps) => {
       <div className="flex flex-col gap-1">
         <img src={image} alt={title} className="w-full" />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

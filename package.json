@@ -29,6 +29,7 @@
     "classnames": "^2.5.1",
     "country-state-city": "^3.2.1",
     "dompurify": "^3.2.1",
+    "framer-motion": "^12.33.0",
     "lucide-react": "^0.479.0",
     "lute-connect": "^1.4.1",
     "magic-sdk": "^28.12.0",
