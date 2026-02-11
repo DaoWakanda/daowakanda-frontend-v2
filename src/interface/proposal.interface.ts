@@ -48,6 +48,7 @@ export interface ProposalApi {
 export interface IProposalCardApi {
   proposal: ProposalApi;
   onDelete: (id: string) => void; // appId is string
+  updateProposal?: (proposal: IProposalContract) => void;
 }
 
 export type ProposalStatus = 'IN_PROGRESS' | 'APPROVED' | 'DENIED';

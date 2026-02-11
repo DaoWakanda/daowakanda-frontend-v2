@@ -102,6 +102,19 @@ export const useProposalActions = () => {
       );
   }, []);
 
+  const deleteProposal = async (appId: string): Promise<void> => {
+    try {
+      await client.delete(`/proposal/${appId}`);
+
+      notify.success('Proposal deleted successfully');
+    } catch (error: any) {
+      const message = error?.response?.data?.message || 'Failed to delete proposal';
+
+      notify.error(message);
+      throw error;
+    }
+  };
+
   return {
     getAllProposals,
     getProposal,
@@ -110,5 +123,6 @@ export const useProposalActions = () => {
     createProposal,
     bootstrapProposal,
     validateWalletAddress,
+    deleteProposal
   };
 };

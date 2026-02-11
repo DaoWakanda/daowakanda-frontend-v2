@@ -62,7 +62,7 @@ export const Pagination = ({ pagination, currentPage, onPageChange }: Pagination
             key={index}
             variant={page === currentPage ? 'default' : 'outline'}
             size="sm"
-            className={page === currentPage ? 'bg-gray-700' : 'text-gray-400 border-gray-700'}
+            className={page === currentPage ? 'bg-gray-700 text-white' : 'text-gray-400 border-gray-700'}
             onClick={() => typeof page === 'number' && goToPage(page)}
             disabled={typeof page !== 'number'}
           >
