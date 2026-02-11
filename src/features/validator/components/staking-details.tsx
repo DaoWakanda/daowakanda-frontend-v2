@@ -1,6 +1,6 @@
 import React from 'react';
-import DonutChart from './DonutChart';
-import StakersList from './StakersList';
+import DonutChart from './donut-chart';
+import StakersList from './stakers-list';
 
 interface DetailItemProps {
   label: string;

@@ -1,11 +1,9 @@
 import { Layers, Users, Activity, Percent } from 'lucide-react';
-import StatCard from '@/components/validator/StatCard';
-import ValidatorDetails from '@/components/validator/ValidatorDetails';
-import StakingDetails from '@/components/validator/StakingDetails';
-import DelegationForm from '@/components/validator/DelegationForm';
-import BecomeValidator from '../../components/validator/BecomeValidator';
-import StakersList from '@/components/validator/StakersList';
-import DonutChart from '../../components/validator/DonutChart';
+import StatCard from '@/features/validator/components/stat-card';
+import ValidatorDetails from '@/features/validator/components/validator-details';
+import StakingDetails from '@/features/validator/components/staking-details';
+import DelegationForm from '@/features/validator/components/delegation-form';
+import BecomeValidator from './components/become-validator';
 
 export const Validator = () => {
   return (
@@ -16,7 +14,7 @@ export const Validator = () => {
           <p className="text-gray-600">Enterprise-grade staking made easy</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="font-degularDisplay font-normal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
             title="Total Staked"
             value={
