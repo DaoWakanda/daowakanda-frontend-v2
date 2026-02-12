@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { BackgroundOverlay } from '@/components/background-overlay';
-import { useWallet } from '@txnlab/use-wallet-react';
-import {
-  MdOutlineRadioButtonChecked,
-  MdOutlineRadioButtonUnchecked,
-} from 'react-icons/md';
+import { useWallet } from '@txnlab/use-wallet';
+import { MdOutlineRadioButtonChecked, MdOutlineRadioButtonUnchecked } from 'react-icons/md';
 import { useProposalActions } from '@/actions/proposals';
 import { useProposalContract } from '@/actions/proposals/proposal.contract';
 import { IProposalContract } from '@/interface/proposal.interface';
@@ -24,20 +21,13 @@ enum Vote {
   MAYBE = 'Maybe',
 }
 
-export function VoteModal({
-  isActive,
-  onclick,
-  proposal,
-  updateProposal,
-}: Props) {
+export function VoteModal({ isActive, onclick, proposal, updateProposal }: Props) {
   const [checked, setChecked] = useState('');
   const [loading, setLoading] = useState(false);
   const { activeAddress } = useWallet();
   const { notify } = useNotify();
-  const { validateWalletAddressAndProposal, voteForProposal: uploadVote } =
-    useProposalActions();
-  const { optInToProposalAsa, registerForProposal, voteForProposal } =
-    useProposalContract();
+  const { validateWalletAddressAndProposal, voteForProposal: uploadVote } = useProposalActions();
+  const { optInToProposalAsa, registerForProposal, voteForProposal } = useProposalContract();
 
   const submit = async () => {
     if (loading) return;
@@ -88,10 +78,7 @@ export function VoteModal({
     } else {
       // Register
       toast.loading('Registering for proposal...', { id: 'loader' });
-      const registerRes = await registerForProposal(
-        proposal.appId,
-        proposal.asaId,
-      );
+      const registerRes = await registerForProposal(proposal.appId, proposal.asaId);
       toast.dismiss('loader');
 
       if (!registerRes) {
@@ -102,11 +89,7 @@ export function VoteModal({
 
     // Vote
     toast.loading('Voting...', { id: 'loader' });
-    const voteRes = await voteForProposal(
-      proposal.appId,
-      proposal.asaId,
-      checked === 'Approve',
-    );
+    const voteRes = await voteForProposal(proposal.appId, proposal.asaId, checked === 'Approve');
     toast.dismiss('loader');
 
     if (!voteRes) {
@@ -140,9 +123,7 @@ export function VoteModal({
           <div className="flex flex-col pt-5 w-full gap-2.5">
             <div
               className={`flex p-2 items-center gap-2 cursor-pointer text-[#e8f9ff] h-10 w-full font-['Inter'] text-sm font-normal leading-5 ${
-                checked === Vote.APPROVE
-                  ? 'bg-[#23c1aa4d] border border-[#c7f284] rounded-lg'
-                  : ''
+                checked === Vote.APPROVE ? 'bg-[#23c1aa4d] border border-[#c7f284] rounded-lg' : ''
               }`}
               onClick={() => setChecked(Vote.APPROVE)}
             >
@@ -156,9 +137,7 @@ export function VoteModal({
 
             <div
               className={`flex p-2 items-center gap-2 cursor-pointer text-[#e8f9ff] h-10 w-full font-['Inter'] text-sm font-normal leading-5 ${
-                checked === Vote.DENY
-                  ? 'bg-[#23c1aa4d] border border-[#c7f284] rounded-lg'
-                  : ''
+                checked === Vote.DENY ? 'bg-[#23c1aa4d] border border-[#c7f284] rounded-lg' : ''
               }`}
               onClick={() => setChecked(Vote.DENY)}
             >
