@@ -3,7 +3,7 @@ import { PageMaxWidth } from '@/components/page-max-width';
 
 const ProfilePage = () => {
   return (
-    <div className="min-h-screen w-full overflow-hidden pt-[100px] lg:pt-[85px]  bg-[#282C35] text-white font-[Inter] relative">
+    <div className="min-h-screen w-full overflow-hidden pt-[100px] lg:pt-[85px] bg-[#FAFAFA] text-white font-[Inter] relative">
       <PageMaxWidth>
         <div className="max-w-7xl mx-auto px-4 py-8 flex justify-between gap-8">
           {/* Main content */}
@@ -12,7 +12,7 @@ const ProfilePage = () => {
           </div>
           <div className="w-full md:w-[528px]  mt-[65px] hidden lg:block ">
             <div className="text-center md:text-left mb-6 font-avenir">
-              <h2 className="text-[32px] font-extrabold text-[#C5EE4F] mb-2">
+              <h2 className="text-[32px] font-extrabold text-[#95b82d] mb-2">
                 Let's Know Who You Are.
               </h2>
               <p className="text-gray-300 text-[20px] font-light">

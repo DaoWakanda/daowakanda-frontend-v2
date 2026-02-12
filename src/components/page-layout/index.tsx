@@ -1,6 +1,5 @@
-import { Footer } from '../footer';
 import { FooterV2 } from '../footer/v2';
-import { Navbar } from '../navbar';
+import { NavbarV2 } from '../navbar-v2';
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -9,7 +8,7 @@ interface PageLayoutProps {
 export function PageLayout({ children }: PageLayoutProps) {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* <Navbar /> */}
+      <NavbarV2 />
       {children}
       <FooterV2 />
     </div>

@@ -16,7 +16,7 @@ interface NotificationsProps {
 const Notifications = ({ onClose }: NotificationsProps) => {
   const [selectedNotification, setSelectedNotification] = useState<number | null>(null);
   const notifications = useRecoilValue(UnclaimedBountiesAtom);
-  const loading = !notifications;;
+  const loading = !notifications;
   const [claiming, setClaiming] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   const { getUnclaimedBounties, claimBounty } = useNotificationActions();
@@ -56,7 +56,7 @@ const Notifications = ({ onClose }: NotificationsProps) => {
       visible={true}
       wrapperStyle={{
         position: 'fixed',
-        top: 80,
+        // top: 80,
         height: '100vh',
       }}
     >
@@ -112,9 +112,13 @@ const Notifications = ({ onClose }: NotificationsProps) => {
                         {notification?.disbursementStatus} {notification?.bounty}
                       </span> */}
                     </div>
-                    <p className="text-white text-sm mt-2 line-clamp-2" title={notification.message}>
-                      Congratulations, you have been selected as part of the winners of {notification.title} task. You
-                      are entitled to claim {notification.bounty} Algo's as your reward.
+                    <p
+                      className="text-white text-sm mt-2 line-clamp-2"
+                      title={notification.message}
+                    >
+                      Congratulations, you have been selected as part of the winners of{' '}
+                      {notification.title} task. You are entitled to claim {notification.bounty}{' '}
+                      Algo's as your reward.
                     </p>
                   </div>
 
