@@ -101,6 +101,7 @@ const ProposalsContent: React.FC = () => {
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
   }, []);
+  console.log(proposalsState)
 
   const handleDeleteClick = useCallback((appId: string) => {
     const proposal = proposalsState.proposals.find((p) => p.appId === appId);
