@@ -12,7 +12,7 @@ export const FooterV2 = () => {
         <div className="flex flex-col gap-6 text-center lg:flex-row lg:items-center lg:justify-between lg:text-left">
           <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-[50px]">
             <Link
-              href="#"
+              href="/terms-and-privacy-policy"
               className="text-white font-medium leading-[20px] text-[12px] font-plusJarkata lg:text-[14px]"
             >
               Terms & Privacy Policy
