@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { motion } from 'framer-motion';
 import { Icons } from './icons';
 import { springTransition } from '../motion';
+import Link from 'next/link';
 
 const fadeUpSpring = {
   hidden: { opacity: 0, y: 28 },
@@ -65,10 +66,13 @@ export const HeroSection = () => {
               className="flex flex-col gap-3 justify-center px-4 sm:flex-row sm:gap-5 sm:px-9"
               variants={fadeUpSpring}
             >
-              <button
+              <Link
+                href="https://t.me/daowakanda"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={classNames(
                   'bg-[#FCD701] text-black font-semibold font-degular rounded-[1000px] relative hover:bg-[#FCD701]/80',
-                  'h-[52px] lg:flex-1 text-[14px] sm:h-[60px] lg:text-[16px]',
+                  'h-[52px] lg:flex-1 text-[14px] sm:h-[60px] lg:text-[16px] flex items-center justify-center',
                 )}
               >
                 <span>Join the Community</span>
@@ -80,7 +84,7 @@ export const HeroSection = () => {
                 >
                   <Icons.ArrowLine />
                 </div>
-              </button>
+              </Link>
               <button
                 className={classNames(
                   'border border-[#2F3640] text-[#2F3640] font-semibold font-degular rounded-[1000px] lg:flex-1 transition-all duration-300 hover:bg-[#2F3640] hover:text-white relative',

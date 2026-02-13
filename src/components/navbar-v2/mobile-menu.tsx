@@ -96,6 +96,7 @@ export function MobileMenu({ isOpen, onClose }: Props) {
                     isActive ? 'text-[#231E15]' : 'text-[#8E8E93]',
                   )}
                   href={route.href}
+                  onClick={handleClose}
                 >
                   {route.label}
                 </Link>

@@ -4,6 +4,7 @@ import { PageMaxWidth } from '@/components/page-max-width';
 import { motion } from 'framer-motion';
 import { Icons } from './icons';
 import { springTransition, viewportOnce } from '../motion';
+import Link from 'next/link';
 
 const blockVariants = {
   hidden: { opacity: 0, y: 36 },
@@ -85,14 +86,14 @@ export const Join = () => {
                 </div>
               </div>
 
-              <button className="flex items-center gap-[10px]">
+              <Link href="https://t.me/daowakanda" target="_blank" rel="noopener noreferrer" className="flex items-center gap-[10px]">
                 <span className="text-white font-medium font-degularDisplay text-[16px] lg:text-[18px]">
                   Join the Community
                 </span>
                 <div className="w-[36px] h-[36px] rounded-full bg-[#182CD1] flex items-center justify-center shrink-0 lg:w-[39px] lg:h-[39px]">
                   <Icons.ArrowRight />
                 </div>
-              </button>
+              </Link>
             </motion.div>
 
             <motion.div

@@ -19,24 +19,30 @@ export const FooterV2 = () => {
             </Link>
 
             <Link
-              href="#"
+              href="https://x.com/DaoWakanda"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-white font-medium leading-[20px] text-[12px] font-plusJarkata lg:text-[14px]"
             >
               Twitter
             </Link>
 
             <Link
-              href="#"
+              href="https://t.me/daowakanda"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-white font-medium leading-[20px] text-[12px] font-plusJarkata lg:text-[14px]"
             >
-              Facebook
+              Telegram
             </Link>
 
             <Link
-              href="#"
+              href="https://medium.com/@daowakanda"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-white font-medium leading-[20px] text-[12px] font-plusJarkata lg:text-[14px]"
             >
-              LinkedIn
+              Blog
             </Link>
           </div>
 
