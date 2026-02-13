@@ -151,14 +151,14 @@ export function NavbarV2() {
                 label: 'Proposals',
                 href: '/proposals',
               },
-              {
-                label: 'Validator',
-                href: '/validator',
-              },
-              {
-                label: 'Talent Pool',
-                href: '#',
-              },
+              // {
+              //   label: 'Validator',
+              //   href: '/validator',
+              // },
+              // {
+              //   label: 'Talent Pool',
+              //   href: '#',
+              // },
             ].map((route) => {
               const isActive = route.href === pathname;
 

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { ProposalCard } from './components/proposal-card';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ProposalApi, ProposalStatus } from '@/interface/proposal.interface';
+import { ProposalApi, ProposalsStatistics, ProposalStatus } from '@/interface/proposal.interface';
 import type { Pagination as PaginationType } from '@/interface/pagination.interface';
 import { useProposalActions } from '@/actions/proposals';
 import ProposalCardSkeleton from './components/proposal-card-skeleton';
@@ -27,33 +27,6 @@ interface ProposalsOverviewProps {
   imgUrl: string;
 }
 
-const proposalsOverview: ProposalsOverviewProps[] = [
-  {
-    title: 'Total Proposals',
-    text: '247',
-    imgUrl:
-      'https://res.cloudinary.com/dk5mfu099/image/upload/v1770708375/Frame_1000002795_4_v9wf2k.png',
-  },
-  {
-    title: 'Active Proposals',
-    text: '6',
-    imgUrl:
-      'https://res.cloudinary.com/dk5mfu099/image/upload/v1770708258/Frame_1000002795_lwvicm.png',
-  },
-  {
-    title: 'Total Votes Counts',
-    text: '12,458',
-    imgUrl:
-      'https://res.cloudinary.com/dk5mfu099/image/upload/v1770708258/Frame_1000002795_2_ah8kvi.png',
-  },
-  {
-    title: 'Participation Rate',
-    text: '67.36%',
-    imgUrl:
-      'https://res.cloudinary.com/dk5mfu099/image/upload/v1770708258/Frame_1000002795_3_dzui2y.png',
-  },
-];
-
 export const ProposalsV2 = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,7 +37,7 @@ export const ProposalsV2 = () => {
   });
   const searchParams = useSearchParams();
   const status = searchParams.get('status');
-  const router = useRouter();
+  const [proposalsStatistics, setProposalsStatistics] = useState<ProposalsStatistics | null>(null);
 
   // Modal states
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -73,7 +46,41 @@ export const ProposalsV2 = () => {
   const [selectedProposal, setSelectedProposal] = useState<ProposalApi | null>(null);
   const [showCreateProposalModal, setShowCreateProposalModal] = useState(false);
 
-  const { getAllProposals, deleteProposal } = useProposalActions();
+  const { getAllProposals, deleteProposal, getProposalsStatistics } = useProposalActions();
+
+  const fetchProposalsStatistics = useCallback(async () => {
+    const response = await getProposalsStatistics();
+    if (response) {
+      setProposalsStatistics(response);
+    }
+  }, []);
+
+  const proposalsOverview: ProposalsOverviewProps[] = [
+    {
+      title: 'Total Proposals',
+      text: proposalsStatistics ? proposalsStatistics.totalProposals.toLocaleString() : '---',
+      imgUrl:
+        'https://res.cloudinary.com/dk5mfu099/image/upload/v1770708375/Frame_1000002795_4_v9wf2k.png',
+    },
+    {
+      title: 'Active Proposals',
+      text: proposalsStatistics ? proposalsStatistics.activeProposals.toLocaleString() : '---',
+      imgUrl:
+        'https://res.cloudinary.com/dk5mfu099/image/upload/v1770708258/Frame_1000002795_lwvicm.png',
+    },
+    {
+      title: 'Total Votes Counts',
+      text: proposalsStatistics ? proposalsStatistics.totalVotes.toLocaleString() : '---',
+      imgUrl:
+        'https://res.cloudinary.com/dk5mfu099/image/upload/v1770708258/Frame_1000002795_2_ah8kvi.png',
+    },
+    {
+      title: 'Participation Rate',
+      text: proposalsStatistics ? `${proposalsStatistics.participationRate.toLocaleString()}%` : '---',
+      imgUrl:
+        'https://res.cloudinary.com/dk5mfu099/image/upload/v1770708258/Frame_1000002795_3_dzui2y.png',
+    },
+  ];
 
   // Fetch proposals from API
   const fetchProposals = useCallback(
@@ -187,6 +194,10 @@ export const ProposalsV2 = () => {
 
   // to check if user is searching
   const isSearching = searchQuery.trim().length > 0;
+
+  useEffect(() => {
+    fetchProposalsStatistics();
+  }, []);
 
   return (
     <div className="min-h-screen pb-[90px] w-full bg-[#FAFAFA] font-degularDisplay">

@@ -108,3 +108,10 @@ export interface ValidateWalletAddressResponse {
   address: string;
   assetId: string;
 }
+
+export interface ProposalsStatistics {
+  totalProposals: number;
+  activeProposals: number;
+  totalVotes: number;
+  participationRate: number;
+}
