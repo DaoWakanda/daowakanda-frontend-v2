@@ -28,7 +28,7 @@ export const HeroSection = () => {
     <motion.div
       className={classNames(
         'flex flex-col min-h-svh bg-[#FAFAFA] justify-end relative',
-        'pb-8 pt-16 lg:pb-[75px] lg:pt-[125px]',
+        'pb-8 pt-16 lg:pb-[75px] lg:pt-[140px]',
       )}
       initial="hidden"
       animate="visible"
@@ -49,7 +49,7 @@ export const HeroSection = () => {
                   'text-[28px] leading-[1.2] lg:text-[48px]',
                 )}
               >
-                Building, Governing, and Scaling Web3 Projects That Actually Ship
+                Community-owned, Globally coordinated, On-chain.
               </h2>
               <p
                 className={classNames(
@@ -57,8 +57,8 @@ export const HeroSection = () => {
                   'text-[16px] leading-[24px] lg:text-[20px] lg:leading-[28px]',
                 )}
               >
-                Daowakanda is a DAO studio focused on execution not speculation. We support serious
-                builders with governance, structure, capital alignment, and long-term scale.
+                Daowakanda is a community layer for early-stage founders. We support builders with
+                governance, structure, capital alignment, and long-term scale.
               </p>
             </motion.div>
 

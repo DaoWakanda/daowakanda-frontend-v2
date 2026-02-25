@@ -1,5 +1,6 @@
-import { About } from '@/features/about';
+
+import AboutV2 from '@/features/about-v2';
 
 export default function Page() {
-  return <About />;
+  return <AboutV2 />;
 }

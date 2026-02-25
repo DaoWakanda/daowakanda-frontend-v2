@@ -136,7 +136,7 @@ const whatWeDo: WhatWeDoItemProps[] = [
   {
     title: 'Build',
     description:
-      'Daowakanda started as a community exploring decentralized coordination. We evolved because ideas alone don’t build sustainable ecosystems.',
+      'Daowakanda as a community layer helps individuals, founders and projects move from ideas to solutions.',
     image:
       'https://res.cloudinary.com/dlinprg6k/image/upload/v1770555427/daowakanda/b58b0bbbd343665463e307a2aebd195b51a2a8ab_cw9z9s.png',
   },

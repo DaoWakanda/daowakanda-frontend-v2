@@ -41,10 +41,7 @@ export const HowItWorks = () => {
       variants={containerVariants}
     >
       <PageMaxWidth>
-        <motion.div
-          className="flex flex-col items-center text-center"
-          variants={titleVariants}
-        >
+        <motion.div className="flex flex-col items-center text-center" variants={titleVariants}>
           <h4
             className={classNames(
               'text-black font-semibold font-degularDisplay text-[14px] lg:text-[18px]',
@@ -70,10 +67,7 @@ export const HowItWorks = () => {
           </div>
         </motion.div>
       </PageMaxWidth>
-      <motion.div
-        className="flex flex-col lg:flex-row"
-        variants={containerVariants}
-      >
+      <motion.div className="grid grid-cols-1 md:grid-cols-4" variants={containerVariants}>
         {howItWorks.map((item) => (
           <HowItWorksItem key={item.index} {...item} />
         ))}
@@ -102,7 +96,7 @@ const HowItWorksItem = ({
   return (
     <motion.div
       className={classNames(
-        'flex flex-col flex-1 min-h-[320px] px-5 pt-6 lg:min-h-[495px] lg:px-[50px] lg:pt-[50px]',
+        'flex flex-col  min-h-[320px] px-5 pt-6 lg:min-h-[495px] lg:px-[50px] lg:pt-[50px]',
       )}
       style={{ backgroundColor: bgColor }}
       variants={stepCardVariants}
@@ -143,23 +137,6 @@ const HowItWorksItem = ({
 const howItWorks: HowItWorksItemProps[] = [
   {
     index: 1,
-    title: 'Discover',
-    description:
-      'Ideas, teams, and proposals are validated openly by the community and DAO stewards.',
-    image: (
-      <img
-        src={
-          'https://res.cloudinary.com/dlinprg6k/image/upload/v1770557498/daowakanda/black_magnifying_glass_for_searching_lnpadk.png'
-        }
-        alt="Discover"
-        className="w-full max-w-[180px] h-auto object-contain lg:max-w-[238px] lg:w-[238px] lg:h-[238px]"
-      />
-    ),
-    textColor: '#E48500',
-    bgColor: '#FFF2E0',
-  },
-  {
-    index: 2,
     title: 'Build',
     description:
       'Selected projects receive structured support, contributors, and weekly accountability.',
@@ -171,6 +148,22 @@ const howItWorks: HowItWorksItemProps[] = [
     ),
     textColor: '#00474D',
     bgColor: '#ADEED9',
+  },
+  {
+    index: 2,
+    title: 'Discover',
+    description: 'Ideas, teams, and proposals are voted openly by the community and DAO validator.',
+    image: (
+      <img
+        src={
+          'https://res.cloudinary.com/dlinprg6k/image/upload/v1770557498/daowakanda/black_magnifying_glass_for_searching_lnpadk.png'
+        }
+        alt="Discover"
+        className="w-full max-w-[180px] h-auto object-contain lg:max-w-[238px] lg:w-[238px] lg:h-[238px]"
+      />
+    ),
+    textColor: '#E48500',
+    bgColor: '#FFF2E0',
   },
   {
     index: 3,
