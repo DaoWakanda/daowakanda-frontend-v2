@@ -12,7 +12,7 @@ const FaqData: FAQProps[] = [
   {
     question: 'What is Daowakanda?',
     answer:
-      "Daowakanda is a DAO studio that helps Web3 projects move from idea to execution and scale. We don't just fund or launch projects. We govern, support, and host teams accountable while they build.",
+      "Daowakanda is a community layer for early-stage founders. We support builders with governance, structure, capital alignment, and long-term scale. We don't just fund or launch projects, we govern, support, and host teams accountable while they build.",
   },
   {
     question: 'How is Daowakanda different from a traditional DAO or launchpad?',
@@ -22,7 +22,7 @@ const FaqData: FAQProps[] = [
   {
     question: 'Is Daowakanda only for Algorand projects?',
     answer:
-      'While we have strong roots in the Algorand ecosystem, Daowakanda supports Web3 projects across multiple blockchains. We believe in blockchain agnostic innovation and welcome projects building on any major blockchain platform that aligns with our values of sustainability, scalability, and decentralization.',
+      'While we have strong roots in the Algorand ecosystem, Daowakanda support projects across multiple ecosystems. We believe in innovation and welcome projects building on any major platform that aligns with our values of sustainability, scalability, and decentralization.',
   },
   {
     question: 'How does governance work on Daowakanda?',
