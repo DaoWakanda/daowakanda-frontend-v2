@@ -40,7 +40,7 @@ const teamMembers = [
   },
   {
     name: 'Maduneche Samuel',
-    role: 'Dev.',
+    role: 'Frontend Dev.',
     image:
       'https://res.cloudinary.com/dk5mfu099/image/upload/v1772028125/28853bbeacf9301395034be6e09b49bfdab83274_ohzz0f.jpg',
   },
