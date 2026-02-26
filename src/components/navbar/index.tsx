@@ -30,7 +30,6 @@ import EditProfile from '@/features/profile-page/profile-edit';
 import { UnclaimedBountiesAtom } from '@/state/trivia.atom';
 import { useNotificationActions } from '@/actions/notifications';
 
-
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);

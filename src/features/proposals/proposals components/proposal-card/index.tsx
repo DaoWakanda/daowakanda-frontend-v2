@@ -65,7 +65,7 @@ export function ProposalCard({ proposal, onDelete }: IProposalCardApi) {
   return (
     <div 
       onClick={() => router.push(`/proposals/${proposal.appId}`)}
-      className="bg-[#2E2D3580] rounded-lg cursor-pointer overflow-hidden border border-gray-800 font-roboto flex flex-col min-h-[300px] cursor-pointer"
+      className="bg-[#2E2D3580] rounded-lg cursor-pointer overflow-hidden border border-gray-800 font-roboto flex flex-col min-h-[300px] "
     >
       {/* Card Header */}
       <div className="p-4 flex flex-col flex-1">

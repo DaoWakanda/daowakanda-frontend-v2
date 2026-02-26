@@ -1,12 +1,8 @@
-import ProfilePage from '@/features/profile-page'
-import React from 'react'
+import ProfilePage from '@/features/profile-page';
+import React from 'react';
 
 const ProfileCreationPage = () => {
-  return (
-    <div>
-        <ProfilePage />
-    </div>
-  )
-}
+  return <ProfilePage />;
+};
 
-export default ProfileCreationPage
+export default ProfileCreationPage;

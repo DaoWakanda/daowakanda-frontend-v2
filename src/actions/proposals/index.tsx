@@ -1,7 +1,7 @@
 import { generateQueryFromObject } from '@/utils';
 import { useNotify } from '@/hooks/useNotify';
 import { useClient } from '@/hooks/use-client';
-import { FetchProposalsDto, IBootstrapProposalDto, ICreateProposalContract, ICreateProposalContractApi, IProposalContract, ProposalApi, ValidateWalletAddressResponse } from '@/interface/proposal.interface';
+import { FetchProposalsDto, IBootstrapProposalDto, ICreateProposalContract, ICreateProposalContractApi, IProposalContract, ProposalApi, ProposalsStatistics, ValidateWalletAddressResponse } from '@/interface/proposal.interface';
 import { PaginationResponse } from '@/interface/pagination.interface';
 import { useCallback } from 'react';
 
@@ -102,6 +102,28 @@ export const useProposalActions = () => {
       );
   }, []);
 
+  const deleteProposal = async (appId: string): Promise<void> => {
+    try {
+      await client.delete(`/proposal/${appId}`);
+
+      notify.success('Proposal deleted successfully');
+    } catch (error: any) {
+      const message = error?.response?.data?.message || 'Failed to delete proposal';
+
+      notify.error(message);
+      throw error;
+    }
+  };
+
+  const getProposalsStatistics = async (): Promise<ProposalsStatistics | undefined> => {
+    const response = await client.get<ProposalsStatistics>('proposal/statistics');
+    if (response.data) {
+      return response.data;
+    }
+
+    notify.error(response.error?.toString() || 'Something went wrong.');
+  };
+
   return {
     getAllProposals,
     getProposal,
@@ -110,5 +132,7 @@ export const useProposalActions = () => {
     createProposal,
     bootstrapProposal,
     validateWalletAddress,
+    deleteProposal,
+    getProposalsStatistics
   };
 };
