@@ -85,14 +85,18 @@ export const HeroSection = () => {
                   <Icons.ArrowLine />
                 </div>
               </Link>
-              <button
+
+              <Link
+                href="https://docs.google.com/forms/d/1n4RE6mYF6oDCUAr2h9uQw8fNoaQ6wFRTxbMoeGHIJ28/preview"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={classNames(
                   'border border-[#2F3640] text-[#2F3640] font-semibold font-degular rounded-[1000px] lg:flex-1 transition-all duration-300 hover:bg-[#2F3640] hover:text-white relative',
-                  'h-[52px] text-[14px] sm:h-[60px] lg:text-[16px]',
+                  'h-[52px] text-[14px] sm:h-[60px] lg:text-[16px]  flex items-center justify-center',
                 )}
               >
                 <span>Apply as a Founder</span>
-              </button>
+              </Link>
             </motion.div>
           </div>
 
