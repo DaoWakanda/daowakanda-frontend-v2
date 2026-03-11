@@ -155,10 +155,10 @@ export function NavbarV2() {
               //   label: 'Validator',
               //   href: '/validator',
               // },
-              // {
-              //   label: 'Talent Pool',
-              //   href: '#',
-              // },
+              {
+                label: 'Talent Pool',
+                href: '/talent-pool',
+              },
             ].map((route) => {
               const isActive = route.href === pathname;
 
