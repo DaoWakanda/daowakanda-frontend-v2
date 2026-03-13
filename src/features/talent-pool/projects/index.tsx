@@ -2,7 +2,11 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { SearchInput } from '../components/search-input';
 import { TabToggler } from '@/components/tab-toggler';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
+import ProjectCard from './project-card';
+import SkeletonCard from './project-card/project-card-skeleton';
+import { mockProjects } from '@/data/mockData';
 
 export function Projects() {
   const filters = [
@@ -21,6 +25,40 @@ export function Projects() {
   const projectTypes = ['All', 'Full-time', 'Part-time', 'Contract'];
   const [projectType, setProjectType] = useState('All');
   const [filter, setFilter] = useState('All');
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  // Filtering Logic
+  const filteredProjects = useMemo(() => {
+    return mockProjects.filter((project) => {
+      const matchSearch =
+        project.title.toLowerCase().includes(search.toLowerCase()) ||
+        project.description.toLowerCase().includes(search.toLowerCase());
+
+      const matchStack = filter === 'All' || project.stack.includes(filter);
+
+      const matchType = projectType === 'All' || project.type === projectType;
+
+      return matchSearch && matchStack && matchType;
+    });
+  }, [search, filter, projectType]);
 
   return (
     <div className="flex flex-col gap-8">
@@ -52,7 +90,7 @@ export function Projects() {
       </div>
 
       <div className="flex gap-4">
-        <SearchInput />
+        <SearchInput value={search} onChange={setSearch} />
 
         <TabToggler
           options={projectTypes}
@@ -70,6 +108,32 @@ export function Projects() {
           selectedOption={filter}
           randomId="filters-x"
         />
+        <div className="py-8">
+          {loading ? (
+            <div className="grid md:grid-cols-2 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <SkeletonCard key={i} />
+              ))}
+            </div>
+          ) : filteredProjects.length === 0 ? (
+            <div className="text-center py-20 text-gray-500">No projects found.</div>
+          ) : (
+            <div
+              className="
+                grid
+                gap-6
+                sm:grid-cols-1
+                md:grid-cols-2
+                lg:grid-cols-2
+                xl:grid-cols-2
+              "
+            >
+              {filteredProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </div>
+          )}{' '}
+        </div>
       </div>
     </div>
   );
