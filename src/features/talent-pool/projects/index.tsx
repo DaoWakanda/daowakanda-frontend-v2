@@ -8,10 +8,6 @@ import ProjectCard from './project-card';
 import SkeletonCard from './project-card/project-card-skeleton';
 import { mockProjects } from '@/data/mockData';
 
-
-
-
-
 export function Projects() {
   const filters = [
     'All',
@@ -32,7 +28,7 @@ export function Projects() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -124,13 +120,13 @@ export function Projects() {
           ) : (
             <div
               className="
-        grid
-        gap-6
-        sm:grid-cols-1
-        md:grid-cols-2
-        lg:grid-cols-2
-        xl:grid-cols-2
-      "
+                grid
+                gap-6
+                sm:grid-cols-1
+                md:grid-cols-2
+                lg:grid-cols-2
+                xl:grid-cols-2
+              "
             >
               {filteredProjects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
