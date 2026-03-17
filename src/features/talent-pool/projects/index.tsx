@@ -7,6 +7,7 @@ import Image from 'next/image';
 import ProjectCard from './project-card';
 import SkeletonCard from './project-card/project-card-skeleton';
 import { mockProjects } from '@/data/mockData';
+import { GetStarted } from '../components/get-started';
 
 export function Projects() {
   const filters = [
@@ -132,8 +133,10 @@ export function Projects() {
                 <ProjectCard key={project.id} project={project} />
               ))}
             </div>
-          )}{' '}
+          )}
         </div>
+
+        <GetStarted />
       </div>
     </div>
   );

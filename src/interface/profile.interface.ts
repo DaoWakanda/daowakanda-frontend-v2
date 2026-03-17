@@ -27,3 +27,5 @@ export interface IUpdateProfile {
   stateOfResidence: string;
   githubLink: string;
 }
+
+export type OnboardingLevel = 'Basic Info' | 'Skills' | 'Portfolio' | 'Preference';
