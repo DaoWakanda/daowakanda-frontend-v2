@@ -5,6 +5,8 @@ import { Progress } from './components/progress';
 import { useState } from 'react';
 import { OnboardingLevel } from '@/interface/profile.interface';
 import { BasicInfo } from './components/basic-info';
+import { YourSkills } from './components/your-skills';
+import { YourPortfolio } from './components/your-portfolio';
 
 export function SetUpProfile() {
   const [level, setLevel] = useState<OnboardingLevel>('Basic Info');
@@ -15,6 +17,20 @@ export function SetUpProfile() {
           <Progress activeLevel={level} />
 
           {level === 'Basic Info' && <BasicInfo onContinue={() => setLevel('Skills')} />}
+
+          {level === 'Skills' && (
+            <YourSkills
+              onContinue={() => setLevel('Portfolio')}
+              onReturn={() => setLevel('Basic Info')}
+            />
+          )}
+
+          {level === 'Portfolio' && (
+            <YourPortfolio
+              onContinue={() => setLevel('Preference')}
+              onReturn={() => setLevel('Skills')}
+            />
+          )}
         </div>
       </PageMaxWidth>
     </main>

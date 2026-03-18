@@ -1,46 +1,54 @@
 import { Input } from '@/components/input';
-import { TextArea } from '@/components/textarea';
 import classNames from 'classnames';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
 
 interface Props {
   onContinue: () => void;
+  onReturn: () => void;
 }
 
-export const BasicInfo = ({ onContinue }: Props) => {
-  const router = useRouter();
-
+export const YourPortfolio = ({ onContinue, onReturn }: Props) => {
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-[20px]">
+      <div className="flex flex-col gap-[50px]">
         <div className="flex flex-col gap-1">
           <h2 className="font-degular font-semibold text-[#1F1F1F] text-[30px] text-center">
-            Tell us about yourself
+            Your Portfolio
           </h2>
           <p className="font-degular font-medium text-[#2F3640] text-[16px] text-center">
-            Let us know who you are.
+            Showcase your best work.
           </p>
         </div>
 
-        <Input label="Name" placeholder="What should we call you?" />
+        <div className="flex flex-col gap-5">
+          <div className="flex gap-5">
+            <div className="flex flex-col flex-1">
+              <Input label="GitHub" placeholder="github.com/username" />
+            </div>
 
-        <Input label="Professional Title" placeholder="What's your job?" />
+            <div className="flex flex-col flex-1">
+              <Input label="Behance" placeholder="behance.net/username" />
+            </div>
+          </div>
 
-        <Input label="Location" placeholder="Where are you located?" />
+          <div className="flex gap-5">
+            <div className="flex flex-col flex-1">
+              <Input label="Dribbble" placeholder="dribbble.com/username" />
+            </div>
 
-        <TextArea
-          label="Bio"
-          placeholder="Tell us about your experience and what drives you..."
-          rows={5}
-        />
+            <div className="flex flex-col flex-1">
+              <Input label="Website" placeholder="yoursite.com" />
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="flex items-center justify-between">
         <button
           className="flex items-center gap-1 text-[#919094] text-base font-degular font-semibold"
-          onClick={() => router.back()}
+          onClick={() => onReturn()}
         >
           <MdKeyboardArrowLeft />
           <span>Back</span>
