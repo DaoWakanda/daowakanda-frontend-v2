@@ -7,9 +7,11 @@ import { OnboardingLevel } from '@/interface/profile.interface';
 import { BasicInfo } from './components/basic-info';
 import { YourSkills } from './components/your-skills';
 import { YourPortfolio } from './components/your-portfolio';
+import { WorkPreferences } from './components/work-preference';
 
 export function SetUpProfile() {
   const [level, setLevel] = useState<OnboardingLevel>('Basic Info');
+
   return (
     <main className="flex flex-col flex-1 bg-[#FAFAFA] lg:pt-[140px] lg:pb-[100px]">
       <PageMaxWidth>
@@ -30,6 +32,10 @@ export function SetUpProfile() {
               onContinue={() => setLevel('Preference')}
               onReturn={() => setLevel('Skills')}
             />
+          )}
+
+          {level === 'Preference' && (
+            <WorkPreferences onContinue={() => setLevel('Portfolio')} onReturn={() => null} />
           )}
         </div>
       </PageMaxWidth>

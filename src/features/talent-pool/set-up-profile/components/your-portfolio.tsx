@@ -1,3 +1,4 @@
+import { DropZone } from '@/components/drop-zone';
 import { Input } from '@/components/input';
 import classNames from 'classnames';
 import { useState } from 'react';
@@ -42,6 +43,8 @@ export const YourPortfolio = ({ onContinue, onReturn }: Props) => {
               <Input label="Website" placeholder="yoursite.com" />
             </div>
           </div>
+
+          <DropZone title="Upload your CV" description="PDF, DOC up to 10MB" />
         </div>
       </div>
 
